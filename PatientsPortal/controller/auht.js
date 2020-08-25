@@ -1,0 +1,171 @@
+var jwt =require('jsonwebtoken');
+require('dotenv').config();
+var expressJwt = require('express-jwt');
+const Patient = require('../model/patient');
+const Hospital = require ('../model/hospital');
+const Doctor= require('../model/doctor');
+
+
+/*Hospital Authetication */
+exports.hospitalsignup = async (req,res)=>{
+    console.log(req.body)
+    const hospitalExists = await Hospital.findOne({email: req.body.email});
+    
+    if(hospitalExists){
+        return res.status(403).json({
+            error: 'Email have already taken'
+        });
+    }
+    const hospital = await new Hospital(req.body);
+    await hospital.save();
+    res.status(200).json({
+        message: "Hospital registered succesfully"
+    });
+}
+
+exports.hospitalsignin =(req,res)=>{
+    //find the hospital based on email
+    const {email, password } = req.body;
+    console.log(req.body);
+    Hospital.findOne({ email}, (err,hospital)=>{
+        //if error or no user
+        if(err || !hospital){
+            return res.status(401).json({ 
+                error: "Hospital with this email is not registered. Please sign in with registered email."
+            })
+        }
+        // if hospital is found authenticate email and password
+        if(!hospital.authenticate(password)){
+            console.log(password);
+            return res.status(401).json({ 
+                error: "Email and Password doesn't match"
+            })   
+        }
+        //generate a token with hospital id and secret
+
+        const token =jwt.sign({_id: hospital.id},process.env.JWT_SECRET);
+
+
+        //persist the token as 't' in cookie with expiry date
+        res.cookie("t",token,{expire: new Date()+ 9999});
+        //return response with user and token to frontend client
+        const {_id, Name, email} = hospital;
+        return res.json({ token, hospital:{ _id, Name, email }});
+
+
+    });
+};
+
+exports.hospitalsignout =(req, res) => {
+    res.clearCookie("t");
+    return res.json({message: "signout successfully"});
+};
+
+exports.hospitalrequireSignIn = expressJwt({
+    secret: process.env.JWT_SECRET, userProperty: "auth",algorithms: ['HS256']
+});
+
+
+
+
+/*Patient authetication */
+exports.signup = async (req,res)=>{
+    console.log(req.body)
+    const patientExists = await Patient.findOne({email: req.body.email});
+    
+    if(patientExists){
+        return res.status(403).json({
+            error: 'Email have already taken'
+        });
+    }
+    const patient = await new Patient(req.body);
+    await patient.save();
+    res.status(200).json({
+        message: "signup succesfully"
+    });
+}
+
+exports.signin =(req,res)=>{
+    //find the user based on email
+    const {email, password } = req.body;
+    console.log(req.body);
+    Patient.findOne({ email}, (err,patient)=>{
+        //if error or no user
+        if(err || !patient){
+            return res.status(401).json({ 
+                error: "Patient with this email does not exists.Please sign in with registered email."
+            })
+        }
+        // if user is found authenticate email and password
+        if(!patient.authenticate(password)){
+            console.log(password);
+            return res.status(401).json({ 
+                error: "Email and Password doesn't match"
+            })   
+        }
+        //generate a token with user id and secret
+
+        const token =jwt.sign({_id: patient.id},process.env.JWT_SECRET);
+
+
+        //persist the token as 't' in cookie with expiry date
+        res.cookie("t",token,{expire: new Date()+ 9999});
+        //return response with user and token to frontend client
+        const {_id, firstname, lastname, email} = patient;
+        return res.json({ token, patient:{ _id, firstname, lastname, email }});
+
+
+    });
+};
+
+exports.signout =(req, res) => {
+    res.clearCookie("t");
+    return res.json({message: "signout successfully"});
+};
+
+exports.requireSignIn = expressJwt({
+    secret: process.env.JWT_SECRET, userProperty: "auth",algorithms: ['HS256']
+});
+
+/**Doctor's authentication methods */
+exports.doctorsignin =(req,res)=>{
+    //find the user based on email
+    const {email, password } = req.body;
+    console.log(req.body);
+    Doctor.findOne({ email}, (err,doctor)=>{
+        //if error or no user
+        if(err || !doctor){
+            return res.status(401).json({ 
+                error: "Doctor with this email does not exists.Please sign in with registered email."
+            })
+        }
+        // if user is found authenticate email and password
+        if(!doctor.authenticate(password)){
+            console.log(password);
+            return res.status(401).json({ 
+                error: "Email and Password doesn't match"
+            })   
+        }
+        //generate a token with user id and secret
+
+        const token =jwt.sign({_id: doctor.id},process.env.JWT_SECRET);
+
+
+        //persist the token as 't' in cookie with expiry date
+        res.cookie("t",token,{expire: new Date()+ 9999});
+        //return response with user and token to frontend client
+        const {_id, firstname, lastname, designation, gender, email} = doctor;
+        return res.json({ token, doctor:{ _id, firstname, lastname, designation, gender, email }});
+
+
+    });
+};
+
+exports.doctorsignout =(req, res) => {
+    res.clearCookie("t");
+    return res.json({message: "signout successfully"});
+};
+
+exports.doctorrequireSignIn = expressJwt({
+    secret: process.env.JWT_SECRET, userProperty: "auth",algorithms: ['HS256']
+});
