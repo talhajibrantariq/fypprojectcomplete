@@ -1,6 +1,6 @@
 import React, { Component } from "react";
-import { Layout, Menu, Breadcrumb, Switch, Image } from "antd";
-import { UserOutlined, SettingOutlined } from "@ant-design/icons";
+import { Layout, Menu, Breadcrumb, Switch } from "antd";
+import { UserOutlined, NotificationOutlined } from "@ant-design/icons";
 import {
   BrowserRouter as Router,
   Redirect,
@@ -8,18 +8,13 @@ import {
   Link,
   Switch as RouterSwitch,
 } from "react-router-dom";
-import { hospitalsignout, isAuthenticated } from "../auth/index";
-import DoctorSignup from "./doctorsignup";
-import DoctorDisplay from "./doctordisplay";
-import PatientSignup from "./PatientSignup";
-import PatientDisplay from "./patientdisplay";
+import { hospitalsignout } from "../auth/index";
 import "antd/dist/antd.css";
-import "./hospital.css";
 
 const { SubMenu } = Menu;
 const { Header, Content, Footer, Sider } = Layout;
 
-class Dashboard extends Component {
+class superAdmindashboard extends Component {
   constructor(props) {
     super(props);
     this.Signout = this.Signout.bind(this);
@@ -31,14 +26,27 @@ class Dashboard extends Component {
   render() {
     return (
       <Layout>
+        <Header className="header">
+          <div className="logo" />
+          <Menu
+            theme="dark"
+            mode="horizontal"
+            defaultSelectedKeys={["1"]}
+          ></Menu>
+        </Header>
         <Content style={{ padding: "0 50px" }}>
           <Router>
             <Layout
               className="site-layout-background"
-              style={{ padding: "2px 0px" }}
+              style={{ padding: "24px 0" }}
             >
-              <Sider className="site-layout-background" width={300}>
-                <Menu mode="inline" style={{ minHeight: "500px" }}>
+              <Sider className="site-layout-background" width={200}>
+                <Menu
+                  mode="inline"
+                  defaultSelectedKeys={["1"]}
+                  defaultOpenKeys={["sub1"]}
+                  style={{ height: "100%" }}
+                >
                   <SubMenu key="sub1" icon={<UserOutlined />} title="Doctors">
                     <Menu.Item key="1">
                       Register Doctors
@@ -58,10 +66,20 @@ class Dashboard extends Component {
                       Display Patients
                       <Link to="/hospital/dashboard/getpatients" />
                     </Menu.Item>
+                  </SubMenu>{" "}
+                  <SubMenu key="sub3" icon={<UserOutlined />} title="Reports">
+                    <Menu.Item key="5">
+                      View Reports
+                      <Link to="" />
+                    </Menu.Item>
+                    <Menu.Item key="6">
+                      Share reports
+                      <Link to="" />
+                    </Menu.Item>
                   </SubMenu>
                   <SubMenu
-                    key="sub3"
-                    icon={<SettingOutlined />}
+                    key="sub4"
+                    icon={<NotificationOutlined />}
                     title="Account"
                   >
                     <Menu.Item onClick={this.Signout} key="9">
@@ -71,14 +89,7 @@ class Dashboard extends Component {
                 </Menu>
               </Sider>
               <Content style={{ padding: "0 24px", minHeight: 280 }}>
-                <RouterSwitch>
-                  <Route exact path="/hospital/dashboard">
-                    <Image
-                      width={800}
-                      height={500}
-                      src="https://images.pexels.com/photos/48603/pexels-photo-48603.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940"
-                    />
-                  </Route>
+                {/* <RouterSwitch>
                   <Route
                     exact
                     path="/hospital/dashboard/signup"
@@ -99,7 +110,7 @@ class Dashboard extends Component {
                     path="/hospital/dashboard/getpatients"
                     component={PatientDisplay}
                   />
-                </RouterSwitch>
+                </RouterSwitch> */}
               </Content>
             </Layout>
           </Router>
@@ -109,4 +120,4 @@ class Dashboard extends Component {
   }
 }
 
-export default Dashboard;
+export default superAdmindashboard;

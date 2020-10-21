@@ -54,10 +54,11 @@ class HospitalSignin extends Component {
         }
 
         return (
+            <div class="formcenter">
             <div class="row mt-5" className="clrbody">
                 <div class="col-md-6 m-auto">
                     <div class="card card-body bg-light">
-                        <h1 class="text-center mb-3"><i class="fas fa-sign-in-alt"></i> Hospital Login</h1>
+                        <h1 class="text-center mb-3 login-heading"><i class="fas fa-sign-in-alt"></i> Hospital Login</h1>
                         <form>
                             <div class="alert alert-warning alert-dismissible fade show" role="alert"
                             style={{display: error ? "":"none"}}
@@ -106,6 +107,7 @@ class HospitalSignin extends Component {
                         </p>
                     </div>
                 </div>
+            </div>
             </div>
         );
     }

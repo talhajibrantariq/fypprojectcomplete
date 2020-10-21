@@ -1,10 +1,13 @@
-import React from 'react';
-import {BrowserRouter} from 'react-router-dom';
-import MainRouter from './MainRouter';
+import React from "react";
+import { BrowserRouter } from "react-router-dom";
+import MainRouter from "./MainRouter";
+import Menu from "./core/Menu";
+
 function App() {
   return (
     <BrowserRouter>
-      <MainRouter/>
+      <Menu />
+      <MainRouter />
     </BrowserRouter>
   );
 }

@@ -17,6 +17,7 @@ exports.hospitalById = (req, res, next, id)=>{
     });
 };
 
+
 exports.hasAuthorization = (req, res, next) => {
     const authorized = req.profile && req.auth && req.profile._id === req.auth._id;
 
@@ -25,7 +26,8 @@ exports.hasAuthorization = (req, res, next) => {
             error: "You are not authorized to perform this action"
         });
     }
-};
+}; 
+
 exports.deleteHospital = (req, res, next)=>{
     let hospital = req.profile;
     hospital.remove((err, hospital)=>{
@@ -41,6 +43,7 @@ exports.deleteHospital = (req, res, next)=>{
         });
     });
 };
+
 
 /*Doctor's Authetication */
 exports.doctorsignup = async (req,res)=>{

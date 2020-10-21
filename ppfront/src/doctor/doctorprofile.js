@@ -47,7 +47,6 @@ class DoctorProfile extends Component {
         this.init(doctorId)
     }
     render(){
-        console.log("In doctorProfile render");
         const { redirect, doctor} = this.state
         if(redirect)  return <Redirect to="/doctor/signin" />
         const photoUrl = this.state.doctor._id ? `http://localhost:8080/doctor/photo/${this.state.doctor._id}` : DefaultProfile;

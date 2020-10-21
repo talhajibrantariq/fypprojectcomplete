@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { hospitalsignup } from "../auth/index";
 import { Link } from "react-router-dom";
 
-class HospitalSignup extends Component {
+class SuperAdminSignup extends Component {
   constructor() {
     super();
     this.state = {
@@ -50,7 +50,7 @@ class HospitalSignup extends Component {
         <div class="col-md-6 m-auto">
           <div class="card card-body bg-light">
             <h1 class="text-center mb-3">
-              <i class="fas fa-briefcase-medical"></i> Register Hospital
+              <i class="fas fa-briefcase-medical"></i> Register Admin
             </h1>
             <div
               class="alert alert-warning alert-dismissible fade show"
@@ -93,7 +93,7 @@ class HospitalSignup extends Component {
                   id="Name"
                   name="Name"
                   class="form-control"
-                  placeholder="Enter Hospital's Name"
+                  placeholder="Enter Admin's Name"
                   value={Name}
                 />
               </div>
@@ -151,7 +151,8 @@ class HospitalSignup extends Component {
               </Link>
             </form>
             <p class="lead mt-4 text-dark">
-              Already have an account? <a href="/hospital/signin">Login</a>
+              Already have an account?{" "}
+              <a href="/superAdmin/superAdminsignin">Login</a>
             </p>
           </div>
         </div>
@@ -160,4 +161,4 @@ class HospitalSignup extends Component {
   }
 }
 
-export default HospitalSignup;
+export default SuperAdminSignup;

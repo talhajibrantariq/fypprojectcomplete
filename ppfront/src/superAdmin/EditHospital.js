@@ -1,19 +1,17 @@
 import React, { Component } from "react";
 import { isAuthenticated } from "../auth//index";
-import { read, update, updatePatient } from "./apiPatient";
+import { getdoctor, updated, updateDoctor } from "./doctorapi";
 import { Redirect } from "react-router-dom";
 import DefaultProfile from "../images/avatar.png";
 
-class EditPatient extends Component {
+class EditHospital extends Component {
   constructor() {
     super();
     this.state = {
       id: "",
-      firstname: "",
-      lastname: "",
+      Name: "",
       phone: "",
       password: "",
-      age: "",
       email: "",
       redirectToProfile: false,
       error: "",
@@ -22,10 +20,10 @@ class EditPatient extends Component {
     };
   }
 
-  init = (patientId) => {
+  init = (doctorId) => {
     const token = isAuthenticated().token;
 
-    read(patientId, token).then((data) => {
+    getdoctor(doctorId, token).then((data) => {
       console.log(data);
       if (data.error) {
         this.setState({
@@ -37,6 +35,7 @@ class EditPatient extends Component {
           firstname: data.firstname,
           lastname: data.lastname,
           phone: data.phone,
+          designation: data.designation,
           password: data.password,
           age: data.age,
           email: data.email,
@@ -47,16 +46,23 @@ class EditPatient extends Component {
   };
 
   componentDidMount() {
-    this.patientData = new FormData();
-    const patientId = this.props.match.params.patientId;
-    this.init(patientId);
+    this.doctorData = new FormData();
+    const doctorId = this.props.match.params.doctorId;
+    this.init(doctorId);
   }
 
   isValid = () => {
-    const { firstname, lastname, phone, email, fileSize } = this.state;
-    if (fileSize > 100000) {
+    const {
+      firstname,
+      lastname,
+      phone,
+      designation,
+      email,
+      fileSize,
+    } = this.state;
+    if (fileSize > 1000000) {
       this.setState({
-        error: "File size should be less than 100kb",
+        error: "File size should be less than 1000kb",
       });
       return false;
     }
@@ -68,9 +74,16 @@ class EditPatient extends Component {
       return false;
     }
 
-    if (phone.length >= 1 && phone.length <= 11) {
+    if (phone.length <= 1 && phone.length >= 11) {
       this.setState({
         error: "Enter a valid phone number",
+      });
+      console.log(this.error);
+      return false;
+    }
+    if (designation.length === 0) {
+      this.setState({
+        error: "Designation is required",
       });
       console.log(this.error);
       return false;
@@ -100,7 +113,7 @@ class EditPatient extends Component {
     });
     const value = name === "photo" ? event.target.files[0] : event.target.value;
     const fileSize = name === "photo" ? event.target.files[0].size : 0;
-    this.patientData.set(name, value);
+    this.doctorData.set(name, value);
     this.setState({ [name]: value, fileSize });
   };
   clickSubmit = (event) => {
@@ -109,15 +122,14 @@ class EditPatient extends Component {
       loading: true,
     });
     if (this.isValid()) {
-      const patientId = this.props.match.params.patientId;
+      const doctorId = this.props.match.params.doctorId;
       const token = isAuthenticated().token;
-      console.log(patientId, token);
-      update(patientId, token, this.patientData).then((data) => {
+      updated(doctorId, token, this.doctorData).then((data) => {
         if (data.error) {
           console.log(data.error);
           this.setState({ error: data.error });
         } else {
-          updatePatient(data, () => {
+          updateDoctor(data, () => {
             this.setState({
               redirectToProfile: true,
             });
@@ -133,16 +145,17 @@ class EditPatient extends Component {
       lastname,
       age,
       phone,
+      designation,
       email,
       redirectToProfile,
       error,
       loading,
     } = this.state;
     if (redirectToProfile) {
-      return <Redirect to={`/patient/${id}`} />;
+      return <Redirect to={`/doctor/dashboard/profile/${id}`} />;
     }
     const photoUrl = id
-      ? `http://localhost:8080/patient/photo/${id}`
+      ? `http://localhost:8080/doctor/photo/${id}`
       : DefaultProfile;
     return (
       <div>
@@ -250,6 +263,20 @@ class EditPatient extends Component {
                   />
                 </div>
                 <div class="form-group">
+                  <label className="text-muted" for="age">
+                    Designation
+                  </label>
+                  <input
+                    onChange={this.handleChange("designation")}
+                    type="designation"
+                    id="designation"
+                    name="designation"
+                    class="form-control"
+                    placeholder="Enter Age"
+                    value={designation}
+                  />
+                </div>
+                <div class="form-group">
                   <label className="text-muted" for="email">
                     Email
                   </label>
@@ -261,6 +288,7 @@ class EditPatient extends Component {
                     class="form-control"
                     placeholder="Enter Email"
                     value={email}
+                    disabled
                   />
                 </div>
 
@@ -269,7 +297,7 @@ class EditPatient extends Component {
                   type="submit"
                   class="btn btn-primary btn-block"
                 >
-                  Update
+                  Update Settings
                 </button>
               </form>
             </div>
@@ -280,4 +308,4 @@ class EditPatient extends Component {
   }
 }
 
-export default EditPatient;
+export default EditHospital;

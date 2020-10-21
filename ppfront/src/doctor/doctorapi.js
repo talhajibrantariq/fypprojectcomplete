@@ -11,9 +11,7 @@ export const getdoctor = (doctorId, token) =>{
         console.log(response)
         return response.json();
     })
-
 }
-
 export const updated = (doctorId, token, doctor) =>{
     console.log("USER DATA FORM :",doctor)
     return fetch(`http://localhost:8080/doctor/${doctorId}`,{
