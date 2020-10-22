@@ -14,6 +14,7 @@ var patientRouter = require("./routes/patient");
 var hospitalRouter = require("./routes/hospital");
 var doctorRouter = require("./routes/doctor");
 var superAdminRouter = require("./routes/superAdmin");
+var reportRouter = require("./routes/report");
 var fs = require("fs");
 var app = express();
 
@@ -58,6 +59,7 @@ app.use("/", patientRouter);
 app.use("/hospital", hospitalRouter);
 app.use("/doctor", doctorRouter);
 app.use("/superAdmin", superAdminRouter);
+app.use("/report", reportRouter);
 app.use(function (err, req, res, next) {
   if (err.name === "UnauthorizedError") {
     res.status(401).json({
