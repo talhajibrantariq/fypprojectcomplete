@@ -1,6 +1,6 @@
-var _ = require("lodash");
 var formidable = require("formidable");
 var Report = require("../model/report");
+const { extend } = require("lodash");
 
 exports.createReport = async (req, res, next) => {
   console.log("exports.createReport -> req.body", req.body);
@@ -16,7 +16,8 @@ exports.createReport = async (req, res, next) => {
   });
 };
 
-exports.getReportById = (req, res, next, id) => {
+exports.reportIdParam = (req, res, next, id) => {
+  console.log("exports.reportIdParam -> req", id);
   Report.findById(id).exec((err, report) => {
     if (err || !report) {
       return res.status(400).json({
@@ -24,9 +25,15 @@ exports.getReportById = (req, res, next, id) => {
       });
     }
     req.reportData = report;
+    console.log("exports.reportIdParam -> report", report);
     next();
   });
 };
+
+exports.getReportById = (req, res) => {
+  return res.json(req.reportData);
+};
+
 // exports.hasAuthorization = (req, res, next) => {
 //   const authorized =
 //     req.reportData && req.auth && req.reportData._id === req.auth._id;
@@ -50,30 +57,22 @@ exports.getAllReports = (req, res) => {
     .catch((err) => console.error(err));
 };
 
-exports.updateReportById = (req, res, next) => {
-  let form = new formidable.IncomingForm();
-  form.keepExtensions = true;
-  form.parse(req, (err, fields, files) => {
-    console.log("exports.updateReportById -> fields", fields);
+exports.editReportById = (req, res) => {
+  console.log("exports.editReportById -> req.body", req.body);
+  let report = req.reportData;
+  report = extend(report, req.body);
+
+  report.save((err) => {
     if (err) {
       return res.status(400).json({
-        error: "Report could not be saved",
+        error: err,
       });
+      console.log("exports.updateReport -> err", err);
     }
-    let report = req.reportData;
-
-    report = _.extend(report, fields);
-
-    report.save((err, result) => {
-      if (err) {
-        console.log("exports.updateReportById -> err", err);
-        return res.status(400).json({
-          error: err,
-        });
-      }
-      res.json(report);
-    });
+    res.json(report);
+    console.log("exports.updateReport -> report", report);
   });
+  console.log(report);
 };
 
 exports.deleteReportById = (req, res, next) => {
