@@ -2,17 +2,15 @@ var _ = require("lodash");
 var formidable = require("formidable");
 var Report = require("../model/report");
 
-exports.createReport = (req, res, next) => {
-
+exports.createReport = async (req, res, next) => {
   const report = await new Report(req.body);
   report.doctor = req.auth._id;
   report.patient = req.auth._id;
   await report.save();
 
   res.status(200).json({
-      message: "Report saved succesfully"
+    message: "Report saved succesfully",
   });
-
 };
 
 exports.getReportById = (req, res, next, id) => {

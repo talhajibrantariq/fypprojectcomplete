@@ -10,10 +10,10 @@ var {
 
 var router = express.Router();
 
-router.post("/report", createReport);
-router.get("/reports", getAllReports);
-router.get("/report/:reportId", getReportById);
-router.put("/report/:reportId", updateReportById);
-router.delete("/report/:reportId", deleteReportById);
+router.post("/", createReport);
+router.get("/all", getAllReports);
+router.get("/:reportId", getReportById);
+router.put("/:reportId", updateReportById);
+router.delete("/:reportId", deleteReportById);
 
 module.exports = router;
