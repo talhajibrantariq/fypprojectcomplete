@@ -10,7 +10,7 @@ var {
 
 var router = express.Router();
 
-router.post("/", createReport);
+router.post("/create", createReport);
 router.get("/all", getAllReports);
 router.get("/:reportId", getReportById);
 router.put("/:reportId", updateReportById);

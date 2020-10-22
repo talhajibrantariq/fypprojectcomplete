@@ -3,13 +3,16 @@ var formidable = require("formidable");
 var Report = require("../model/report");
 
 exports.createReport = async (req, res, next) => {
+  console.log("exports.createReport -> req.body", req.body);
   const report = await new Report(req.body);
-  report.doctor = req.auth._id;
-  report.patient = req.auth._id;
-  await report.save();
+  console.log(
+    "exports.createReport -> await report.save()",
+    await report.save()
+  );
 
   res.status(200).json({
     message: "Report saved succesfully",
+    message: req.body,
   });
 };
 
