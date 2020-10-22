@@ -1,4 +1,3 @@
-var formidable = require("formidable");
 var Report = require("../model/report");
 const { extend } = require("lodash");
 
@@ -16,34 +15,24 @@ exports.createReport = async (req, res, next) => {
   });
 };
 
-exports.reportIdParam = (req, res, next, id) => {
-  console.log("exports.reportIdParam -> req", id);
-  Report.findById(id).exec((err, report) => {
-    if (err || !report) {
-      return res.status(400).json({
-        error: "Report not found",
-      });
-    }
-    req.reportData = report;
-    console.log("exports.reportIdParam -> report", report);
-    next();
-  });
-};
-
 exports.getReportById = (req, res) => {
   return res.json(req.reportData);
 };
 
-// exports.hasAuthorization = (req, res, next) => {
-//   const authorized =
-//     req.reportData && req.auth && req.reportData._id === req.auth._id;
+exports.getReportsByDoctor = async (req, res) => {
+  const results = await Report.find({ doctor: req.doctor.id });
 
-//   if (!authorized) {
-//     res.status(403).json({
-//       error: "Report is not authorized to perform this action",
-//     });
-//   }
-// };
+  res.status(200).json({
+    results,
+  });
+};
+
+exports.getReportsOfPatient = async (req, res) => {
+  const results = await Report.find({ patient: req.patient.id });
+  res.status(200).json({
+    results,
+  });
+};
 
 exports.getAllReports = (req, res) => {
   Report.find()
