@@ -22,17 +22,12 @@ class CreateReport extends Component {
 
   renderDoctors = (doctor) => {
     return (
-      //   <div>
-      //     <div className="container">
-      //       <h2 className="mt-5 mb-5">Profile</h2>
-      //     </div>
-      //   </div>
       <div className="home-body">
         <div className="container">
           <div className="row p-3 justify-content-center">
             <div className="col-md-4">
               <div className="home-deck-card">
-                <Link to={"/superadmin/superadminsignin"}>
+                <Link to={"/doctor/report/report-1"}>
                   <Card.Img
                     style={{ maxHeight: "180px", maxWidth: "100%" }}
                     variant="top"
@@ -48,7 +43,7 @@ class CreateReport extends Component {
 
             <div className="col-md-4">
               <div className="home-deck-card">
-                <Link to={"/hospital/signin"}>
+                <Link to={"/doctor/report/report-2"}>
                   <Card.Img variant="top" src="" />
                   <Card.Body>
                     <Card.Title>Report 2</Card.Title>
@@ -61,7 +56,7 @@ class CreateReport extends Component {
 
             <div className="col-md-4">
               <div className="home-deck-card">
-                <Link to={"/doctor/signin"}>
+                <Link to={"/doctor/report/report-3"}>
                   <Card.Img variant="top" />
                   <Card.Body>
                     <Card.Title>Report 3l</Card.Title>
@@ -74,7 +69,7 @@ class CreateReport extends Component {
 
             <div className="col-md-4">
               <div className="home-deck-card">
-                <Link to={"/patient"}>
+                <Link to={"/doctor/report/report-4"}>
                   <Card.Img variant="top" />
                   <Card.Body>
                     <Card.Title>Report 4</Card.Title>
@@ -99,15 +94,7 @@ class CreateReport extends Component {
     return (
       <div>
         <div className="container">
-          <h2 className=" mb-5">Doctors</h2>
-          <input
-            onChange={this.handleChange("keyword")}
-            type="text"
-            id="inputKeyword"
-            placeholder="Search.."
-            style={{ marginBottom: 10 }}
-            value={keyword}
-          />
+          <h2 className=" mb-5">Reports</h2>
           {this.renderDoctors(doctors)}
         </div>
       </div>

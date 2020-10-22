@@ -58,11 +58,6 @@ function MainRouter() {
         path="/doctor/profile/:doctorId"
         component={DoctorProfile}
       />
-      <DoctorRouter
-        exact
-        path="/doctor/create-report"
-        component={CreateReport}
-      />
 
       <Route exact path="/hospital/signup" component={HospitalSignup} />
       <Route exact path="/hospital/signin" component={HospitalSignin} />
