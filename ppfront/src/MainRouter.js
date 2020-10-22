@@ -24,6 +24,7 @@ import DoctorRouter from "./auth/doctorprivate";
 import superAdmindashboard from "./superAdmin/superAdmindashboard";
 import SuperAdminSignin from "./superAdmin/superAdminsignin";
 import SuperAdminRouter from "./auth/superAdminprivate";
+import CreateReport from "./doctor/Reports/CreateReport";
 
 function MainRouter() {
   return (
@@ -57,6 +58,12 @@ function MainRouter() {
         path="/doctor/profile/:doctorId"
         component={DoctorProfile}
       />
+      <DoctorRouter
+        exact
+        path="/doctor/create-report"
+        component={CreateReport}
+      />
+
       <Route exact path="/hospital/signup" component={HospitalSignup} />
       <Route exact path="/hospital/signin" component={HospitalSignin} />
       <HospitalRouter exact path="/hospital/dashboard" component={Dashboard} />
