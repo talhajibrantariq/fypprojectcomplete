@@ -1,27 +1,25 @@
-import React, { Component } from "react";
-import {
-  BrowserRouter as Router,
-  Redirect,
-  Route,
-  Link,
-  Switch as RouterSwitch,
-} from "react-router-dom";
 import {
   UploadOutlined,
   UserOutlined,
-  VideoCameraOutlined,
+  VideoCameraOutlined
 } from "@ant-design/icons";
 import { Layout, Menu } from "antd";
-import { doctorsignout, isAuthenticated } from "../auth/index";
-import DoctorProfile from "./doctorprofile";
-import EditDoctor from "./EditDoctor";
-import Doctors from "./doctors";
-
-import styles from "./dashboard.module.css";
 import SubMenu from "antd/lib/menu/SubMenu";
+import React, { Component } from "react";
+import {
+  BrowserRouter as Router,
+  Link,
+  Route,
+  Switch as RouterSwitch
+} from "react-router-dom";
+import { doctorsignout, isAuthenticated } from "../auth/index";
+import Chat from "./chat";
+import styles from "./dashboard.module.css";
+import DoctorProfile from "./doctorprofile";
+import Doctors from "./doctors";
+import EditDoctor from "./EditDoctor";
 import CreateReport from "./Reports/CreateReport";
 import ViewReport from "./Reports/ViewReport";
-import Chat from "./chat";
 
 const { Header, Content, Footer, Sider } = Layout;
 
@@ -66,9 +64,8 @@ class DoctorDashboard extends Component {
               <Menu.Item key="1" icon={<UserOutlined />}>
                 Profile
                 <Link
-                  to={`/doctor/dashboard/profile/${
-                    isAuthenticated().doctor._id
-                  }`}
+                  to={`/doctor/dashboard/profile/${isAuthenticated().doctor._id
+                    }`}
                 />
               </Menu.Item>
               <Menu.Item key="2" icon={<VideoCameraOutlined />}>
@@ -102,11 +99,12 @@ class DoctorDashboard extends Component {
             </Menu>
           </Sider>
           <Layout>
-            <Header className={styles.sssl} style={{ padding: 0 }} />
-            <Content style={{ margin: "24px 16px 0" }}>
+            {/* <Header className={styles.sssl} style={{ padding: 0 }} /> */}
+            <Content
+              className={styles.ssl}
+            >
               <div
-                className={styles.ssl}
-                style={{ padding: 24, minHeight: 360 }}
+                className="container"
               >
                 <RouterSwitch>
                   <Route

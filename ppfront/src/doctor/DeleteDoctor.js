@@ -1,41 +1,40 @@
-import  React, { Component } from 'react';
-import {isAuthenticated} from '../auth/index'
-import { deletedoctor} from './doctorapi';
-import {doctorsignout} from '../auth/index';
-import {Redirect} from 'react-router-dom'
-class DeleteDoctor extends Component{
-    state ={
+import React, { Component } from 'react';
+import { Redirect } from 'react-router-dom';
+import { doctorsignout, isAuthenticated } from '../auth/index';
+import { deletedoctor } from './doctorapi';
+class DeleteDoctor extends Component {
+    state = {
         redirect: false
     }
 
-    deleteAccount = () =>{
+    deleteAccount = () => {
         const token = isAuthenticated().token
-        const doctorId= this.props.doctorId
+        const doctorId = this.props.doctorId
         deletedoctor(doctorId, token)
-        .then(data =>{
-            if(data.error){
-                console.log(data.error)
-            }
-            else{
-                doctorsignout(()=> console.log("Deleted"));
+            .then(data => {
+                if (data.error) {
+                    console.log(data.error)
+                }
+                else {
+                    doctorsignout(() => console.log("Deleted"));
 
-                this.setState({
-                    redirect: true
-                })
-            }
-        })
+                    this.setState({
+                        redirect: true
+                    })
+                }
+            })
     }
 
-    deleteConfirmed = () =>{
+    deleteConfirmed = () => {
         let answer = window.confirm("Are you sure you want to delete this account");
 
-        if (answer){
+        if (answer) {
             this.deleteAccount();
         }
 
     };
-    render(){
-        if(this.state.redirect){
+    render() {
+        if (this.state.redirect) {
             return <Redirect to="/doctor/signin" />
 
         }

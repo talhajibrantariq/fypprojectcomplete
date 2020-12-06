@@ -53,7 +53,7 @@ export const createpathReport = (pathreport, token) => {
 };
 
 export const getUsersDropdown = () => {
-  return fetch("http://localhost:8080/hospital/allpatients",{
+  return fetch("http://localhost:8080/hospital/allpatients", {
 
   }).then((response) =>
     response.json()
@@ -66,7 +66,7 @@ export const getUsersDropdowndoctors = () => {
 };
 
 export const getmessages = (body) => {
-  return fetch("http://localhost:8080/chat/conversation/query/"+body.sender+"/"+body.reciever).then((response) =>
+  return fetch("http://localhost:8080/chat/conversation/query/" + body.sender + "/" + body.reciever).then((response) =>
     response.json()
   );
 };

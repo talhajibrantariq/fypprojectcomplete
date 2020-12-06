@@ -10,6 +10,7 @@ body {
   /* background: #d81b60;
   color: white; */
 }
+
 /* 
  ********************************
  *
@@ -32,17 +33,21 @@ body {
   transition: all 0.2s;
   border-radius: 0.5rem;
 }
+
 .home-deck-card:hover {
   box-shadow: 0 0 5px 5px rgb(0, 0, 0, 0.3);
   transform: scale(1.03);
 }
+
 .home-deck-card a {
   color: white !important;
 }
+
 .home-deck-card img {
   height: auto;
   width: 100%;
 }
+
 /* 
  ********************************
  *
@@ -82,6 +87,21 @@ div.admin-bg {
   left: 0;
   z-index: -1;
   background-color: black;
+}
+
+/* CHAT LIST */
+li.MuiListItem-root.MuiListItem-gutters.MuiListItem-alignItemsFlexStart {
+  width: max-content;
+  max-width: 80%;
+  overflow-wrap: break-word;
+}
+
+li.MuiListItem-root.makeStyles-listItemRight-17.MuiListItem-gutters.MuiListItem-alignItemsFlexStart {
+  margin-left: auto;
+}
+
+.img-thumbnail {
+  margin: auto;
 }
 
 @media screen and (max-width: 1024px) {

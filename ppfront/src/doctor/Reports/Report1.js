@@ -1,10 +1,9 @@
 import React, { Component } from "react";
-import { Redirect } from "react-router-dom";
-import { Link } from "react-router-dom";
+import { Link, Redirect } from "react-router-dom";
+import { isAuthenticated } from "../../auth/index";
 // import { Layout } from "antd";
 import styles from "../doctorlogin.module.css";
-import { isAuthenticated } from "../../auth/index";
-import { createReport,  getUsersDropdown } from "./reportapi";
+import { createReport, getUsersDropdown } from "./reportapi";
 
 // const { Header, Content, Footer } = Layout;
 

@@ -1,25 +1,24 @@
-import React, { useState, useEffect, useRef } from "react";
-import { makeStyles } from "@material-ui/core/styles";
+import Avatar from "@material-ui/core/Avatar";
 import Grid from "@material-ui/core/Grid";
-import Typography from "@material-ui/core/Typography";
-import TextField from "@material-ui/core/TextField";
 import IconButton from "@material-ui/core/IconButton";
-import SendIcon from "@material-ui/icons/Send";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
-import ListItemText from "@material-ui/core/ListItemText";
 import ListItemAvatar from "@material-ui/core/ListItemAvatar";
-import Avatar from "@material-ui/core/Avatar";
+import ListItemText from "@material-ui/core/ListItemText";
 import Paper from "@material-ui/core/Paper";
-import socketIOClient from "socket.io-client";
+import { makeStyles } from "@material-ui/core/styles";
+import TextField from "@material-ui/core/TextField";
+import Typography from "@material-ui/core/Typography";
+import SendIcon from "@material-ui/icons/Send";
 import classnames from "classnames";
+import React, { useEffect, useRef, useState } from "react";
 import commonUtilites from "../Utilities/common";
-import { sendmessage,getconversations,getmessages } from "./../Reports/pathreportapi";
+import { getmessages, sendmessage } from "./../Reports/pathreportapi";
 
 const useStyles = makeStyles((theme) => ({
   root: {
     height: "100%",
-    color:'black'
+    color: "black",
   },
   headerRow: {
     maxHeight: 60,
@@ -77,12 +76,10 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const ChatBox = (props) => {
-  const [currentUserId] = useState(
-    props.user._id
-  );
+  const [currentUserId] = useState(props.user._id);
   const [newMessage, setNewMessage] = useState("");
   const [messages, setMessages] = useState([]);
-  const [lastMessage, setLastMessage] = useState(null);
+  // const [lastMessage, setLastMessage] = useState(null);
 
   // const getGlobalMessages = useGetGlobalMessages();
   // const sendGlobalMessage = useSendGlobalMessage();
@@ -95,42 +92,41 @@ const ChatBox = (props) => {
   useEffect(() => {
     loadmessages();
     scrollToBottom();
-  }, [lastMessage, props.scope, props.conversationId]);
+
+    // eslint-disable-next-line
+  }, [props.scope, props.conversationId]);
 
   const loadmessages = () => {
     if (props.scope === "Global Chat") {
-      setMessages([])
-    } else 
-    {
-
-    const message = {
-      reciever: props.user._id,
-      sender: localStorage.getItem("doctor_id"),
+      setMessages([]);
+    } else {
+      const message = {
+        reciever: props.user._id,
+        sender: localStorage.getItem("doctor_id"),
+      };
+      getmessages(message).then((data) => {
+        console.log(data);
+        if (data.error) {
+          //this.setState({ error: data.error });
+          console.log(data.error);
+        } else {
+          setMessages(data);
+          setNewMessage("");
+        }
+      });
     }
-    getmessages(message).then((data) => {
-      console.log(data);
-      if (data.error) {
-        //this.setState({ error: data.error });
-        console.log(data.error)
-      }
-      else {
-        setMessages(data)
-        setNewMessage("");
-      }
-    });
-  }
-  }
-  const reloadMessages = () => {
-    // if (props.scope === "Global Chat") {
-    //   getGlobalMessages().then((res) => {
-    //     setMessages(res);
-    //   });
-    // } else if (props.scope !== null && props.conversationId !== null) {
-    //   getConversationMessages(props.user._id).then((res) => setMessages(res));
-    // } else {
-    //   setMessages([]);
-    // }
   };
+  // const reloadMessages = () => {
+  // if (props.scope === "Global Chat") {
+  //   getGlobalMessages().then((res) => {
+  //     setMessages(res);
+  //   });
+  // } else if (props.scope !== null && props.conversationId !== null) {
+  //   getConversationMessages(props.user._id).then((res) => setMessages(res));
+  // } else {
+  //   setMessages([]);
+  // }
+  // };
 
   const scrollToBottom = () => {
     chatBottom.current.scrollIntoView({ behavior: "smooth" });
@@ -141,8 +137,7 @@ const ChatBox = (props) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (props.scope === "Global Chat") {
-      alert("select a recipient")
-
+      alert("select a recipient");
     } else {
       const message = {
         conversation: "",
@@ -150,7 +145,7 @@ const ChatBox = (props) => {
         from: localStorage.getItem("doctor_id"),
         body: newMessage,
         date: new Date(),
-      }
+      };
       var m = messages;
       m.push(message);
       setNewMessage(m);
@@ -159,18 +154,15 @@ const ChatBox = (props) => {
         console.log(data);
         if (data.error) {
           //this.setState({ error: data.error });
-          console.log(data.error)
-        }
-        else {
-          
+          console.log(data.error);
+        } else {
           setNewMessage("");
-          alert("message sent")
+          alert("message sent");
         }
       });
       //sendConversationMessage(props.user._id, newMessage).then((res) => {
-      
-      }
     }
+  };
 
   return (
     <Grid container className={classes.root}>
@@ -190,8 +182,7 @@ const ChatBox = (props) => {
                   <ListItem
                     key={m._id}
                     className={classnames(classes.listItem, {
-                      [`${classes.listItemRight}`]:
-                        m.to === currentUserId,
+                      [`${classes.listItemRight}`]: m.to === currentUserId,
                     })}
                     alignItems="flex-start"
                   >

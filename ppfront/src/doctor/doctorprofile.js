@@ -1,9 +1,9 @@
 import React, { Component } from "react";
+import { Link, Redirect } from "react-router-dom";
 import { isAuthenticated } from "../auth/index";
-import { Redirect, Link } from "react-router-dom";
-import { getdoctor } from "./doctorapi";
 import DefaultProfile from "../images/avatar.png";
 import DeleteDoctor from "./DeleteDoctor";
+import { getdoctor } from "./doctorapi";
 
 class DoctorProfile extends Component {
   constructor() {
@@ -53,42 +53,40 @@ class DoctorProfile extends Component {
       : DefaultProfile;
     return (
       <div>
-        <div className="container">
-          <h2 className="mt-5 mb-5">Profile</h2>
-          <div className="row">
-            <div className="col-md-6">
-              <img
-                style={{ height: "auto", width: "350px" }}
-                className="img-thumbnail"
-                src={photoUrl}
-                onError={(i) => (i.target.src = `${DefaultProfile}`)}
-                alt={doctor.firstname}
-              />
+        <h2 className="mb-5">Profile</h2>
+        <div className="row">
+          <div className="col-md-6">
+            <img
+              style={{ height: "auto", width: "350px" }}
+              className="img-thumbnail"
+              src={photoUrl}
+              onError={(i) => (i.target.src = `${DefaultProfile}`)}
+              alt={doctor.firstname}
+            />
+          </div>
+          <div className="col-md-6">
+            <div className="lead mt-2">
+              <p>
+                {doctor.firstname} {doctor.lastname}
+              </p>
+              <p>Email: {doctor.email}</p>
+              <p>Designation: {doctor.designation}</p>
+              <p>{`Joined ${new Date(
+                this.state.doctor.created
+              ).toDateString()}`}</p>
             </div>
-            <div className="col-md-6">
-              <div className="lead mt-2">
-                <p>
-                  {doctor.firstname} {doctor.lastname}
-                </p>
-                <p>Email: {doctor.email}</p>
-                <p>Designation: {doctor.designation}</p>
-                <p>{`Joined ${new Date(
-                  this.state.doctor.created
-                ).toDateString()}`}</p>
-              </div>
-              {isAuthenticated().doctor &&
-                isAuthenticated().doctor._id === doctor._id && (
-                  <div className="d-inline-block">
-                    <Link
-                      className="btn btn-raised btn-success mr- 5"
-                      to={`/doctor/dashboard/edit/${doctor._id}`}
-                    >
-                      Edit Profile
+            {isAuthenticated().doctor &&
+              isAuthenticated().doctor._id === doctor._id && (
+                <div className="d-inline-block">
+                  <Link
+                    className="btn btn-raised btn-success mr- 5"
+                    to={`/doctor/dashboard/edit/${doctor._id}`}
+                  >
+                    Edit Profile
                     </Link>
-                    <DeleteDoctor doctorId={doctor._id} />
-                  </div>
-                )}
-            </div>
+                  <DeleteDoctor doctorId={doctor._id} />
+                </div>
+              )}
           </div>
         </div>
       </div>

@@ -1,10 +1,7 @@
 import React, { Component } from "react";
-import { Redirect } from "react-router-dom";
-import { doctorsignin, authenticate } from "../auth/index";
-import { Link } from "react-router-dom";
-import { Layout, Menu, Form, Input, Button, Checkbox, Breadcrumb } from "antd";
-import styles from "./doctorlogin.module.css";
-const { Header, Content, Footer } = Layout;
+import { Link, Redirect } from "react-router-dom";
+import { authenticate, doctorsignin } from "../auth/index";
+import "./doctorlogin.module.css";
 
 class DoctorSignin extends Component {
   constructor() {
@@ -18,8 +15,16 @@ class DoctorSignin extends Component {
     };
   }
 
+  componentDidMount() {
+    if (localStorage.getItem("jwt")) {
+      authenticate(JSON.parse(localStorage.getItem("jwt")), () => {
+        this.setState({ redirectTo: true });
+      });
+    }
+  }
+
   handleChange = (name) => (event) => {
-    this.setState({ error: " " });
+    this.setState({ error: "" });
     this.setState({ [name]: event.target.value });
   };
 
@@ -32,8 +37,7 @@ class DoctorSignin extends Component {
       password,
     };
     doctorsignin(user).then((data) => {
-      console.log(data.error);
-      if (data.error) {
+      if (data?.error) {
         this.setState({ error: data.error, loading: false });
       } else {
         localStorage.setItem("doctor_id", data.doctor._id);
@@ -56,30 +60,29 @@ class DoctorSignin extends Component {
       <div class="Container">
         <div
           class="card card-container"
-          className={styles.ch}
+          className="ch curd"
           style={{ width: "30%" }}
-          className={styles.curd}
         >
           <img
             id="profile-img"
-            className={styles.profiles}
+            className="profiles"
             style={{ marginLeft: 150 }}
             class="profile-img-card"
             src="https://img.icons8.com/wired/100/000000/circled-user.png"
           />
           <p
             id="profile-name"
-            className={styles.profilename}
+            className="profilename"
             style={{ marginLeft: 150 }}
             class="profile-name-card"
           >
             Doctor Login
           </p>
-          <form class="form-signin" className={styles.formsctrl}>
+          <form class="form-signin" className="formsctrl">
             <div
               class="alert alert-warning alert-dismissible fade show"
               role="alert"
-              style={{ display: error ? "" : "none" }}
+              style={{ display: !!error ? "" : "none" }}
             >
               {error}
               <button
@@ -96,12 +99,12 @@ class DoctorSignin extends Component {
                 <h2>Signing in....</h2>
               </div>
             ) : (
-              ""
-            )}
+                ""
+              )}
             <span
               id="reauth-email"
               class="reauth-email"
-              className={styles.authmail}
+              className="authmail"
             ></span>
             <input
               onChange={this.handleChange("email")}

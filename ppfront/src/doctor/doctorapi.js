@@ -1,70 +1,70 @@
-export const getdoctor = (doctorId, token) =>{
-    return fetch(`http://localhost:8080/doctor/${doctorId}`,{
+export const getdoctor = (doctorId, token) => {
+    return fetch(`http://localhost:8080/doctor/${doctorId}`, {
         method: "GET",
         headers: {
             Accept: "application/json",
             "Content-Type": "application/json",
-            Authorization:`Bearer ${token}`
+            Authorization: `Bearer ${token}`
         }
     })
-    .then(response =>{
-        console.log(response)
-        return response.json();
-    })
+        .then(response => {
+            console.log(response)
+            return response.json();
+        })
 }
-export const updated = (doctorId, token, doctor) =>{
-    console.log("USER DATA FORM :",doctor)
-    return fetch(`http://localhost:8080/doctor/${doctorId}`,{
+export const updated = (doctorId, token, doctor) => {
+    console.log("USER DATA FORM :", doctor)
+    return fetch(`http://localhost:8080/doctor/${doctorId}`, {
         method: "PUT",
         headers: {
             Accept: "application/json",
-            Authorization:`Bearer ${token}`
+            Authorization: `Bearer ${token}`
         },
         body: doctor
-    
+
     })
-    .then(response =>{
-        console.log(response)
-        return response.json();
-    })
-    .catch(err=>console.log(err))
+        .then(response => {
+            console.log(response)
+            return response.json();
+        })
+        .catch(err => console.log(err))
 
 }
 
-export const deletedoctor = (doctorId, token) =>{
-    return fetch(`http://localhost:8080/doctor/${doctorId}`,{
+export const deletedoctor = (doctorId, token) => {
+    return fetch(`http://localhost:8080/doctor/${doctorId}`, {
         method: "DELETE",
         headers: {
             Accept: "application/json",
             "Content-Type": "application/json",
-            Authorization:`Bearer ${token}`
+            Authorization: `Bearer ${token}`
         }
     })
-    .then(response =>{
-        console.log(response)
-        return response.json();
-    })
+        .then(response => {
+            console.log(response)
+            return response.json();
+        })
 
 }
-export const getalldoctors = () =>{
-    return fetch("http://localhost:8080/doctor/doctors",{
+export const getalldoctors = () => {
+    return fetch("http://localhost:8080/doctor/doctors", {
         method: "GET"
     })
-    .then(response => {
+        .then(response => {
 
-        console.log("list", response);
-        return response.json()
+            console.log("list", response);
+            return response.json()
 
-    })
-    .catch(err => console.log(err));
+        })
+        .catch(err => console.log(err));
 }
 
 export const updateDoctor = (patient, next) => {
-    if(typeof window !== "undefined"){
-        if(localStorage.getItem("jwt")){
+    if (typeof window !== "undefined") {
+        if (localStorage.getItem("jwt")) {
             let auth = JSON.parse(localStorage.getItem("jwt"));
-            auth.patient =patient;
-            localStorage.setItem('jwt',JSON.stringify(auth));
+            auth.patient = patient;
+            localStorage.setItem('jwt', JSON.stringify(auth));
             next();
         }
     }
