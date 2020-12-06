@@ -1,8 +1,7 @@
-import React from "react";
+import React from 'react';
 import { Route, Switch } from "react-router-dom";
 import Home from "./core/Home";
 import patientHome from "./core/patienthome";
-import superAdmin from "./superAdmin/hospitalsignup";
 import HospitalSignin from "./hospital/hospitalsignin";
 import HospitalSignup from "./hospital/hospitalsignup";
 import Dashboard from "./hospital/dashboard";
@@ -23,8 +22,15 @@ import HospitalRouter from "./auth/hospitalprivate";
 import DoctorRouter from "./auth/doctorprivate";
 import superAdmindashboard from "./superAdmin/superAdmindashboard";
 import SuperAdminSignin from "./superAdmin/superAdminsignin";
+import CallEditHospital from "./superAdmin/CallEditHospital";
+import RegisterHospital from "./superAdmin/RegisterHospital";
+import DeleteHospital from "./superAdmin/DeleteHospital";
+import displayHospital from "./superAdmin/displayHospital";
 import SuperAdminRouter from "./auth/superAdminprivate";
 import CreateReport from "./doctor/Reports/CreateReport";
+import Report1 from "./doctor/Reports/Report1";
+import Report2 from "./doctor/Reports/Report2";
+import  Chat from "./doctor/chat";
 
 function MainRouter() {
   return (
@@ -39,6 +45,26 @@ function MainRouter() {
         exact
         path="/superadmin/superAdmindashboard"
         component={superAdmindashboard}
+      />
+      <SuperAdminRouter
+        exact
+        path="/superAdmin/RegisterHospital"
+        component={RegisterHospital}
+      />
+      <SuperAdminRouter
+        exact
+        path="/superAdmin/EditHospital/:id"
+        component={CallEditHospital}
+      />
+      <SuperAdminRouter
+        exact
+        path="/superAdmin/DeleteHospital"
+        component={DeleteHospital}
+      />
+      <SuperAdminRouter
+        exact
+        path="/superAdmin/displayHospital"
+        component={displayHospital}
       />
 
       <Route exact path="/patient" component={patientHome} />
@@ -58,6 +84,14 @@ function MainRouter() {
         path="/doctor/profile/:doctorId"
         component={DoctorProfile}
       />
+      <DoctorRouter
+        exact
+        path="/doctor/Reports/CreateReport"
+        component={CreateReport}
+      />
+      <DoctorRouter exact path="/doctor/Reports/Report1" component={Report1} />
+      <DoctorRouter exact path="/doctor/Reports/Report2" component={Report2} />
+      <DoctorRouter exact path="/doctor/chat" component={Chat} />
 
       <Route exact path="/hospital/signup" component={HospitalSignup} />
       <Route exact path="/hospital/signin" component={HospitalSignin} />

@@ -1,8 +1,9 @@
 import React, { Component } from "react";
 import { isAuthenticated } from "../auth//index";
-import { getdoctor, updated, updateDoctor } from "./doctorapi";
-import { Redirect } from "react-router-dom";
-import DefaultProfile from "../images/avatar.png";
+import { getHospital, updated, updateHospital } from "./superAdminapi";
+import { Link } from "react-router-dom";
+
+// import { Redirect } from "react-router-dom";
 
 class EditHospital extends Component {
   constructor() {
@@ -10,9 +11,8 @@ class EditHospital extends Component {
     this.state = {
       id: "",
       Name: "",
-      phone: "",
-      password: "",
       email: "",
+      password: "",
       redirectToProfile: false,
       error: "",
       fileSize: 0,
@@ -20,10 +20,10 @@ class EditHospital extends Component {
     };
   }
 
-  init = (doctorId) => {
+  init = (hospitalId) => {
     const token = isAuthenticated().token;
 
-    getdoctor(doctorId, token).then((data) => {
+    getHospital(hospitalId, token).then((data) => {
       console.log(data);
       if (data.error) {
         this.setState({
@@ -31,14 +31,10 @@ class EditHospital extends Component {
         });
       } else {
         this.setState({
-          id: data._id,
-          firstname: data.firstname,
-          lastname: data.lastname,
-          phone: data.phone,
-          designation: data.designation,
-          password: data.password,
-          age: data.age,
-          email: data.email,
+          id: data.results._id,
+          Name: data.results.Name,
+          email: data.results.email,
+          phone: data.results.phone,
           error: "",
         });
       }
@@ -46,56 +42,21 @@ class EditHospital extends Component {
   };
 
   componentDidMount() {
-    this.doctorData = new FormData();
-    const doctorId = this.props.match.params.doctorId;
-    this.init(doctorId);
+    const hospitalId = this.props.id;
+    this.init(hospitalId);
   }
 
   isValid = () => {
-    const {
-      firstname,
-      lastname,
-      phone,
-      designation,
-      email,
-      fileSize,
-    } = this.state;
-    if (fileSize > 1000000) {
+    const { Name, email } = this.state;
+
+    if (Name.length === 0) {
       this.setState({
-        error: "File size should be less than 1000kb",
-      });
-      return false;
-    }
-    if (firstname.length === 0) {
-      this.setState({
-        error: "First name is required",
+        error: "Name is required",
       });
       console.log(this.error);
       return false;
     }
 
-    if (phone.length <= 1 && phone.length >= 11) {
-      this.setState({
-        error: "Enter a valid phone number",
-      });
-      console.log(this.error);
-      return false;
-    }
-    if (designation.length === 0) {
-      this.setState({
-        error: "Designation is required",
-      });
-      console.log(this.error);
-      return false;
-    }
-
-    if (lastname.length === 0) {
-      this.setState({
-        error: "Last name is required",
-      });
-      console.log(this.error);
-      return false;
-    }
     if (!/^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})$/.test(email)) {
       this.setState({
         error: "Valid email is required",
@@ -107,14 +68,8 @@ class EditHospital extends Component {
     return true;
   };
 
-  handleChange = (name) => (event) => {
-    this.setState({
-      error: "",
-    });
-    const value = name === "photo" ? event.target.files[0] : event.target.value;
-    const fileSize = name === "photo" ? event.target.files[0].size : 0;
-    this.doctorData.set(name, value);
-    this.setState({ [name]: value, fileSize });
+  handleChange = (e) => {
+    this.setState({ [e.target.name]: e.target.value });
   };
   clickSubmit = (event) => {
     event.preventDefault();
@@ -122,14 +77,26 @@ class EditHospital extends Component {
       loading: true,
     });
     if (this.isValid()) {
-      const doctorId = this.props.match.params.doctorId;
+      const hospitalId = this.props.id;
+      // const HospitalData = {
+      //   _id: this.props.id,
+      //   Name: this.state.Name,
+      //   phone: this.state.phone,
+      //   email: this.state.email,
+      // };
       const token = isAuthenticated().token;
-      updated(doctorId, token, this.doctorData).then((data) => {
+      updated(
+        token,
+        this.props.id,
+        this.state.Name,
+        this.state.phone,
+        this.state.email
+      ).then((data) => {
         if (data.error) {
           console.log(data.error);
           this.setState({ error: data.error });
         } else {
-          updateDoctor(data, () => {
+          updateHospital(data, () => {
             this.setState({
               redirectToProfile: true,
             });
@@ -138,25 +105,37 @@ class EditHospital extends Component {
       });
     }
   };
+
+  // handleSubmit = (eid) => {
+  //   let Name = this.refs.Name.value;
+  //   let email = this.refs.email.value;
+  //   let phone = this.refs.phone.value;
+  //   fetch("http://localhost:8080/superAdmin/EditHospital/" + eid, {
+  //     method: "PUT",
+  //     headers: {
+  //       "Content-Type": "application/json",
+  //     },
+  //     body: JSON.stringify({
+  //       Name,
+  //       email,
+  //       phone,
+  //     }),
+  //   }).then(function (response) {
+  //     if (response.ok) {
+  //       alert("Item updated Successfully");
+  //       //window.location.reload(false);
+  //       return true;
+  //     } else {
+  //       var error = new Error(response.statusText);
+  //       error.response = response;
+  //       throw error;
+  //     }
+  //   });
+  // };
+
   render() {
-    const {
-      id,
-      firstname,
-      lastname,
-      age,
-      phone,
-      designation,
-      email,
-      redirectToProfile,
-      error,
-      loading,
-    } = this.state;
-    if (redirectToProfile) {
-      return <Redirect to={`/doctor/dashboard/profile/${id}`} />;
-    }
-    const photoUrl = id
-      ? `http://localhost:8080/doctor/photo/${id}`
-      : DefaultProfile;
+    const { Name, phone, email, password, error, loading } = this.state;
+
     return (
       <div>
         <div class="row mt-5">
@@ -183,114 +162,70 @@ class EditHospital extends Component {
               </div>
               {loading ? (
                 <div className="jumbotron text-center">
-                  <h2>Loading....</h2>
+                  <h2>Saved Successfully</h2>
                 </div>
               ) : (
                 ""
               )}
-              <img
-                style={{ height: "auto", width: "300px" }}
-                className="img-thumbnail"
-                src={photoUrl}
-                alt={firstname}
-              />
-              <form action="/signup" method="POST">
-                <div class="form-group">
-                  <label className="text-muted" for="photo">
-                    Profile Photo
-                  </label>
-                  <input
-                    onChange={this.handleChange("photo")}
-                    type="file"
-                    id="firstname"
-                    accept="image/*"
-                    class="form-control"
-                  />
-                  <label className="text-muted" for="firstname">
-                    First Name
-                  </label>
-                  <input
-                    onChange={this.handleChange("firstname")}
-                    type="firstname"
-                    id="firstname"
-                    name="firstname"
-                    class="form-control"
-                    placeholder="Enter First Name"
-                    value={firstname}
-                  />
-                </div>
-                <div class="form-group">
-                  <label className="text-muted" for="lastname">
-                    Last Name
-                  </label>
-                  <input
-                    onChange={this.handleChange("lastname")}
-                    type="lastname"
-                    id="lastname"
-                    name="lastname"
-                    class="form-control"
-                    placeholder="Enter Last Name"
-                    value={lastname}
-                  />
-                </div>
-                <div class="form-group">
-                  <label className="text-muted" for="age">
-                    Age
-                  </label>
-                  <input
-                    onChange={this.handleChange("age")}
-                    type="age"
-                    id="age"
-                    name="age"
-                    class="form-control"
-                    placeholder="Enter Age"
-                    value={age}
-                  />
-                </div>
 
+              <form>
+                <div class="form-group">
+                  <label className="text-muted" for="Name">
+                    Name
+                  </label>
+                  <input
+                    onChange={this.handleChange}
+                    type="Name"
+                    id="Name"
+                    name="Name"
+                    class="form-control"
+                    placeholder="Enter Name"
+                    value={Name}
+                  />
+                </div>
                 <div class="form-group">
                   <label className="text-muted" for="phone">
                     Phone
                   </label>
                   <input
-                    onChange={this.handleChange("phone")}
+                    onChange={this.handleChange}
                     type="phone"
                     id="phone"
                     name="phone"
                     class="form-control"
-                    placeholder="Enter Phone"
+                    placeholder="Enter  phone"
                     value={phone}
                   />
                 </div>
-                <div class="form-group">
-                  <label className="text-muted" for="age">
-                    Designation
-                  </label>
-                  <input
-                    onChange={this.handleChange("designation")}
-                    type="designation"
-                    id="designation"
-                    name="designation"
-                    class="form-control"
-                    placeholder="Enter Age"
-                    value={designation}
-                  />
-                </div>
+
                 <div class="form-group">
                   <label className="text-muted" for="email">
                     Email
                   </label>
                   <input
-                    onChange={this.handleChange("email")}
+                    onChange={this.handleChange}
                     type="email"
                     id="email"
                     name="email"
                     class="form-control"
                     placeholder="Enter Email"
                     value={email}
-                    disabled
                   />
                 </div>
+                {/* <div class="form-group">
+                  <label className="text-muted" for="Password">
+                    Password
+                  </label>
+                  <input
+                    onChange={this.handleChange}
+                    type="password"
+                    id="password"
+                    name="password"
+                    class="form-control"
+                    placeholder="Create Password"
+                    value={password}
+                  />
+                </div> */}
 
                 <button
                   onClick={this.clickSubmit}
@@ -299,6 +234,12 @@ class EditHospital extends Component {
                 >
                   Update Settings
                 </button>
+                <Link
+                  to={"/superAdmin/displayHospital"}
+                  class="btn btn-lg btn-block btn-danger "
+                >
+                  Back
+                </Link>
               </form>
             </div>
           </div>

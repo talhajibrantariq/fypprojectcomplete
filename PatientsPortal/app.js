@@ -15,7 +15,11 @@ var hospitalRouter = require("./routes/hospital");
 var doctorRouter = require("./routes/doctor");
 var superAdminRouter = require("./routes/superAdmin");
 var reportRouter = require("./routes/report");
+var pathRouter = require("./routes/pathreport");
+var chatRouter = require("./routes/chat");
+
 var fs = require("fs");
+
 var app = express();
 
 mongoose
@@ -60,6 +64,9 @@ app.use("/hospital", hospitalRouter);
 app.use("/doctor", doctorRouter);
 app.use("/superAdmin", superAdminRouter);
 app.use("/report", reportRouter);
+app.use("/pathreport", pathRouter);
+app.use("/chat", chatRouter);
+
 app.use(function (err, req, res, next) {
   if (err.name === "UnauthorizedError") {
     res.status(401).json({

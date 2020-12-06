@@ -1,9 +1,11 @@
 var Report = require("../model/report");
+var Doctor = require("../model/doctor");
 const { extend } = require("lodash");
 
 exports.createReport = async (req, res, next) => {
   console.log("exports.createReport -> req.body", req.body);
   const report = await new Report(req.body);
+  const doctor = await new Doctor(req.body);
   console.log(
     "exports.createReport -> await report.save()",
     await report.save()
@@ -20,10 +22,26 @@ exports.getReportById = (req, res) => {
 };
 
 exports.getReportsByDoctor = async (req, res) => {
-  const results = await Report.find({ doctor: req.doctor.id });
+  const resu = await Report.find({ doctor: req.doctor.id });
+
+  const tmp = resu.values;
+  // console.log("exports.getReportsByDoctor -> tmp", tmp);
+
+  let results = Array.from(resu);
+  // console.log("exports.getReportsByDoctor -> results", results);
+
+  const x = [];
+  resu.map(async (r) => {
+    const xx = await Doctor.findOne({ _id: r.doctor });
+    r["doctorx"] = xx;
+    r["doctory"] = 123;
+
+    x.push(xx);
+  });
 
   res.status(200).json({
     results,
+    x,
   });
 };
 

@@ -1,6 +1,5 @@
 import React from "react";
-import { Card, CardDeck, Button } from "react-bootstrap";
-import Signin from "../patient/Signin";
+import { Card } from "react-bootstrap";
 import superAdminImage from "../images/superAdmin.jpg";
 import HospitalImage from "../images/hospital.jpg";
 import DoctorImage from "../images/doctor.jpg";

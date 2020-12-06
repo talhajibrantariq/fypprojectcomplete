@@ -1,7 +1,6 @@
-import { Card, CardDeck, Button } from "react-bootstrap";
-import { Link } from "react-router-dom";
+import { Card } from "react-bootstrap";
 import React, { Component } from "react";
-
+import { Link } from "react-router-dom";
 class CreateReport extends Component {
   constructor() {
     super();
@@ -24,33 +23,29 @@ class CreateReport extends Component {
     return (
       <div className="home-body">
         <div className="container">
+          <h2>Choose template:</h2>
           <div className="row p-3 justify-content-center">
             <div className="col-md-4">
               <div className="home-deck-card">
-                <Link to={"/doctor/report/report-1"}>
-                  <Card.Img
-                    style={{ maxHeight: "180px", maxWidth: "100%" }}
-                    variant="top"
-                  />
+                <a href="/doctor/reports/Report1">
+                  <Card.Img variant="top" src="" />
                   <Card.Body>
-                    <Card.Title>Report 1</Card.Title>
-                    <Card.Text>Hello admin.</Card.Text>
-                    <span class="btn btn-raised btn-primary "></span>
+                    <Card.Title>Blood Report</Card.Title>
+                    <Card.Text></Card.Text>
                   </Card.Body>
-                </Link>
+                </a>
               </div>
             </div>
 
             <div className="col-md-4">
               <div className="home-deck-card">
-                <Link to={"/doctor/report/report-2"}>
+                <a href="/doctor/reports/Report2">
                   <Card.Img variant="top" src="" />
                   <Card.Body>
-                    <Card.Title>Report 2</Card.Title>
+                    <Card.Title>Pathology Report</Card.Title>
                     <Card.Text></Card.Text>
-                    <span class="btn btn-raised btn-primary ">Report 2</span>
                   </Card.Body>
-                </Link>
+                </a>
               </div>
             </div>
 
@@ -59,22 +54,8 @@ class CreateReport extends Component {
                 <Link to={"/doctor/report/report-3"}>
                   <Card.Img variant="top" />
                   <Card.Body>
-                    <Card.Title>Report 3l</Card.Title>
+                    <Card.Title>Radiology report</Card.Title>
                     <Card.Text></Card.Text>
-                    <span class="btn btn-raised btn-primary ">Report 3</span>
-                  </Card.Body>
-                </Link>
-              </div>
-            </div>
-
-            <div className="col-md-4">
-              <div className="home-deck-card">
-                <Link to={"/doctor/report/report-4"}>
-                  <Card.Img variant="top" />
-                  <Card.Body>
-                    <Card.Title>Report 4</Card.Title>
-                    <Card.Text></Card.Text>
-                    <span class="btn btn-raised btn-primary ">Report 4</span>
                   </Card.Body>
                 </Link>
               </div>

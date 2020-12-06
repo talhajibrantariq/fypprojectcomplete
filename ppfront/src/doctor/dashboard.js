@@ -20,6 +20,8 @@ import Doctors from "./doctors";
 import styles from "./dashboard.module.css";
 import SubMenu from "antd/lib/menu/SubMenu";
 import CreateReport from "./Reports/CreateReport";
+import ViewReport from "./Reports/ViewReport";
+import Chat from "./chat";
 
 const { Header, Content, Footer, Sider } = Layout;
 
@@ -90,7 +92,11 @@ class DoctorDashboard extends Component {
                   <Link to="/doctor/view-reports" />
                 </Menu.Item>
               </SubMenu>
-              <Menu.Item key="4" icon={<UserOutlined />} onClick={this.Signout}>
+              <Menu.Item key="4" icon={<UploadOutlined />}>
+                <Link to="/doctor/chat" />
+                Chat
+              </Menu.Item>
+              <Menu.Item key="5" icon={<UserOutlined />} onClick={this.Signout}>
                 Signout
               </Menu.Item>
             </Menu>
@@ -123,6 +129,12 @@ class DoctorDashboard extends Component {
                     path="/doctor/create-report"
                     component={CreateReport}
                   />
+                  <Route
+                    exact
+                    path="/doctor/view-reports"
+                    component={ViewReport}
+                  />
+                  <Route exact path="/doctor/chat" component={Chat} />
                 </RouterSwitch>
               </div>
             </Content>

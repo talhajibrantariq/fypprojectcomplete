@@ -1,4 +1,20 @@
 /** Hospital's Actions **/
+export const getHospital = (hospitalId, token) => {
+  return fetch(
+    `http://localhost:8080/superAdmin/displayHospital/${hospitalId}`,
+    {
+      method: "GET",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  ).then((response) => {
+    console.log(response);
+    return response.json();
+  });
+};
 export const hospitalsignup = (user, token) => {
   return fetch("http://localhost:8080/superAdmin/hospitalsignup", {
     method: "POST",
@@ -16,7 +32,7 @@ export const hospitalsignup = (user, token) => {
 };
 
 export const getallhospitals = (token) => {
-  return fetch(`http://localhost:8080/superAdmin/getallhospitals`, {
+  return fetch(`http://localhost:8080/superAdmin/displayAllHospitals`, {
     method: "GET",
     headers: {
       Accept: "application/json",
@@ -30,17 +46,18 @@ export const getallhospitals = (token) => {
 };
 
 export const deleteHospital = (hospitalId, token) => {
-  return fetch(`http://localhost:8080/superAdmin/deletehospitals`, {
-    method: "DELETE",
-    body: JSON.stringify({
-      id: hospitalId,
-    }),
-    headers: {
-      Accept: "application/json",
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`,
-    },
-  }).then((response) => {
+  return fetch(
+    `http://localhost:8080/superAdmin/DeleteHospital/${hospitalId}`,
+    {
+      method: "DELETE",
+
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  ).then((response) => {
     console.log(response);
     return response.json();
   });
@@ -55,4 +72,22 @@ export const updateHospital = (hospital, next) => {
       next();
     }
   }
+};
+export const updated = (token, _id, Name, phone, email) => {
+  const body = { _id, Name, phone, email };
+  console.log("HOSPITAL DATA FORM :", body);
+  return fetch(`http://localhost:8080/superAdmin/EditHospital/${_id}`, {
+    method: "PUT",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify(body),
+  })
+    .then((response) => {
+      console.log(response);
+      return response.json();
+    })
+    .catch((err) => console.log(err));
 };

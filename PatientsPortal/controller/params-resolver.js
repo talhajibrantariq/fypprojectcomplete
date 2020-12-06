@@ -19,6 +19,17 @@ exports.reportIdParam = (req, res, next, id) => {
     next();
   });
 };
+exports.pathreportIdParam = (req, res, next, id) => {
+  pathReport.findById(id).exec((err, pathreport) => {
+    if (err || !report) {
+      return res.status(400).json({
+        error: "Report not found",
+      });
+    }
+    req.pathreportData = pathreport;
+    next();
+  });
+};
 
 exports.doctorIdParam = (req, res, next, id) => {
   Doctor.findById(id).exec((err, doctor) => {

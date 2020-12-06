@@ -43,50 +43,74 @@ exports.hasAuthorization = (req, res, next) => {
   }
 };
 
-exports.updateHospital = (req, res, next) => {
-  let form = new formidable.IncomingForm();
-  form.keepExtensions = true;
-  form.parse(req, (err, fields, files) => {
-    console.log("form parsed");
-    if (err) {
-      return res.status(400).json({
-        error: "Photo could not be uploaded",
-      });
-    }
-    console.log("Fids", fields);
-    let hospital = req.profile;
-    hospital = _.extend(hospital, fields);
-    hospital.save((err, result) => {
-      if (err) {
-        return res.status(400).json({
-          error: err,
-        });
-      }
-      hospital.hashed_password = undefined;
-      hospital.salt = undefined;
-      res.json(hospital);
-    });
+// xports.EditHospital = function (req, res, next) {
+//   response = null;
+//   Hospital.findById(req.params._id)
+//     .then((hospital) => {
+//       console.log("exports.EditHospital -> req.body", req.body);
+
+//       hospital
+//         .update({
+//           Name: req.body.Name,
+//           phone: req.body.phone,
+//           email: req.body.email,
+//         })
+//         .then((result) => {
+//           return res.status(200).json(result);
+//         })
+//         .catch((err) => next(err));
+//     })
+//     .catch((err) => next(err));
+// };
+// e;
+exports.EditHospital = async (req, res) => {
+  console.log("exports.EditHospital -> req.body", req.body);
+  // console.log("exports.EditHospital -> req", req)
+  console.log("exports.EditHospital -> { Name: req.body.Name, phone: req.body.phone, email: req.body.email }", { Name: req.body.Name, phone: req.body.phone, email: req.body.email })
+  const results = await Hospital.findOneAndUpdate(
+    { _id: req.body._id },
+    { Name: req.body.Name, phone: req.body.phone, email: req.body.email }
+  );
+
+  console.log(results);
+  res.status(200).json({
+    results: results,
   });
 };
+// Respond with valid data
 
-exports.deleteHospital = (req, res, next) => {
-  let superAdmin = req.profile;
-  superAdmin.remove((err, hospital) => {
-    if (err) {
-      return res.status(400).json({
-        error: err,
-      });
+// exports.EditHospital = async (req, res, next) => {
+//   const hos = await Hospital.findOne({ _id: req.params._id });
+//   hos.Name = req.body.Name;
+//   hos.phone = req.body.phone;
+//   hos.email = req.body.email;
+//   await hos.save();
+//   res.json("hoho");
+// };
+
+exports.DeleteHospital = (req, res, next) => {
+  Hospital.deleteOne({ _id: req.params.hospitalId }, function (error, results) {
+    if (error) {
+      return next(error);
     }
-    hospital.hashed_password = undefined;
-    hospital.salt = undefined;
+    // Respond with valid data
     res.json({
       message: "Hospital deleted successfully",
     });
+    // hospital.hashed_password = undefined;
+    // hospital.salt = undefined;
   });
 };
 
-exports.getallhospitals = async (req, res) => {
-  const results = await Hospital.find({ createdBy: req.auth._id });
+exports.displayHospital = async (req, res) => {
+  const results = await Hospital.findOne({ _id: req.params.hospitalId });
+  res.status(200).json({
+    results,
+  });
+};
+
+exports.displayAllHospitals = async (req, res) => {
+  const results = await Hospital.find({});
   res.status(200).json({
     results,
   });

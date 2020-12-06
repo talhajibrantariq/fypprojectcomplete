@@ -90,3 +90,14 @@ export const deletePatient = (patientId, token) => {
     return response.json();
   });
 };
+
+export const updateHospital = (hospital, next) => {
+  if (typeof window !== "undefined") {
+    if (localStorage.getItem("jwt")) {
+      let auth = JSON.parse(localStorage.getItem("jwt"));
+      auth.hospital = hospital;
+      localStorage.setItem("jwt", JSON.stringify(auth));
+      next();
+    }
+  }
+};

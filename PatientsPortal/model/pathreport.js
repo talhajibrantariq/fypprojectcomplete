@@ -1,7 +1,11 @@
 var mongoose = require("mongoose");
 var { ObjectId } = mongoose.Schema;
 
-var reportSchema = new mongoose.Schema({
+var pathreportSchema = new mongoose.Schema({
+  type:{
+     type:String,
+     default:"None"
+  },
   doctor: {
     type: ObjectId,
     ref: "Doctor",
@@ -12,22 +16,27 @@ var reportSchema = new mongoose.Schema({
     ref: "Patient",
     required: true,
   },
-  bloodpressure: {
+  GrossExamination: {
     type: String,
     trim: true,
     required: false,
   },
-  glucose: {
+  MicroscopicExamination: {
     type: String,
     trim: true,
     required: false,
   },
-  hmg: {
+  Specimen: {
+    type: String,
+    trim: true,
+    required: false,
+  },
+  PertinentHistory: {
     type: String,
     trim: true,
     required: false,
   },
 });
 
-const Report = mongoose.model("Report", reportSchema);
-module.exports = Report;
+const pathreport = mongoose.model("pathreport", pathreportSchema);
+module.exports = pathreport;
