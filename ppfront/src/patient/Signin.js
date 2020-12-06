@@ -1,9 +1,9 @@
-import React, {Component} from 'react';
-import {Redirect} from 'react-router-dom';
-import {signin, authenticate} from '../auth/index'
+import React, { Component } from 'react';
+import { Redirect } from 'react-router-dom';
+import { authenticate, signin } from '../auth/index';
 
 class Signin extends Component {
-    constructor(){
+    constructor() {
         super()
         this.state = {
             email: "",
@@ -15,38 +15,38 @@ class Signin extends Component {
     }
 
     handleChange = (name) => (event) => {
-        this.setState({error: " "});
+        this.setState({ error: " " });
         this.setState({ [name]: event.target.value })
     };
 
-    clickSubmit = event =>{
+    clickSubmit = event => {
         event.preventDefault();
-        this.setState({loading: true});
-        const {email, password} = this.state
+        this.setState({ loading: true });
+        const { email, password } = this.state
         var user = {
             email,
             password
         }
         console.log(user)
         signin(user)
-        .then(data=>{
-            console.log(data.error)
-            if(data.error){
-                this.setState({error:data.error, loading: false})
-            }
-            else{
-                //authentication
-                authenticate(data, ()=>{
-                    this.setState({redirectTo: true})
-                })
-            }
-        })
+            .then(data => {
+                console.log(data.error)
+                if (data.error) {
+                    this.setState({ error: data.error, loading: false })
+                }
+                else {
+                    //authentication
+                    authenticate(data, () => {
+                        this.setState({ redirectTo: true })
+                    })
+                }
+            })
     };
 
-    render(){
-        const { email, password, error, redirectTo, loading} = this.state;
+    render() {
+        const { email, password, error, redirectTo, loading } = this.state;
 
-        if(redirectTo){
+        if (redirectTo) {
             console.log(redirectTo);
             return <Redirect to="/patient" />
         }
@@ -58,48 +58,48 @@ class Signin extends Component {
                         <h1 class="text-center mb-3"><i class="fas fa-sign-in-alt"></i>  Login</h1>
                         <form>
                             <div class="alert alert-warning alert-dismissible fade show" role="alert"
-                            style={{display: error ? "":"none"}}
+                                style={{ display: error ? "" : "none" }}
                             >
                                 {error}
                                 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                     <span aria-hidden="true">&times;</span>
                                 </button>
                             </div>
-                            {loading ?(
+                            {loading ? (
                                 <div className="jumbotron text-center">
                                     <h2>Loading....</h2>
                                 </div>
                             ) : (
-                                ""
-                            )}
+                                    ""
+                                )}
                             <div class="form-group">
                                 <label for="email">Email</label>
                                 <input
-                                onChange={this.handleChange("email")}
-                                type="email"
-                                id="email"
-                                name="email"
-                                class="form-control"
-                                placeholder="Enter Email"
-                                value={email}
+                                    onChange={this.handleChange("email")}
+                                    type="email"
+                                    id="email"
+                                    name="email"
+                                    class="form-control"
+                                    placeholder="Enter Email"
+                                    value={email}
                                 />
                             </div>
                             <div class="form-group">
                                 <label for="password">Password</label>
                                 <input
-                                onChange={this.handleChange("password")}
-                                type="password"
-                                id="password"
-                                name="password"
-                                class="form-control"
-                                placeholder="Enter Password"
-                                value={password}
+                                    onChange={this.handleChange("password")}
+                                    type="password"
+                                    id="password"
+                                    name="password"
+                                    class="form-control"
+                                    placeholder="Enter Password"
+                                    value={password}
                                 />
                             </div>
                             <button onClick={this.clickSubmit} type="submit" class="btn btn-primary btn-block">Login</button>
                         </form>
                         <p class="lead mt-4">
-                        No Account? <a href="/signup">Register</a>
+                            No Account? <a href="/signup">Register</a>
                         </p>
                     </div>
                 </div>

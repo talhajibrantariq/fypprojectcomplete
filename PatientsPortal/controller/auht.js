@@ -1,10 +1,10 @@
-var jwt = require("jsonwebtoken");
-require("dotenv").config();
-var expressJwt = require("express-jwt");
-const Patient = require("../model/patient");
-const Hospital = require("../model/hospital");
-const Doctor = require("../model/doctor");
-const SuperAdmin = require("../model/superAdmin");
+var jwt = require('jsonwebtoken');
+require('dotenv').config();
+var expressJwt = require('express-jwt');
+const Patient = require('../model/patient');
+const Hospital = require('../model/hospital');
+const Doctor = require('../model/doctor');
+const SuperAdmin = require('../model/superAdmin');
 
 /*superAdmin Authetication */
 exports.superAdminsignup = async (req, res) => {
@@ -13,13 +13,13 @@ exports.superAdminsignup = async (req, res) => {
 
   if (superAdminExists) {
     return res.status(403).json({
-      error: "Email have already taken",
+      error: 'Email have already taken',
     });
   }
   const superAdmin = await new SuperAdmin(req.body);
   await superAdmin.save();
   res.status(200).json({
-    message: "Admin registered succesfully",
+    message: 'Admin registered succesfully',
   });
 };
 
@@ -32,7 +32,7 @@ exports.superAdminsignin = (req, res) => {
     if (err || !superAdmin) {
       return res.status(401).json({
         error:
-          "Admin with this email is not registered. Please sign in with registered email.",
+          'Admin with this email is not registered. Please sign in with registered email.',
       });
     }
     // if hospital is found authenticate email and password
@@ -46,7 +46,7 @@ exports.superAdminsignin = (req, res) => {
     const token = jwt.sign({ _id: superAdmin.id }, process.env.JWT_SECRET);
 
     //persist the token as 't' in cookie with expiry date
-    res.cookie("t", token, { expire: new Date() + 9999 });
+    res.cookie('t', token, { expire: new Date() + 9999 });
     //return response with user and token to frontend client
     const { _id, Name, email } = superAdmin;
     return res.json({ token, super: { _id, Name, email } });
@@ -54,14 +54,14 @@ exports.superAdminsignin = (req, res) => {
 };
 
 exports.superAdminsignout = (req, res) => {
-  res.clearCookie("t");
-  return res.json({ message: "signout successfully" });
+  res.clearCookie('t');
+  return res.json({ message: 'signout successfully' });
 };
 
 exports.superAdminrequireSignIn = expressJwt({
   secret: process.env.JWT_SECRET,
-  userProperty: "auth",
-  algorithms: ["HS256"],
+  userProperty: 'auth',
+  algorithms: ['HS256'],
 });
 
 /*Hospital Authetication */
@@ -71,13 +71,13 @@ exports.hospitalsignup = async (req, res) => {
 
   if (hospitalExists) {
     return res.status(403).json({
-      error: "Email have already taken",
+      error: 'Email have already taken',
     });
   }
   const hospital = await new Hospital(req.body);
   await hospital.save();
   res.status(200).json({
-    message: "Hospital registered succesfully",
+    message: 'Hospital registered succesfully',
   });
 };
 
@@ -90,7 +90,7 @@ exports.hospitalsignin = (req, res) => {
     if (err || !hospital) {
       return res.status(401).json({
         error:
-          "Hospital with this email is not registered. Please sign in with registered email.",
+          'Hospital with this email is not registered. Please sign in with registered email.',
       });
     }
     // if hospital is found authenticate email and password
@@ -104,7 +104,7 @@ exports.hospitalsignin = (req, res) => {
     const token = jwt.sign({ _id: hospital.id }, process.env.JWT_SECRET);
 
     //persist the token as 't' in cookie with expiry date
-    res.cookie("t", token, { expire: new Date() + 9999 });
+    res.cookie('t', token, { expire: new Date() + 9999 });
     //return response with user and token to frontend client
     const { _id, Name, email } = hospital;
     return res.json({ token, hospital: { _id, Name, email } });
@@ -112,14 +112,14 @@ exports.hospitalsignin = (req, res) => {
 };
 
 exports.hospitalsignout = (req, res) => {
-  res.clearCookie("t");
-  return res.json({ message: "signout successfully" });
+  res.clearCookie('t');
+  return res.json({ message: 'signout successfully' });
 };
 
 exports.hospitalrequireSignIn = expressJwt({
   secret: process.env.JWT_SECRET,
-  userProperty: "auth",
-  algorithms: ["HS256"],
+  userProperty: 'auth',
+  algorithms: ['HS256'],
 });
 
 /*Patient authetication */
@@ -129,13 +129,13 @@ exports.signup = async (req, res) => {
 
   if (patientExists) {
     return res.status(403).json({
-      error: "Email have already taken",
+      error: 'Email have already taken',
     });
   }
   const patient = await new Patient(req.body);
   await patient.save();
   res.status(200).json({
-    message: "signup succesfully",
+    message: 'signup succesfully',
   });
 };
 
@@ -148,7 +148,7 @@ exports.signin = (req, res) => {
     if (err || !patient) {
       return res.status(401).json({
         error:
-          "Patient with this email does not exists.Please sign in with registered email.",
+          'Patient with this email does not exists.Please sign in with registered email.',
       });
     }
     // if user is found authenticate email and password
@@ -163,7 +163,7 @@ exports.signin = (req, res) => {
     const token = jwt.sign({ _id: patient.id }, process.env.JWT_SECRET);
 
     //persist the token as 't' in cookie with expiry date
-    res.cookie("t", token, { expire: new Date() + 9999 });
+    res.cookie('t', token, { expire: new Date() + 9999 });
     //return response with user and token to frontend client
     const { _id, firstname, lastname, email } = patient;
     return res.json({ token, patient: { _id, firstname, lastname, email } });
@@ -171,14 +171,14 @@ exports.signin = (req, res) => {
 };
 
 exports.signout = (req, res) => {
-  res.clearCookie("t");
-  return res.json({ message: "signout successfully" });
+  res.clearCookie('t');
+  return res.json({ message: 'signout successfully' });
 };
 
 exports.requireSignIn = expressJwt({
   secret: process.env.JWT_SECRET,
-  userProperty: "auth",
-  algorithms: ["HS256"],
+  userProperty: 'auth',
+  algorithms: ['HS256'],
 });
 
 /**Doctor's authentication methods */
@@ -191,7 +191,7 @@ exports.doctorsignin = (req, res) => {
     if (err || !doctor) {
       return res.status(401).json({
         error:
-          "Doctor with this email does not exists.Please sign in with registered email.",
+          'Doctor with this email does not exists.Please sign in with registered email.',
       });
     }
     // if user is found authenticate email and password
@@ -206,7 +206,7 @@ exports.doctorsignin = (req, res) => {
     const token = jwt.sign({ _id: doctor.id }, process.env.JWT_SECRET);
 
     //persist the token as 't' in cookie with expiry date
-    res.cookie("t", token, { expire: new Date() + 9999 });
+    res.cookie('t', token, { expire: new Date() + 9999 });
     //return response with user and token to frontend client
     const { _id, firstname, lastname, designation, gender, email } = doctor;
     return res.json({
@@ -217,12 +217,12 @@ exports.doctorsignin = (req, res) => {
 };
 
 exports.doctorsignout = (req, res) => {
-  res.clearCookie("t");
-  return res.json({ message: "signout successfully" });
+  res.clearCookie('t');
+  return res.json({ message: 'signout successfully' });
 };
 
 exports.doctorrequireSignIn = expressJwt({
   secret: process.env.JWT_SECRET,
-  userProperty: "auth",
-  algorithms: ["HS256"],
+  userProperty: 'auth',
+  algorithms: ['HS256'],
 });

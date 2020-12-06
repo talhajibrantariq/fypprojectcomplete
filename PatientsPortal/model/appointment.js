@@ -1,5 +1,5 @@
 var mongoose = require('mongoose');
-var {ObjectId} =mongoose.Schema
+var { ObjectId } = mongoose.Schema
 var appointmentSchema = new mongoose.Schema({
     title: {
         type: String,
@@ -27,4 +27,4 @@ var appointmentSchema = new mongoose.Schema({
     }
 });
 
-module.exports = mongoose.model("Appointment",appointmentSchema);
+module.exports = mongoose.model("Appointment", appointmentSchema);

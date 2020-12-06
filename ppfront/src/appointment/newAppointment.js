@@ -1,40 +1,38 @@
-import React, { Component } from 'react'
-import {isAuthenticated } from '../auth//index'
-import { create } from './apiAppointment';
+import React, { Component } from 'react';
+import { isAuthenticated } from '../auth//index';
 import Menu from '../core/Menu';
-import {Redirect} from 'react-router-dom';
-import DefaultProfile from '../images/avatar.png'
+import { create } from './apiAppointment';
 
 class NewAppointment extends Component {
-    constructor(){
+    constructor() {
         super();
         this.state = {
-            title:'',
-            body:'',
-            photo:'',
-            error :'',
-            patient:{},
+            title: '',
+            body: '',
+            photo: '',
+            error: '',
+            patient: {},
             fileSize: 0,
-            loading: false 
+            loading: false
         };
     }
 
-    componentDidMount(){
+    componentDidMount() {
         this.appointmentData = new FormData();
         this.setState({
             patient: isAuthenticated().patient
         })
     }
 
-    isValid = () =>{
-        const {title, body, fileSize}= this.state
-        if(fileSize > 100000){
+    isValid = () => {
+        const { title, body, fileSize } = this.state
+        if (fileSize > 100000) {
             this.setState({
                 error: "File size should be less than 100kb"
             })
             return false;
         }
-        if(title.length === 0){
+        if (title.length === 0) {
             this.setState({
                 error: "Title is required"
             })
@@ -42,14 +40,14 @@ class NewAppointment extends Component {
             return false;
         }
 
-        if(body.length === 0){
+        if (body.length === 0) {
             this.setState({
                 error: "Body is required"
-            }) 
+            })
             console.log(this.error)
             return false;
         }
-        if(title.length === 0 || body.length === 0){
+        if (title.length === 0 || body.length === 0) {
             this.setState({
                 error: "All feild are required"
             })
@@ -65,38 +63,38 @@ class NewAppointment extends Component {
             error: ""
         });
         const value = name === 'photo' ? event.target.files[0] : event.target.value;
-        const fileSize = name === 'photo' ? event.target.files[0].size: 0;
+        const fileSize = name === 'photo' ? event.target.files[0].size : 0;
         this.appointmentData.set(name, value);
         this.setState({ [name]: value, fileSize })
     };
-    clickSubmit = event =>{
+    clickSubmit = event => {
         event.preventDefault();
         this.setState({
             loading: true
         })
-        if(this.isValid()){
+        if (this.isValid()) {
             const patientId = isAuthenticated().patient._id
-            const token =  isAuthenticated().token
+            const token = isAuthenticated().token
             console.log(patientId, token)
-            create(patientId, token, this.appointmentData).then(data=>{
-                if(data.error){ 
+            create(patientId, token, this.appointmentData).then(data => {
+                if (data.error) {
                     console.log(data.error)
-                    this.setState({error:data.error});
-                }else{
+                    this.setState({ error: data.error });
+                } else {
                     this.setState({
                         loading: false,
-                        title:'',
-                        body:'',
-                        photo:''
+                        title: '',
+                        body: '',
+                        photo: ''
                     })
 
-                    console.log("new appointment :",data);
+                    console.log("new appointment :", data);
                 }
             });
         }
     };
     render() {
-        const { title, body, photo, patient , error, loading} = this.state;
+        const { title, body, photo, patient, error, loading } = this.state;
         // if(redirectToProfile){
         //     return <Redirect to={`/patient/${id}`} />
         // }
@@ -107,71 +105,71 @@ class NewAppointment extends Component {
                 <div class="row mt-5">
                     <div class="col-md-6 m-auto">
                         <div class="card card-body">
-                        <h1 class="text-center mb-3">
-                            <i class='fas fa-user-edit'></i> Create Appointment
+                            <h1 class="text-center mb-3">
+                                <i class='fas fa-user-edit'></i> Create Appointment
                         </h1>
-                        <div class="alert alert-danger 
+                            <div class="alert alert-danger 
                             alert-dismissible fade show" role="alert"
-                            style={{display: this.state.error ? "":"none"}}
+                                style={{ display: this.state.error ? "" : "none" }}
                             >
                                 {error}
                                 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                     <span aria-hidden="true">&times;</span>
                                 </button>
                             </div>
-                            {loading ?(
+                            {loading ? (
                                 <div className="jumbotron text-center">
                                     <h2>Loading....</h2>
                                 </div>
                             ) : (
-                                ""
-                            )}
-                        {/* <img style={{height:"auto",width:"300px"}} className="img-thumbnail" src={photoUrl} alt={firstname} /> */}
-                        <form action="/signup" method="POST">
-                            <div class="form-group">
-                            
-                            <label className="text-muted" for="photo">Photo</label>
-                            <input
-                                onChange={this.handleChange("photo")}
-                                type="file"
-                                id="photo"
-                                accept="image/*"
-                                class="form-control"
-                            />
-                            <label className="text-muted" for="title">Title</label>
-                            <input
-                                onChange={this.handleChange("title")}
-                                type="title"
-                                id="title"
-                                name="title"
-                                class="form-control"
-                                placeholder="Enter Title"
-                                value={title}
-                            />
-                            </div>
-                            <div class="form-group">
-                            <label className="text-muted" for="body">Description</label>
-                            <textarea
-                                onChange={this.handleChange("body")} 
-                                type="body"
-                                id="body"
-                                name="body"
-                                class="form-control"
-                                placeholder="Enter Description"
-                                value={body}
-                            />
-                            </div>
-                            
+                                    ""
+                                )}
+                            {/* <img style={{height:"auto",width:"300px"}} className="img-thumbnail" src={photoUrl} alt={firstname} /> */}
+                            <form action="/signup" method="POST">
+                                <div class="form-group">
 
-                            <button onClick={this.clickSubmit} type="submit" class="btn btn-primary btn-block">
-                            Create
+                                    <label className="text-muted" for="photo">Photo</label>
+                                    <input
+                                        onChange={this.handleChange("photo")}
+                                        type="file"
+                                        id="photo"
+                                        accept="image/*"
+                                        class="form-control"
+                                    />
+                                    <label className="text-muted" for="title">Title</label>
+                                    <input
+                                        onChange={this.handleChange("title")}
+                                        type="title"
+                                        id="title"
+                                        name="title"
+                                        class="form-control"
+                                        placeholder="Enter Title"
+                                        value={title}
+                                    />
+                                </div>
+                                <div class="form-group">
+                                    <label className="text-muted" for="body">Description</label>
+                                    <textarea
+                                        onChange={this.handleChange("body")}
+                                        type="body"
+                                        id="body"
+                                        name="body"
+                                        class="form-control"
+                                        placeholder="Enter Description"
+                                        value={body}
+                                    />
+                                </div>
+
+
+                                <button onClick={this.clickSubmit} type="submit" class="btn btn-primary btn-block">
+                                    Create
                             </button>
-                        </form>
+                            </form>
                         </div>
                     </div>
                 </div>
             </div>
-              
+
         );
     }
 }

@@ -1,14 +1,13 @@
-var _ = require("lodash");
-var formidable = require("formidable");
-var fs = require("fs");
+var _ = require('lodash');
+var formidable = require('formidable');
+var fs = require('fs');
 var Patient = require("../model/patient");
 
 exports.patientById = (req, res, next, id) => {
-  console.log("exports.patientById -> patientById", patientById);
   Patient.findById(id).exec((err, patient) => {
     if (err || !patient) {
       return res.status(400).json({
-        error: "Patient not found",
+        error: "Patient not found"
       });
     }
     req.profile = patient;
@@ -17,27 +16,30 @@ exports.patientById = (req, res, next, id) => {
 };
 
 exports.hasAuthorization = (req, res, next) => {
-  const authorized =
-    req.profile && req.auth && req.profile._id === req.auth._id;
+  const authorized = req.profile && req.auth && req.profile._id === req.auth._id;
 
   if (!authorized) {
     res.status(403).json({
-      error: "Patient os not authorized to perform this action",
+      error: "Patient os not authorized to perform this action"
     });
   }
 };
+
 
 exports.getAllPatients = (req, res) => {
   var patient = Patient.find()
     .select("_id  firstname lastname cnic phone email age created")
     .then((patient) => {
-      res.status(200).json(patient);
+      res.status(200).json(
+        patient
+      );
     })
-    .catch((err) => console.log(err));
+    .catch(err => console.log(err));
 };
 
+
 exports.getPatient = (req, res) => {
-  console.log("exports.getPatient -> getPatient", getPatient);
+
   return res.json(req.profile);
 };
 
@@ -64,56 +66,56 @@ exports.getPatient = (req, res) => {
 // };
 
 exports.updatePatient = (req, res, next) => {
-  let form = new formidable.IncomingForm();
-  form.keepExtensions = true;
+  let form = new formidable.IncomingForm()
+  form.keepExtensions = true
   form.parse(req, (err, fields, files) => {
-    console.log("form parsed");
+    console.log("form parsed")
     if (err) {
       return res.status(400).json({
-        error: "Photo could not be uploaded",
-      });
+        error: "Photo could not be uploaded"
+      })
     }
-    console.log("Fids", fields);
-    let patient = req.profile;
-    patient = _.extend(patient, fields);
+    console.log("Fids", fields)
+    let patient = req.profile
+    patient = _.extend(patient, fields)
 
     if (files.photo) {
-      patient.photo.data = fs.readFileSync(files.photo.path);
-      patient.photo.contentType = files.photo.type;
+      patient.photo.data = fs.readFileSync(files.photo.path)
+      patient.photo.contentType = files.photo.type
     }
     patient.save((err, result) => {
       if (err) {
         return res.status(400).json({
-          error: err,
-        });
+          error: err
+        })
       }
       patient.hashed_password = undefined;
       patient.salt = undefined;
-      res.json(patient);
-    });
-  });
-};
+      res.json(patient)
+    })
+  })
+}
 
 exports.patientPhoto = (req, res, next) => {
   if (req.profile.photo.data) {
     res.set(("Content-Type", req.profile.photo.contentType));
-    return res.send(req.profile.photo.data);
+    return res.send(req.profile.photo.data)
   }
   next();
-};
+}
 
 exports.deletePatient = (req, res, next) => {
   let patient = req.profile;
   patient.remove((err, patient) => {
     if (err) {
       return res.status(400).json({
-        error: err,
-      });
+        error: err
+      })
     }
     patient.hashed_password = undefined;
     patient.salt = undefined;
     res.json({
-      message: "Patient deleted successfully",
+      message: "Patient deleted successfully"
     });
   });
 };

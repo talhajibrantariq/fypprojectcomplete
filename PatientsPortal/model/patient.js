@@ -1,39 +1,39 @@
 const mongoose = require('mongoose');
 const uuidv1 = require('uuidv1')
 const crypto = require('crypto');
-var {ObjectId} =mongoose.Schema;
+var { ObjectId } = mongoose.Schema;
 const patientSchema = new mongoose.Schema({
-    firstname:{
+    firstname: {
         type: String,
         trim: true,
         required: true
     },
-    lastname:{
+    lastname: {
         type: String,
         trim: true,
         required: true
     },
-    cnic:{
+    cnic: {
         type: String,
         trim: true,
         required: true
     },
-    phone:{
+    phone: {
         type: String,
         trim: true,
         required: true
     },
-    age:{
+    age: {
         type: Number,
         trim: true,
         required: true
     },
-    email:{
+    email: {
         type: String,
         trim: true,
         required: true
     },
-    hashed_password:{
+    hashed_password: {
         type: String,
         required: true
     },
@@ -42,12 +42,12 @@ const patientSchema = new mongoose.Schema({
         type: ObjectId,
         ref: "Hospital"
     },
-    created:{
+    created: {
         type: Date,
         default: Date.now()
     },
     updated: Date,
-    photo:{
+    photo: {
         data: Buffer,
         contentType: String
     }
@@ -57,20 +57,20 @@ patientSchema.virtual('password').set(function (password) {
     //creating temp variable _password
     this._password = password;
     //generateing a timestamp
-    this.salt= uuidv1();
+    this.salt = uuidv1();
     this.hashed_password = this.encryptPassword(password);
 })
-.get(function () {
-    return this._password
-})
+    .get(function () {
+        return this._password
+    })
 
-patientSchema.methods= {
-    authenticate : function(plainText){
+patientSchema.methods = {
+    authenticate: function (plainText) {
         return this.encryptPassword(plainText) === this.hashed_password;
     },
 
-    encryptPassword : function (password) {
-        if(!password){
+    encryptPassword: function (password) {
+        if (!password) {
             return ""
         }
         try {
@@ -81,7 +81,7 @@ patientSchema.methods= {
         catch (e) {
             return ""
         }
-    } 
+    }
 };
-const Patient = mongoose.model('Patient',patientSchema);
+const Patient = mongoose.model('Patient', patientSchema);
 module.exports = Patient;

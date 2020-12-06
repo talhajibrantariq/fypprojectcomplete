@@ -4,5 +4,8 @@
   "editor.formatOnType": true,
   "editor.codeActionsOnSave": {
     "source.organizeImports": true
+  },
+  "emmet.includeLanguages": {
+    "javascript": "javascriptreact"
   }
 }
