@@ -176,7 +176,7 @@ const ChatBox = (props) => {
                 to: props.user._id,
                 from: localStorage.getItem("doctor_id"),
                 date: new Date(),
-                message: "Show me not (it's a file)",
+                body: "Show me not",
                 file,
                 fileName,
                 fileType,
@@ -216,7 +216,7 @@ const ChatBox = (props) => {
                                             classes.listItem,
                                             {
                                                 [`${classes.listItemRight}`]:
-                                                    m.to === currentUserId,
+                                                    m.from === currentUserId,
                                             }
                                         )}
                                         alignItems="flex-start"
@@ -243,7 +243,7 @@ const ChatBox = (props) => {
                                             }}
                                             primary={m.body}
                                             secondary={
-                                                m.to === currentUserId
+                                                m.from === currentUserId
                                                     ? ""
                                                     : props.scope
                                             }
