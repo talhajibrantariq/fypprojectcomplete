@@ -77,7 +77,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const ChatBox = (props) => {
-    const [currentUserId] = useState(props.user._id);
+    const [currentUserId] = useState(localStorage.getItem("doctor_id"));
     const [newMessage, setNewMessage] = useState("");
     const [messages, setMessages] = useState([]);
     const [File, setFile] = useState();
@@ -164,20 +164,32 @@ const ChatBox = (props) => {
 
     const handleFileChange = (event) => {
         if (event.target.files.length) {
-            const value = event.target.files[0];
+            const file = event.target.files[0];
             const fileName = event.target.files[0].name;
             const fileSize = event.target.files[0].size;
             const fileType = event.target.files[0].type;
             // this.appointmentData.set(name, value);
-            setFile({ value, fileSize });
+            setFile({ value: file, fileSize });
 
             const message = {
                 conversation: "",
                 to: props.user._id,
                 from: localStorage.getItem("doctor_id"),
-                body: newMessage,
                 date: new Date(),
+                message: "Show me not (it's a file)",
+                file,
+                fileName,
+                fileType,
             };
+
+            sendmessage(message).then((data) => {
+                if (data.error) {
+                    //this.setState({ error: data.error });
+                } else {
+                    setMessages([...messages, message]);
+                    setNewMessage("");
+                }
+            });
         } else {
             setFile();
         }
