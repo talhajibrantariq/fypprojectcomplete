@@ -5,6 +5,8 @@ var Doctor = require("../model/doctor");
 var Conversation = require('../model/Conversation')
 var Message = require('../model/Message')
 var mongoose = require('mongoose')
+var formidable = require("formidable");
+
 // Get conversations list
 exports.conversations = (req, res, next, id) => {
     let from = mongoose.Types.ObjectId(jwtUser.id);
@@ -35,6 +37,7 @@ exports.conversations = (req, res, next, id) => {
             }
         });
 }
+
 
 // Get messages from conversation
 // based on to & from

@@ -1,3 +1,5 @@
+
+import { PaperClipOutlined } from "@ant-design/icons";
 import Avatar from "@material-ui/core/Avatar";
 import Grid from "@material-ui/core/Grid";
 import IconButton from "@material-ui/core/IconButton";
@@ -15,10 +17,11 @@ import React, { useEffect, useRef, useState } from "react";
 import commonUtilites from "../Utilities/common";
 import { getmessages, sendmessage } from "./../Reports/pathreportapi";
 
+
 const useStyles = makeStyles((theme) => ({
   root: {
     height: "100%",
-    color: "black",
+    color: "#000080",
   },
   headerRow: {
     maxHeight: 60,
@@ -27,9 +30,9 @@ const useStyles = makeStyles((theme) => ({
   paper: {
     display: "flex",
     alignItems: "center",
-    justifyContent: "center",
-    height: "100%",
-    color: theme.palette.primary.dark,
+    justifyContent:"center",
+    height: "100%", 
+    color: theme.palette.primary.light,
   },
   messageContainer: {
     height: "100%",
@@ -52,6 +55,7 @@ const useStyles = makeStyles((theme) => ({
     boxShadow: "-3px 4px 4px 0px rgba(0,0,0,0.08)",
     marginTop: 8,
     maxWidth: "40em",
+    
   },
   messageBubbleRight: {
     borderRadius: "10px 0 10px 10px",
@@ -157,7 +161,7 @@ const ChatBox = (props) => {
           console.log(data.error);
         } else {
           setNewMessage("");
-          alert("message sent");
+        
         }
       });
       //sendConversationMessage(props.user._id, newMessage).then((res) => {
@@ -223,9 +227,16 @@ const ChatBox = (props) => {
                     fullWidth
                     value={newMessage}
                     onChange={(e) => setNewMessage(e.target.value)}
+                    
                   />
+               
+
                 </Grid>
                 <Grid item xs={1}>
+                      
+                     <IconButton>
+                    <PaperClipOutlined/>
+                  </IconButton>
                   <IconButton type="submit">
                     <SendIcon />
                   </IconButton>

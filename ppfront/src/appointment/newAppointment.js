@@ -146,7 +146,7 @@ class NewAppointment extends Component {
                                         placeholder="Enter Title"
                                         value={title}
                                     />
-                                </div>
+                                  </div>
                                 <div class="form-group">
                                     <label className="text-muted" for="body">Description</label>
                                     <textarea

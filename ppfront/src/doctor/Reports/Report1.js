@@ -1,12 +1,43 @@
+import Slider from "@material-ui/core/Slider";
+import Typography from "@material-ui/core/Typography";
 import React, { Component } from "react";
 import { Link, Redirect } from "react-router-dom";
 import { isAuthenticated } from "../../auth/index";
-// import { Layout } from "antd";
 import styles from "../doctorlogin.module.css";
 import { createReport, getUsersDropdown } from "./reportapi";
-
 // const { Header, Content, Footer } = Layout;
-
+const marks1 = [
+  {
+    value: 72,
+    label: "72mg/dL",
+  },
+  {
+    value: 85,
+    label: "85mg/dL",
+  },
+  {
+    value: 99,
+    label: "99 mg/dL",
+  },
+];
+const marks = [
+  {
+    value: 0,
+    label: "0mmHg",
+  },
+  {
+    value: 40,
+    label: "80mmHg",
+  },
+  {
+    value: 80,
+    label: "120mmHg",
+  },
+  {
+    value: 100,
+    label: "220mmHg",
+  },
+];
 class Report1 extends Component {
   constructor() {
     super();
@@ -22,11 +53,11 @@ class Report1 extends Component {
       loading: false,
     };
   }
-
   componentDidMount() {
     getUsersDropdown().then((res) => {
-      this.setState({ allPatients: res.results });
       console.log(res);
+      this.setState({ allPatients: res.data });
+      
     });
   }
 
@@ -64,6 +95,7 @@ class Report1 extends Component {
       }
     });
   };
+
   render() {
     const {
       patient,
@@ -78,12 +110,13 @@ class Report1 extends Component {
       console.log(redirectTo);
       return <Redirect to="/doctor/reports" />;
     }
+
     return (
       <div class="Container">
         <div
           class="card card-container"
           className={styles.ch}
-          style={{ width: "30%" }}
+          style={{ width: "50%", height: "100%" }}
           // eslint-disable-next-line react/jsx-no-duplicate-props
           className={styles.curd}
         >
@@ -94,14 +127,6 @@ class Report1 extends Component {
             style={{ display: error ? "" : "none" }}
           >
             {error}
-            <button
-              type="button"
-              class="close"
-              data-dismiss="alert"
-              aria-label="Close"
-            >
-              <span aria-hidden="false">&times;</span>
-            </button>
           </div>
           {/* <input
             onChange={this.handleChange("doctor")}
@@ -132,19 +157,24 @@ class Report1 extends Component {
             </select>
           )}
           {/* <input
-            type="name"
-          /> */}
-          <input
-            onChange={this.handleChange("bloodpressure")}
             type="bloodpressure"
             id="bloodpressure"
             class="form-control"
             placeholder="Blood pressure"
             style={{ marginBottom: 10 }}
-            value={bloodpressure}
             required
+          /> */}
+          <Typography id="track-inverted-range-slider" gutterBottom>
+            Blood pressure
+          </Typography>
+          <Slider
+            track="inverted"
+            aria-labelledby="track-inverted-range-slider"
+            getAriaValueText={bloodpressure}
+            defaultValue={[80, 120]}
+            marks={marks}
           />
-          <input
+          {/* <input
             onChange={this.handleChange("glucose")}
             type="glucose"
             id="glucose"
@@ -152,8 +182,19 @@ class Report1 extends Component {
             class="form-control"
             placeholder="Enter glucose level"
             style={{ marginBottom: 10 }}
-            value={glucose}
+            value=
             required
+          /> */}
+          <Typography id="track-inverted-range-slider" gutterBottom>
+            Glucose
+          </Typography>
+          <Slider
+            track="inverted"
+            aria-labelledby="track-inverted-range-slider"
+            getAriaValueText={glucose}
+            defaultValue={[72, 99]}
+            valueLabelDisplay="on"
+            marks1={marks1}
           />
           <input
             onChange={this.handleChange("hmg")}
@@ -166,7 +207,7 @@ class Report1 extends Component {
             required
           />
           <button
-            class="btn btn-primary btn-block"
+            class="btn btn-lg btn-primary btn-block"
             type="submit"
             onClick={this.clickSubmit}
           >

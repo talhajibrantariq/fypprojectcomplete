@@ -12,7 +12,7 @@ class CreateReport extends Component {
     console.log("CreateReport");
   }
 
-  componentDidMount = () => { };
+  componentDidMount = () => {};
 
   handleChange = (name) => (event) => {
     this.setState({ error: " " });

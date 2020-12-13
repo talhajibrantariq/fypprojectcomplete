@@ -187,8 +187,11 @@ class Report2 extends Component {
               onChange={this.handleChange("PertinentHistory")}
             />
           </div>
+          <div>
+            <div></div>
+          </div>
           <button
-            class="btn-block btn-btn-primary "
+            class="btn btn-lg btn-primary btn-block btn-signin"
             type="submit"
             onClick={this.clickSubmit}
           >

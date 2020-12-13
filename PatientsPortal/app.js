@@ -1,4 +1,6 @@
 var createError = require("http-errors");
+var cors = require("cors");
+
 var express = require("express");
 var path = require("path");
 var mongoose = require("mongoose");
@@ -16,6 +18,7 @@ var doctorRouter = require("./routes/doctor");
 var superAdminRouter = require("./routes/superAdmin");
 var reportRouter = require("./routes/report");
 var pathRouter = require("./routes/pathreport");
+var radRouter = require("./routes/radreport");
 var chatRouter = require("./routes/chat");
 
 var fs = require("fs");
@@ -65,8 +68,9 @@ app.use("/doctor", doctorRouter);
 app.use("/superAdmin", superAdminRouter);
 app.use("/report", reportRouter);
 app.use("/pathreport", pathRouter);
+app.use("/radreport", radRouter);
 app.use("/chat", chatRouter);
-
+app.use(cors());
 app.use(function (err, req, res, next) {
   if (err.name === "UnauthorizedError") {
     res.status(401).json({

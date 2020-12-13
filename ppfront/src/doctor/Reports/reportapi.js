@@ -53,9 +53,12 @@ export const createReport = (report, token) => {
 };
 
 export const getUsersDropdown = () => {
-  return fetch("http://localhost:8080/hospital/allpatients").then((response) =>
-    response.json()
-  );
+  return fetch(
+    "http://localhost:8080/hospital/getallpatients"
+  ).then((response) => {
+    console.log(response);
+    return response.json()
+  });
 };
 
 export const getReportsByDoctor = (token) => {

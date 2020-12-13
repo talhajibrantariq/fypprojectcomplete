@@ -5,11 +5,11 @@ var {
   doctorsignup,
   getalldoctors,
   deletedoctor,
+  getpatients,
   patientsignup,
   getallpatients,
   getalldoctors,
   deletepatient,
-
   EditHospital,
 } = require("../controller/hospital");
 var {
@@ -39,8 +39,8 @@ router.post(
   patientSignUpValidation,
   patientsignup
 );
-router.get("/getpatients", hospitalrequireSignIn, getallpatients);
-router.get("/allpatients", getallpatients);
+router.get("/getpatients", hospitalrequireSignIn, getpatients);
+router.get("/getallpatients", getallpatients);
 router.delete("/deletepatient", hospitalrequireSignIn, deletepatient);
 
 module.exports = router;
