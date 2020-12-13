@@ -1,9 +1,9 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 // Create Schema for Users
 const ConversationSchema = new Schema({
-    recipients: [{ type: Schema.Types.ObjectId, ref: 'Doctor' }],
+    recipients: [{ type: Schema.Types.ObjectId, ref: "Doctor" }],
     lastMessage: {
         type: String,
     },
@@ -11,9 +11,15 @@ const ConversationSchema = new Schema({
         type: String,
         default: Date.now,
     },
+    type: { type: String, default: "text" },
+    filename: { type: String },
+    file: {
+        data: Buffer,
+        contentType: String,
+    },
 });
 
 module.exports = Conversation = mongoose.model(
-    'conversations',
+    "conversations",
     ConversationSchema
 );
