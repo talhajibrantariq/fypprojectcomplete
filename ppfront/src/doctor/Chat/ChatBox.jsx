@@ -1,4 +1,3 @@
-
 import { PaperClipOutlined } from "@ant-design/icons";
 import Avatar from "@material-ui/core/Avatar";
 import Grid from "@material-ui/core/Grid";
@@ -17,7 +16,6 @@ import React, { useEffect, useRef, useState } from "react";
 import commonUtilites from "../Utilities/common";
 import { getmessages, sendmessage } from "./../Reports/pathreportapi";
 
-
 const useStyles = makeStyles((theme) => ({
   root: {
     height: "100%",
@@ -30,8 +28,8 @@ const useStyles = makeStyles((theme) => ({
   paper: {
     display: "flex",
     alignItems: "center",
-    justifyContent:"center",
-    height: "100%", 
+    justifyContent: "center",
+    height: "100%",
     color: theme.palette.primary.light,
   },
   messageContainer: {
@@ -55,7 +53,6 @@ const useStyles = makeStyles((theme) => ({
     boxShadow: "-3px 4px 4px 0px rgba(0,0,0,0.08)",
     marginTop: 8,
     maxWidth: "40em",
-    
   },
   messageBubbleRight: {
     borderRadius: "10px 0 10px 10px",
@@ -140,32 +137,27 @@ const ChatBox = (props) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (props.scope === "Global Chat") {
-      alert("select a recipient");
-    } else {
-      const message = {
-        conversation: "",
-        to: props.user._id,
-        from: localStorage.getItem("doctor_id"),
-        body: newMessage,
-        date: new Date(),
-      };
-      var m = messages;
-      m.push(message);
-      setNewMessage(m);
-      setNewMessage("");
-      sendmessage(message).then((data) => {
-        console.log(data);
-        if (data.error) {
-          //this.setState({ error: data.error });
-          console.log(data.error);
-        } else {
-          setNewMessage("");
-        
-        }
-      });
-      //sendConversationMessage(props.user._id, newMessage).then((res) => {
+
+    if (!newMessage) {
+      return;
     }
+
+    const message = {
+      conversation: "",
+      to: props.user._id,
+      from: localStorage.getItem("doctor_id"),
+      body: newMessage,
+      date: new Date(),
+    };
+
+    sendmessage(message).then((data) => {
+      if (data.error) {
+        //this.setState({ error: data.error });
+      } else {
+        setMessages([...messages, message]);
+        setNewMessage("");
+      }
+    });
   };
 
   return (
@@ -227,15 +219,11 @@ const ChatBox = (props) => {
                     fullWidth
                     value={newMessage}
                     onChange={(e) => setNewMessage(e.target.value)}
-                    
                   />
-               
-
                 </Grid>
                 <Grid item xs={1}>
-                      
-                     <IconButton>
-                    <PaperClipOutlined/>
+                  <IconButton>
+                    <PaperClipOutlined />
                   </IconButton>
                   <IconButton type="submit">
                     <SendIcon />

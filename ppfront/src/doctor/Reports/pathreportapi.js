@@ -53,22 +53,24 @@ export const createpathReport = (pathreport, token) => {
 };
 
 export const getUsersDropdown = () => {
-  return fetch("http://localhost:8080/hospital/allpatients", {
-
-  }).then((response) =>
-    response.json()
-  );
+  return fetch(
+    "http://localhost:8080/hospital/allpatients",
+    {}
+  ).then((response) => response.json());
 };
 export const getUsersDropdowndoctors = () => {
-  return fetch("http://localhost:8080/hospital/getalldoctors").then((response) =>
-    response.json()
-  );
+  return fetch(
+    "http://localhost:8080/hospital/getalldoctors"
+  ).then((response) => response.json());
 };
 
 export const getmessages = (body) => {
-  return fetch("http://localhost:8080/chat/conversation/query/" + body.sender + "/" + body.reciever).then((response) =>
-    response.json()
-  );
+  return fetch(
+    "http://localhost:8080/chat/conversation/query/" +
+      body.sender +
+      "/" +
+      body.reciever
+  ).then((response) => response.json());
 };
 
 export const getconversations = () => {
@@ -88,7 +90,6 @@ export const sendmessage = (message) => {
     body: JSON.stringify(message),
   })
     .then((response) => {
-      console.log("res: ", response);
       return response.json();
     })
     .catch((err) => console.log(err));
@@ -96,28 +97,34 @@ export const sendmessage = (message) => {
 
 export const getpathReportsByDoctor = (token) => {
   const doctorId = localStorage.getItem("doctor_id");
-  return fetch(`http://localhost:8080/pathreport/pathreports-by-doctor/${doctorId}`, {
-    method: "GET",
-    headers: {
-      Accept: "application/json",
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`,
-    },
-  }).then((response) => {
+  return fetch(
+    `http://localhost:8080/pathreport/pathreports-by-doctor/${doctorId}`,
+    {
+      method: "GET",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  ).then((response) => {
     console.log(response);
     return response.json();
   });
 };
 
 export const getpathReportsOfPatient = (patientId, token) => {
-  return fetch(`http://localhost:8080/pathreport/pathreports-of-patient/${patientId}`, {
-    method: "GET",
-    headers: {
-      Accept: "application/json",
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`,
-    },
-  }).then((response) => {
+  return fetch(
+    `http://localhost:8080/pathreport/pathreports-of-patient/${patientId}`,
+    {
+      method: "GET",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  ).then((response) => {
     console.log(response);
     return response.json();
   });
