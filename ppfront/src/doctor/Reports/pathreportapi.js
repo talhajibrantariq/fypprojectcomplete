@@ -78,18 +78,17 @@ export const getconversations = () => {
         response.json()
     );
 };
-
 export const sendmessage = (message) => {
     return fetch("http://localhost:8080/chat/sendmessage", {
         method: "POST",
         headers: {
             Accept: "application/json",
-            "Content-type": "application/json",
+            "Content-Type": "application/json",
         },
-
         body: JSON.stringify(message),
     })
         .then((response) => {
+            console.log(response);
             return response.json();
         })
         .catch((err) => console.log(err));

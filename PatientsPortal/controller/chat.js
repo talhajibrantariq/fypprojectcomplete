@@ -1,3 +1,5 @@
+// var formidable = require("formidable");
+// var fs = require("fs");
 var Conversation = require("../model/Conversation");
 var Message = require("../model/Message");
 var mongoose = require("mongoose");
@@ -36,6 +38,11 @@ exports.conversations = (req, res) => {
 // Get messages from conversation
 // based on to & from
 exports.conversationquery = (req, res) => {
+    // mongoose.Message.deleteMany({}, null).then((e) => {
+    //     console.log(e);
+    // });
+    // Message.collection.drop();
+
     let user1 = mongoose.Types.ObjectId(req.params.sender);
     let user2 = mongoose.Types.ObjectId(req.params.reciever);
 
@@ -85,8 +92,12 @@ exports.conversationquery = (req, res) => {
 
 // Post private message
 exports.sendmessage = (req, res) => {
+    console.log(`🚀 > req`, req.body);
+    // Message.collection.drop();
+
     let from = mongoose.Types.ObjectId(req.body.from);
     let to = mongoose.Types.ObjectId(req.body.to);
+
     Conversation.findOneAndUpdate(
         {
             recipients: {
@@ -103,6 +114,15 @@ exports.sendmessage = (req, res) => {
         },
         { upsert: true, new: true, setDefaultsOnInsert: true },
         function (err, conversation) {
+            // let form = new formidable.IncomingForm();
+            // form.keepExtensions = true;
+            // form.parse(req);
+            // if (files.file) {
+            //     appointment.file.data = fs.readFileSync(files.file.path);
+            //     appointment.file.contentType = files.file.type;
+            // }
+            console.log(`🚀 > req`, req.body);
+
             if (err) {
                 console.log(err);
                 res.setHeader("Content-Type", "application/json");
@@ -114,6 +134,9 @@ exports.sendmessage = (req, res) => {
                     to: req.body.to,
                     from: req.body.from,
                     body: req.body.body,
+                    file: req.body.file,
+                    fileName: req.body.fileName,
+                    fileType: req.body.fileType,
                 });
 
                 message.save((err) => {

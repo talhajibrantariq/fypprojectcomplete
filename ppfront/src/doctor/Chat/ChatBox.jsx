@@ -12,6 +12,7 @@ import TextField from "@material-ui/core/TextField";
 import Typography from "@material-ui/core/Typography";
 import SendIcon from "@material-ui/icons/Send";
 import classnames from "classnames";
+import { get } from "lodash";
 import React, { useEffect, useRef, useState } from "react";
 import commonUtilites from "../Utilities/common";
 import { getmessages, sendmessage } from "./../Reports/pathreportapi";
@@ -153,7 +154,7 @@ const ChatBox = (props) => {
         };
 
         sendmessage(message).then((data) => {
-            if (data.error) {
+            if (!data || get(data, "error")) {
                 //this.setState({ error: data.error });
             } else {
                 setMessages([...messages, message]);
@@ -181,6 +182,9 @@ const ChatBox = (props) => {
                 fileName,
                 fileType,
             };
+
+            // const appointmentData = new FormData();
+            // appointmentData.set("body", "Show me not");
 
             sendmessage(message).then((data) => {
                 if (data.error) {
