@@ -11,13 +11,13 @@ import { makeStyles } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
 import Typography from "@material-ui/core/Typography";
 import SendIcon from "@material-ui/icons/Send";
-import axios from 'axios';
+import axios from "axios";
 import classnames from "classnames";
 import { get } from "lodash";
 import React, { useEffect, useRef, useState } from "react";
-import Button from 'react-bootstrap/Button';
-import Image from 'react-bootstrap/Image';
-import Modal from 'react-bootstrap/Modal';
+import Button from "react-bootstrap/Button";
+import Image from "react-bootstrap/Image";
+import Modal from "react-bootstrap/Modal";
 import commonUtilites from "../Utilities/common";
 import { getmessages, sendmessage } from "./../Reports/pathreportapi";
 const useStyles = makeStyles((theme) => ({
@@ -88,8 +88,6 @@ const ChatBox = (props) => {
     const [show, setShow] = useState(false);
     const [src, setSrc] = useState("");
 
-
-  
     let chatBottom = useRef(null);
     const classes = useStyles();
 
@@ -99,8 +97,11 @@ const ChatBox = (props) => {
 
         // eslint-disable-next-line
     }, [props.scope, props.conversationId]);
+
     const handleClose = () => setShow(false);
+
     const handleShow = () => setShow(true);
+
     const loadmessages = () => {
         if (props.scope === "Global Chat") {
             setMessages([]);
@@ -116,7 +117,7 @@ const ChatBox = (props) => {
                     console.log(data.error);
                 } else {
                     setMessages(data);
-                    console.log(data)
+                    console.log(data);
                     setNewMessage("");
                 }
             });
@@ -124,28 +125,45 @@ const ChatBox = (props) => {
     };
 
     const handleUpload = (event) => {
-    event.preventDefault();
-        const data = new FormData();
+        event.preventDefault();
         const file = event.target.files[0];
         const fileName = event.target.files[0].name;
         const fileSize = event.target.files[0].size;
         const fileType = event.target.files[0].type;
-    
-        data.append('file', file);
-        data.append('name', fileName);
-        data.append('to', props.user._id);
-        data.append('from', localStorage.getItem("doctor_id"));
-        data.append('body', "");
-        data.append('conversation', "");
-        data.append('fileType', fileType);
 
-        var endpoint = "http://localhost:8080/chat/sendmessage1"
-    axios.post(endpoint, data).then((res) => {
-      console.log(res.statusText);
-    });
-    loadmessages()
-  };
-    
+        const uploadImg = new FormData();
+        uploadImg.append("file", file);
+
+        const message = new FormData();
+        message.append("fileName", fileName);
+        message.append("fileType", fileType);
+        message.append("conversation", "");
+        message.append("to", props.user._id);
+        message.append("from", localStorage.getItem("doctor_id"));
+        message.append("body", "(upload)");
+        message.append("date", new Date());
+
+        var endpoint = "https://dev.g2gwireless.com/api/v1/uploadfyp/fyp";
+        axios.post(endpoint, uploadImg).then((res) => {
+            console.log(res.statusText);
+            console.log(`🚀 > axios.post > res.data`, res.data);
+
+            if (get(res, "data.data")) {
+                const message = {
+                    conversation: "",
+                    to: props.user._id,
+                    from: localStorage.getItem("doctor_id"),
+                    date: new Date(),
+                    body: "https://dev.g2gwireless.com/".concat(res.data.data),
+                    fileName,
+                    fileType,
+                };
+
+                sendNewMessageRequest(message);
+            }
+        });
+    };
+
     const scrollToBottom = () => {
         chatBottom.current.scrollIntoView({ behavior: "smooth" });
     };
@@ -167,9 +185,13 @@ const ChatBox = (props) => {
             date: new Date(),
             file: null,
             fileName: "text",
-            fileType:"text"
+            fileType: "text",
         };
 
+        sendNewMessageRequest(message);
+    };
+
+    const sendNewMessageRequest = (message) => {
         sendmessage(message).then((data) => {
             if (!data || get(data, "error")) {
                 //this.setState({ error: data.error });
@@ -177,10 +199,9 @@ const ChatBox = (props) => {
                 setMessages([...messages, message]);
                 setNewMessage("");
             }
+            loadmessages();
         });
-        loadmessages()
     };
-
     const handleFileChange = (event) => {
         if (event.target.files.length) {
             const file = event.target.files[0];
@@ -197,12 +218,12 @@ const ChatBox = (props) => {
                 date: new Date(),
                 body: "Show me not",
                 file: file,
-                file1:file,
-                fileName:fileName,
-                fileType:fileType,
+                file1: file,
+                fileName: fileName,
+                fileType: fileType,
             };
-            console.log("kkkk")
-            console.log(message)
+            console.log("kkkk");
+            console.log(message);
             sendmessage(message).then((data) => {
                 if (data.error) {
                     //this.setState({ error: data.error });
@@ -214,29 +235,33 @@ const ChatBox = (props) => {
         } else {
             setFile();
         }
-        loadmessages()
+        loadmessages();
     };
     const imageClick = (i) => {
-        console.log('Click',i);
-        setSrc(i)
-        handleShow()
-
-      } 
+        console.log("Click", i);
+        setSrc(i);
+        handleShow();
+    };
     return (
         <Grid container className={classes.root}>
             <Modal show={show} onHide={handleClose}>
-        <Modal.Header closeButton>
-          <Modal.Title>Image</Modal.Title>
-        </Modal.Header>
-        <Modal.Body> <Image className="cover-image-deal"
-              width={150} height={200}
-              src={`http://localhost:8080/chat/image/${src}`}/></Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={handleClose}>
-            Close
-          </Button>
-        </Modal.Footer>
-      </Modal>
+                <Modal.Header closeButton>
+                    <Modal.Title>Image</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    <Image
+                        className="cover-image-deal"
+                        width="100%"
+                        height="auto"
+                        src={src}
+                    />
+                </Modal.Body>
+                <Modal.Footer>
+                    <Button variant="secondary" onClick={handleClose}>
+                        Close
+                    </Button>
+                </Modal.Footer>
+            </Modal>
             <Grid item xs={12} className={classes.headerRow}>
                 <Paper className={classes.paper} square elevation={2}>
                     <Typography color="inherit" variant="h6">
@@ -249,145 +274,111 @@ const ChatBox = (props) => {
                     <Grid item xs={12} className={classes.messagesRow}>
                         {messages && (
                             <List>
-                                {messages.map((m) => {
-                                return m.fileName=="text" ?
-                                <ListItem
-                                key={m._id}
-                                className={classnames(
-                                    classes.listItem,
-                                    {
-                                        [`${classes.listItemRight}`]:
-                                            m.from === currentUserId,
-                                    }
-                                )}
-                                alignItems="flex-start"
-                            >
-                                <ListItemAvatar
-                                    className={classes.avatar}
-                                >
-                                    <Avatar>
-                                        {commonUtilites.getInitialsFromName(
-                                            props.user.email
-                                        )}
-                                    </Avatar>
-                                </ListItemAvatar>
-                                <ListItemText
-                                    classes={{
-                                        root: classnames(
-                                            classes.messageBubble,
+                                {messages.map((m) => (
+                                    <ListItem
+                                        key={m._id}
+                                        className={classnames(
+                                            classes.listItem,
                                             {
-                                                [`${classes.messageBubbleRight}`]:
-                                                    m.to ===
-                                                    currentUserId,
+                                                [`${classes.listItemRight}`]:
+                                                    m.from === currentUserId,
                                             }
-                                        ),
-                                    }}
-                                    primary={m.body}
-                                    secondary={
-                                        m.from === currentUserId
-                                            ? ""
-                                            : props.scope
-                                    }
-                                />
-                            </ListItem>
-                                :
-                                <ListItem
-                                key={m._id}
-                                className={classnames(
-                                    classes.listItem,
-                                    {
-                                        [`${classes.listItemRight}`]:
-                                            m.from === currentUserId,
-                                    }
-                                )}
-                                alignItems="flex-start"
-                            >
-                                <ListItemAvatar
-                                    className={classes.avatar}
-                                >
-                                    <Avatar>
-                                        {commonUtilites.getInitialsFromName(
-                                            props.user.email
                                         )}
-                                    </Avatar>
-                                </ListItemAvatar>
-                                {/* <ListItemText
-                                    classes={{
-                                        root: classnames(
-                                            classes.messageBubble,
-                                            {
-                                                [`${classes.messageBubbleRight}`]:
-                                                    m.to ===
-                                                    currentUserId,
-                                            }
-                                        ),
-                                    }}
-                                    primary={m.body}
-                                    secondary={
-                                        m.from === currentUserId
-                                            ? ""
-                                            : props.scope
-                                    }
-                                /> */}
-                                         <Image className="cover-image-deal"
-              width={150} height={200}
-              src={`http://localhost:8080/chat/image/${m._id}`} onClick={() => imageClick(m._id)}/>
-                            </ListItem>
-                               })}
+                                        alignItems="flex-start"
+                                    >
+                                        <ListItemAvatar
+                                            className={classes.avatar}
+                                        >
+                                            <Avatar>
+                                                {commonUtilites.getInitialsFromName(
+                                                    props.user.email
+                                                )}
+                                            </Avatar>
+                                        </ListItemAvatar>
+                                        {m.fileType === "text" ? (
+                                            <ListItemText
+                                                classes={{
+                                                    root: classnames(
+                                                        classes.messageBubble,
+                                                        {
+                                                            [`${classes.messageBubbleRight}`]:
+                                                                m.to ===
+                                                                currentUserId,
+                                                        }
+                                                    ),
+                                                }}
+                                                primary={m.body}
+                                                secondary={
+                                                    m.from === currentUserId
+                                                        ? ""
+                                                        : props.scope
+                                                }
+                                            />
+                                        ) : m?.fileType?.includes("image/") ? (
+                                            <Image
+                                                className="cover-image-deal"
+                                                width="300px"
+                                                height="auto"
+                                                src={m.body}
+                                                onClick={() =>
+                                                    imageClick(m.body)
+                                                }
+                                            />
+                                        ) : (
+                                            <a
+                                                className="d-flex flex-column align-items-center"
+                                                href={m.body}
+                                                target="_blank"
+                                            >
+                                                <i class="fa fa-file fa-5x text-muted"></i>
+                                                {m.fileName}
+                                            </a>
+                                        )}
+                                    </ListItem>
+                                ))}
                             </List>
                         )}
                         <div ref={chatBottom} />
                     </Grid>
-                    <Grid item xs={12} className={classes.inputRow}>
-                        <form action="/upload" method="POST" enctype="multipart/form-data" onSubmit={handleSubmit} className={classes.form}>
-                            <Grid
-                                container
-                                className={classes.newMessageRow}
-                                alignItems="flex-end"
-                            >
-                                <Grid item xs={11}>
-                                    <TextField
-                                        id="message"
-                                        label="Message"
-                                        variant="outlined"
-                                        margin="dense"
-                                        fullWidth
-                                        value={newMessage}
-                                        onChange={(e) =>
-                                            setNewMessage(e.target.value)
-                                        }
-                                    />
-                                </Grid>
-                                <Grid item xs={3}>
-                                    
-                                    <IconButton>
-                                        <PaperClipOutlined
-                                            onClick={(e) =>
-                                                document
-                                                    .getElementById("photo")
-                                                    .click()
-                                            }
-                                        />
-                                        <input
-                                            onChange={handleUpload}
-                                            type="file"
-                                            id="file"
-                                            name="file"
-                                            accept="image/*"
-                                       
-                                        />
-                                    </IconButton>
-                                    
-                                    <IconButton type="submit">
-                                        <SendIcon />
-                                    </IconButton>
-                                </Grid>
-                            </Grid>
+                    <form
+                        action="/upload"
+                        method="POST"
+                        encType="multipart/form-data"
+                        onSubmit={handleSubmit}
+                        className="d-flex w-100 mx-3"
+                    >
+                        <Grid item xs={10}>
+                            <TextField
+                                id="message"
+                                label="Message"
+                                variant="outlined"
+                                margin="dense"
+                                fullWidth
+                                value={newMessage}
+                                onChange={(e) => setNewMessage(e.target.value)}
+                            />
+                        </Grid>
+                        <Grid item xs={2}>
+                            <IconButton>
+                                <PaperClipOutlined
+                                    onClick={(e) =>
+                                        document.getElementById("file").click()
+                                    }
+                                />
+                                <input
+                                    onChange={handleUpload}
+                                    type="file"
+                                    id="file"
+                                    name="file"
+                                    className="d-none"
+                                />
+                            </IconButton>
 
-                        </form>
-                   
-                    </Grid>
-
+                            <IconButton type="submit">
+                                <SendIcon />
+                            </IconButton>
+                        </Grid>
+                    </form>
                 </Grid>
             </Grid>
         </Grid>
