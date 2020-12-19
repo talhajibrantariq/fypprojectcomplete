@@ -2,14 +2,15 @@ const express = require("express");
 const params = require("../controller/params-resolver");
 
 const {
-  getAllReports,
-  createReport,
-  editReportById,
-  deleteReportById,
+    getAllReports,
+    createReport,
+    editReportById,
+    deleteReportById,
 
-  getReportById,
-  getReportsByDoctor,
-  getReportsOfPatient,
+    getReportById,
+    getReportsByDoctor,
+    getReportsOfPatient,
+    getReportsOfPatientByDoctor,
 } = require("../controller/report");
 
 const router = express.Router();
@@ -23,6 +24,10 @@ router.delete("/:reportId", deleteReportById); // delete a saved report by its i
 
 router.get("/reports-by-doctor/:doctorId", getReportsByDoctor); // see all reports by given doctor's id
 router.get("/reports-of-patient/:patientId", getReportsOfPatient); // see all reports by given patient's id
+router.post(
+    "/reports-of-patient-by-doctor/:patientId/:doctorId",
+    getReportsOfPatientByDoctor
+); // see all reports by given patient's id
 
 router.param("reportId", params.reportIdParam); // resolve reportId parameter
 router.param("doctorId", params.doctorIdParam); // resolve doctorId parameter

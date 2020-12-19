@@ -1,6 +1,7 @@
 var Report = require("../model/report");
 var Doctor = require("../model/doctor");
 const { extend } = require("lodash");
+var mongoose = require("mongoose");
 
 exports.createReport = async (req, res, next) => {
     console.log("exports.createReport -> req.body", req.body);
@@ -30,32 +31,63 @@ exports.getDoctorById = (req, res) => {
 exports.getPatientById = (req, res) => {
     return res.json(req.patient);
 };
+
 exports.getReportsByDoctor = async (req, res) => {
-    const resu = await Report.find({ doctor: req.doctor.id });
+    // doctor
+    const results = await Report.aggregate([
+        {
+            $match: {
+                doctor: mongoose.Types.ObjectId(req.doctor.id),
+            },
+        },
+        {
+            $lookup: {
+                from: "patients",
+                localField: "patient",
+                foreignField: "_id",
+                as: "patients",
+            },
+        },
+        { $unwind: "$patients" },
+    ]);
 
-    const tmp = resu.values;
-    // console.log("exports.getReportsByDoctor -> tmp", tmp);
-
-    let results = Array.from(resu);
-    // console.log("exports.getReportsByDoctor -> results", results);
-
-    const x = [];
-    resu.map(async (r) => {
-        const xx = await Doctor.findOne({ _id: r.doctor });
-        r["doctorx"] = xx;
-        r["doctory"] = 123;
-
-        x.push(xx);
-    });
+    // const results = await Report.find({ doctor: req.doctor.id });
 
     res.status(200).json({
         results,
-        x,
     });
 };
 
 exports.getReportsOfPatient = async (req, res) => {
     const results = await Report.find({ patient: req.patient.id });
+    res.status(200).json({
+        results,
+    });
+};
+
+exports.getReportsOfPatientByDoctor = async (req, res) => {
+    const results = await Report.aggregate([
+        {
+            $match: {
+                doctor: mongoose.Types.ObjectId(req.doctor.id),
+                patient: mongoose.Types.ObjectId(req.patient.id),
+                // date: {
+                //     $gte: mongoose.Types.ISODate("2013-01-01T00:00:00.0Z"),
+                //     $lt: mongoose.Types.ISODate("2013-02-01T00:00:00.0Z"),
+                // },
+            },
+        },
+        {
+            $lookup: {
+                from: "patients",
+                localField: "patient",
+                foreignField: "_id",
+                as: "patients",
+            },
+        },
+        { $unwind: "$patients" },
+    ]);
+
     res.status(200).json({
         results,
     });
