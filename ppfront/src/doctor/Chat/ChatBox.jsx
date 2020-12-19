@@ -11,12 +11,15 @@ import { makeStyles } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
 import Typography from "@material-ui/core/Typography";
 import SendIcon from "@material-ui/icons/Send";
+import axios from 'axios';
 import classnames from "classnames";
 import { get } from "lodash";
 import React, { useEffect, useRef, useState } from "react";
+import Button from 'react-bootstrap/Button';
+import Image from 'react-bootstrap/Image';
+import Modal from 'react-bootstrap/Modal';
 import commonUtilites from "../Utilities/common";
 import { getmessages, sendmessage } from "./../Reports/pathreportapi";
-
 const useStyles = makeStyles((theme) => ({
     root: {
         height: "100%",
@@ -82,14 +85,11 @@ const ChatBox = (props) => {
     const [newMessage, setNewMessage] = useState("");
     const [messages, setMessages] = useState([]);
     const [File, setFile] = useState();
+    const [show, setShow] = useState(false);
+    const [src, setSrc] = useState("");
 
-    // const [lastMessage, setLastMessage] = useState(null);
 
-    // const getGlobalMessages = useGetGlobalMessages();
-    // const sendGlobalMessage = useSendGlobalMessage();
-    // const getConversationMessages = useGetConversationMessages();
-    // const sendConversationMessage = useSendConversationMessage();
-
+  
     let chatBottom = useRef(null);
     const classes = useStyles();
 
@@ -99,7 +99,8 @@ const ChatBox = (props) => {
 
         // eslint-disable-next-line
     }, [props.scope, props.conversationId]);
-
+    const handleClose = () => setShow(false);
+    const handleShow = () => setShow(true);
     const loadmessages = () => {
         if (props.scope === "Global Chat") {
             setMessages([]);
@@ -115,23 +116,36 @@ const ChatBox = (props) => {
                     console.log(data.error);
                 } else {
                     setMessages(data);
+                    console.log(data)
                     setNewMessage("");
                 }
             });
         }
     };
-    // const reloadMessages = () => {
-    // if (props.scope === "Global Chat") {
-    //   getGlobalMessages().then((res) => {
-    //     setMessages(res);
-    //   });
-    // } else if (props.scope !== null && props.conversationId !== null) {
-    //   getConversationMessages(props.user._id).then((res) => setMessages(res));
-    // } else {
-    //   setMessages([]);
-    // }
-    // };
 
+    const handleUpload = (event) => {
+    event.preventDefault();
+        const data = new FormData();
+        const file = event.target.files[0];
+        const fileName = event.target.files[0].name;
+        const fileSize = event.target.files[0].size;
+        const fileType = event.target.files[0].type;
+    
+        data.append('file', file);
+        data.append('name', fileName);
+        data.append('to', props.user._id);
+        data.append('from', localStorage.getItem("doctor_id"));
+        data.append('body', "");
+        data.append('conversation', "");
+        data.append('fileType', fileType);
+
+        var endpoint = "http://localhost:8080/chat/sendmessage1"
+    axios.post(endpoint, data).then((res) => {
+      console.log(res.statusText);
+    });
+    loadmessages()
+  };
+    
     const scrollToBottom = () => {
         chatBottom.current.scrollIntoView({ behavior: "smooth" });
     };
@@ -151,6 +165,9 @@ const ChatBox = (props) => {
             from: localStorage.getItem("doctor_id"),
             body: newMessage,
             date: new Date(),
+            file: null,
+            fileName: "text",
+            fileType:"text"
         };
 
         sendmessage(message).then((data) => {
@@ -161,6 +178,7 @@ const ChatBox = (props) => {
                 setNewMessage("");
             }
         });
+        loadmessages()
     };
 
     const handleFileChange = (event) => {
@@ -170,7 +188,7 @@ const ChatBox = (props) => {
             const fileSize = event.target.files[0].size;
             const fileType = event.target.files[0].type;
             // this.appointmentData.set(name, value);
-            setFile({ value: file, fileSize });
+            //setFile({ value: file, fileSize });
 
             const message = {
                 conversation: "",
@@ -178,14 +196,13 @@ const ChatBox = (props) => {
                 from: localStorage.getItem("doctor_id"),
                 date: new Date(),
                 body: "Show me not",
-                file,
-                fileName,
-                fileType,
+                file: file,
+                file1:file,
+                fileName:fileName,
+                fileType:fileType,
             };
-
-            // const appointmentData = new FormData();
-            // appointmentData.set("body", "Show me not");
-
+            console.log("kkkk")
+            console.log(message)
             sendmessage(message).then((data) => {
                 if (data.error) {
                     //this.setState({ error: data.error });
@@ -197,10 +214,29 @@ const ChatBox = (props) => {
         } else {
             setFile();
         }
+        loadmessages()
     };
+    const imageClick = (i) => {
+        console.log('Click',i);
+        setSrc(i)
+        handleShow()
 
+      } 
     return (
         <Grid container className={classes.root}>
+            <Modal show={show} onHide={handleClose}>
+        <Modal.Header closeButton>
+          <Modal.Title>Image</Modal.Title>
+        </Modal.Header>
+        <Modal.Body> <Image className="cover-image-deal"
+              width={150} height={200}
+              src={`http://localhost:8080/chat/image/${src}`}/></Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleClose}>
+            Close
+          </Button>
+        </Modal.Footer>
+      </Modal>
             <Grid item xs={12} className={classes.headerRow}>
                 <Paper className={classes.paper} square elevation={2}>
                     <Typography color="inherit" variant="h6">
@@ -213,53 +249,97 @@ const ChatBox = (props) => {
                     <Grid item xs={12} className={classes.messagesRow}>
                         {messages && (
                             <List>
-                                {messages.map((m) => (
-                                    <ListItem
-                                        key={m._id}
-                                        className={classnames(
-                                            classes.listItem,
-                                            {
-                                                [`${classes.listItemRight}`]:
-                                                    m.from === currentUserId,
-                                            }
+                                {messages.map((m) => {
+                                return m.fileName=="text" ?
+                                <ListItem
+                                key={m._id}
+                                className={classnames(
+                                    classes.listItem,
+                                    {
+                                        [`${classes.listItemRight}`]:
+                                            m.from === currentUserId,
+                                    }
+                                )}
+                                alignItems="flex-start"
+                            >
+                                <ListItemAvatar
+                                    className={classes.avatar}
+                                >
+                                    <Avatar>
+                                        {commonUtilites.getInitialsFromName(
+                                            props.user.email
                                         )}
-                                        alignItems="flex-start"
-                                    >
-                                        <ListItemAvatar
-                                            className={classes.avatar}
-                                        >
-                                            <Avatar>
-                                                {commonUtilites.getInitialsFromName(
-                                                    props.user.email
-                                                )}
-                                            </Avatar>
-                                        </ListItemAvatar>
-                                        <ListItemText
-                                            classes={{
-                                                root: classnames(
-                                                    classes.messageBubble,
-                                                    {
-                                                        [`${classes.messageBubbleRight}`]:
-                                                            m.to ===
-                                                            currentUserId,
-                                                    }
-                                                ),
-                                            }}
-                                            primary={m.body}
-                                            secondary={
-                                                m.from === currentUserId
-                                                    ? ""
-                                                    : props.scope
+                                    </Avatar>
+                                </ListItemAvatar>
+                                <ListItemText
+                                    classes={{
+                                        root: classnames(
+                                            classes.messageBubble,
+                                            {
+                                                [`${classes.messageBubbleRight}`]:
+                                                    m.to ===
+                                                    currentUserId,
                                             }
-                                        />
-                                    </ListItem>
-                                ))}
+                                        ),
+                                    }}
+                                    primary={m.body}
+                                    secondary={
+                                        m.from === currentUserId
+                                            ? ""
+                                            : props.scope
+                                    }
+                                />
+                            </ListItem>
+                                :
+                                <ListItem
+                                key={m._id}
+                                className={classnames(
+                                    classes.listItem,
+                                    {
+                                        [`${classes.listItemRight}`]:
+                                            m.from === currentUserId,
+                                    }
+                                )}
+                                alignItems="flex-start"
+                            >
+                                <ListItemAvatar
+                                    className={classes.avatar}
+                                >
+                                    <Avatar>
+                                        {commonUtilites.getInitialsFromName(
+                                            props.user.email
+                                        )}
+                                    </Avatar>
+                                </ListItemAvatar>
+                                {/* <ListItemText
+                                    classes={{
+                                        root: classnames(
+                                            classes.messageBubble,
+                                            {
+                                                [`${classes.messageBubbleRight}`]:
+                                                    m.to ===
+                                                    currentUserId,
+                                            }
+                                        ),
+                                    }}
+                                    primary={m.body}
+                                    secondary={
+                                        m.from === currentUserId
+                                            ? ""
+                                            : props.scope
+                                    }
+                                /> */}
+                                         <Image className="cover-image-deal"
+              width={150} height={200}
+              src={`http://localhost:8080/chat/image/${m._id}`} onClick={() => imageClick(m._id)}/>
+                            </ListItem>
+                               })}
                             </List>
                         )}
                         <div ref={chatBottom} />
                     </Grid>
                     <Grid item xs={12} className={classes.inputRow}>
-                        <form onSubmit={handleSubmit} className={classes.form}>
+                        <form action="/upload" method="POST" enctype="multipart/form-data" onSubmit={handleSubmit} className={classes.form}>
                             <Grid
                                 container
                                 className={classes.newMessageRow}
@@ -278,7 +358,8 @@ const ChatBox = (props) => {
                                         }
                                     />
                                 </Grid>
-                                <Grid item xs={1}>
+                                <Grid item xs={3}>
+                                    
                                     <IconButton>
                                         <PaperClipOutlined
                                             onClick={(e) =>
@@ -288,20 +369,25 @@ const ChatBox = (props) => {
                                             }
                                         />
                                         <input
-                                            onChange={handleFileChange}
+                                            onChange={handleUpload}
                                             type="file"
-                                            id="photo"
+                                            id="file"
+                                            name="file"
                                             accept="image/*"
-                                            class="d-none"
+                                       
                                         />
                                     </IconButton>
+                                    
                                     <IconButton type="submit">
                                         <SendIcon />
                                     </IconButton>
                                 </Grid>
                             </Grid>
+
                         </form>
+                   
                     </Grid>
+
                 </Grid>
             </Grid>
         </Grid>

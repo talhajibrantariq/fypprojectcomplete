@@ -4,34 +4,30 @@ export const read = (patientId, token) => {
         headers: {
             Accept: "application/json",
             "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`
-        }
-    })
-        .then(response => {
-            console.log(response)
-            return response.json();
-        })
-
-}
+            Authorization: `Bearer ${token}`,
+        },
+    }).then((response) => {
+        console.log(response);
+        return response.json();
+    });
+};
 
 export const update = (patientId, token, patient) => {
-    console.log("USER DATA FORM :", patient)
+    console.log("USER DATA FORM :", patient);
     return fetch(`http://localhost:8080/patient/${patientId}`, {
         method: "PUT",
         headers: {
             Accept: "application/json",
-            Authorization: `Bearer ${token}`
+            Authorization: `Bearer ${token}`,
         },
-        body: patient
-
+        body: patient,
     })
-        .then(response => {
-            console.log(response)
+        .then((response) => {
+            console.log(response);
             return response.json();
         })
-        .catch(err => console.log(err))
-
-}
+        .catch((err) => console.log(err));
+};
 
 export const remove = (patientId, token) => {
     return fetch(`http://localhost:8080/patient/${patientId}`, {
@@ -39,35 +35,41 @@ export const remove = (patientId, token) => {
         headers: {
             Accept: "application/json",
             "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`
-        }
-    })
-        .then(response => {
-            console.log(response)
-            return response.json();
-        })
-
-}
+            Authorization: `Bearer ${token}`,
+        },
+    }).then((response) => {
+        console.log(response);
+        return response.json();
+    });
+};
 export const list = () => {
     return fetch("http://localhost:8080/patients", {
-        method: "GET"
+        method: "GET",
     })
-        .then(response => {
-
+        .then((response) => {
             console.log("list", response);
-            return response.json()
-
+            return response.json();
         })
-        .catch(err => console.log(err));
-}
+        .catch((err) => console.log(err));
+};
+
+export const userapps = (id) => {
+    return fetch(`http://localhost:8080/appointments/${id}`, {
+        method: "GET",
+    })
+        .then((response) => {
+            return response.json();
+        })
+        .catch((err) => console.log(err));
+};
 
 export const updatePatient = (patient, next) => {
     if (typeof window !== "undefined") {
         if (localStorage.getItem("jwt")) {
             let auth = JSON.parse(localStorage.getItem("jwt"));
             auth.patient = patient;
-            localStorage.setItem('jwt', JSON.stringify(auth));
+            localStorage.setItem("jwt", JSON.stringify(auth));
             next();
         }
     }
-}
+};

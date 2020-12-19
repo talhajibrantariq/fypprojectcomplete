@@ -3,11 +3,6 @@ const Schema = mongoose.Schema;
 
 // Create Schema for Users
 const MessageSchema = new Schema({
-    conversation: {
-        type: Schema.Types.ObjectId,
-        ref: "conversations",
-        required: true,
-    },
     to: {
         type: Schema.Types.ObjectId,
         ref: "Doctor",
@@ -27,8 +22,17 @@ const MessageSchema = new Schema({
         default: Date.now,
         required: true,
     },
-    fileName: { type: String, default: null },
-    fileType: { type: String, default: "text" },
+    fileName: {
+        type: String,
+        required: true,
+        default: "text",
+    },
+
+    fileType: {
+        type: String,
+        default: "text",
+        required: true,
+    },
     file: {
         data: Buffer,
         contentType: String,

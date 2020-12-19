@@ -51,13 +51,15 @@ export const createpathReport = (pathreport, token) => {
         })
         .catch((err) => console.log(err));
 };
-
 export const getUsersDropdown = () => {
-    return fetch(
-        "http://localhost:8080/hospital/allpatients",
-        {}
-    ).then((response) => response.json());
+    return fetch("http://localhost:8080/hospital/getallpatients").then(
+        (response) => {
+            console.log(response);
+            return response.json();
+        }
+    );
 };
+
 export const getUsersDropdowndoctors = () => {
     return fetch(
         "http://localhost:8080/hospital/getalldoctors"
@@ -78,7 +80,25 @@ export const getconversations = () => {
         response.json()
     );
 };
+
+export const uploadFile = (file) => {
+    return fetch("http:localhost:8000/chat/upload", {
+        method: "POST",
+        headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify(file),
+    })
+        .then((response) => {
+            console.log(response);
+            return response.json();
+        })
+        .catch((err) => console.log(err));
+};
+
 export const sendmessage = (message) => {
+    console.log(message, "lllll");
     return fetch("http://localhost:8080/chat/sendmessage", {
         method: "POST",
         headers: {

@@ -4,20 +4,17 @@ import {
     getpatientsnames,
     getReportsByDoctor,
 } from "./reportapi";
-class ViewBloodReport extends Component {
-    constructor(props) {
-        super(props);
+class ViewPathReport extends Component {
+    constructor() {
+        super();
         this.state = {
-            doctor: "",
-            patient: "",
-            bloodpressure: "",
-            glucose: "",
-            hmg: "",
-            error: "",
-            redirectTo: false,
-            loading: false,
             reports: [],
             keyword: "",
+            Specimen: "",
+            GrossExamination: "",
+            MicroscopicExamination: "",
+            Comments: "",
+            PertinentHistory: "",
         };
     }
 
@@ -79,52 +76,31 @@ class ViewBloodReport extends Component {
         this.setState({ [name]: event.target.value });
     };
 
-    // printDocument = (report) => {
-    //     const { patient, bloodpressure, glucose, hmg } = this.state;
-
-    //     var report12 = "Doctors name:" + report.name;
-
-    //     const input = document.getElementById(report12);
-    //     html2canvas(input).then((canvas) => {
-    //         const imgData = canvas.toDataURL("image/png");
-    //         const pdf = new jsPDF();
-    //         pdf.addImage(imgData, "JPEG", 0, 0);
-    //         // pdf.output("dataurlnewwindow");
-    //         pdf.save("download.pdf");
-    //     });
-    // };
-
     render() {
         return (
             <>
-                <h2 className="mb-5">Blood Report</h2>
+                <h2 className="mb-5">Pathology Report</h2>
                 <table className="table">
                     <thead>
                         <tr>
                             <th>Doctor</th>
                             <th>Patient</th>
-                            <th>Bloodpressure</th>
-                            <th>Glucose</th>
-                            <th>Hmg</th>
-                            <th></th>
+                            <th>GrossExamination:</th>
+                            <th> MicroscopicExamination:</th>
+                            <th>Specimen</th>
+                            <th>PertinentHistory</th>
+                            <th>Comments</th>
                         </tr>
                         {this.state.reports &&
                             this.state.reports.map((r) => (
                                 <tr>
                                     <th>{r.name}</th>
                                     <th>{r.namepatient}</th>
-                                    <th>{r.bloodpressure}</th>
-                                    <th>{r.glucose}</th>
-                                    <th>{r.hmg}</th>
-                                    <th>
-                                        {" "}
-                                        <button
-                                            class="btn btn-lg btn-primary btn-block"
-                                            type="submit"
-                                        >
-                                            Generate PDF
-                                        </button>
-                                    </th>
+                                    <th>{r.GrossExamination}</th>
+                                    <th>{r.MicroscopicExamination}</th>
+                                    <th>{r.Specimen}</th>
+                                    <th>{r.PertinentHistory}</th>
+                                    <th>{r.Comments}</th>
                                 </tr>
                             ))}
                     </thead>
@@ -134,4 +110,4 @@ class ViewBloodReport extends Component {
     }
 }
 
-export default ViewBloodReport;
+export default ViewPathReport;

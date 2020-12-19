@@ -15,93 +15,107 @@ import { getUsersDropdowndoctors } from "./Reports/pathreportapi";
 import commonUtilites from "./Utilities/common";
 
 class Chat extends React.Component {
-  constructor() {
-    super();
-    this.state = {
-      allDoctors: [],
-      scope: "Global Chat",
-      tab: 1,
-      user: null,
+    constructor() {
+        super();
+        this.state = {
+            allDoctors: [],
+            scope: "Global Chat",
+            tab: 1,
+            user: null,
+            src: "https://homepages.cae.wisc.edu/~ece533/images/airplane.png",
+        };
+    }
+    componentDidMount() {
+        getUsersDropdowndoctors().then((res) => {
+            this.setState({ allDoctors: res.results });
+        });
+    }
+    handleChange = (e, newVal) => {
+        this.setState({ tab: newVal });
     };
-  }
-  componentDidMount() {
-    getUsersDropdowndoctors().then((res) => {
-      this.setState({ allDoctors: res.results });
-      console.log(res.re);
-    });
-  }
-  handleChange = (e, newVal) => {
-    this.setState({ tab: newVal });
-  };
 
-  render() {
-    return (
-      <React.Fragment>
-        <Grid container>
-          <Grid item md={4}>
-            <Paper square elevation={5}>
-              <Paper square>
-                <Tabs
-                  onChange={this.handleChange}
-                  variant="fullWidth"
-                  value={this.state.tab}
-                  indicatorColor="primary"
-                  textColor="primary"
-                >
-                  <Tab label="Doctors" />
-                </Tabs>
-              </Paper>
-              {this.state.tab === 0 && (
-                <Conversations
-                  setUser={this.state.user}
-                  setScope={this.state.scope}
-                />
-              )}
+    render() {
+        return (
+            <React.Fragment>
+                <Grid container>
+                    <Grid item md={4}>
+                        <Paper square elevation={5}>
+                            <Paper square>
+                                {/* <Image className="cover-image-deal"
+              width={150} height={200}
+              src={`http://localhost:8080/chat/image/5fda8848d8cb660e2cf99bf6`} roundedCircle/> */}
+                            </Paper>
+                            <Paper square>
+                                <Tabs
+                                    onChange={this.handleChange}
+                                    variant="fullWidth"
+                                    value={this.state.tab}
+                                    indicatorColor="primary"
+                                    textColor="primary"
+                                >
+                                    <Tab label="Doctors" />
+                                </Tabs>
+                            </Paper>
+                            {this.state.tab === 0 && (
+                                <Conversations
+                                    setUser={this.state.user}
+                                    setScope={this.state.scope}
+                                />
+                            )}
 
-              <List
-                style={{
-                  maxHeight: "calc(100vh - 112px)",
-                  overflowY: "auto",
-                }}
-              >
-                {this.state.allDoctors.map((u) => (
-                  <ListItem
-                    key={u._id}
-                    onClick={() => {
-                      this.setState({ user: u });
-                      this.setState({ scope: u.email });
-                    }}
-                    style={{
-                      color: "black",
-                    }}
-                    button
-                  >
-                    <ListItemAvatar>
-                      <Avatar>
-                        {commonUtilites.getInitialsFromName(u.firstname)}
-                      </Avatar>
-                    </ListItemAvatar>
-                    <ListItemText
-                      primary={
-                        <Typography type="body2" style={{ color: "black" }}>
-                          {u.email}
-                        </Typography>
-                      }
-                    />
-                  </ListItem>
-                ))}
-              </List>
-            </Paper>
-          </Grid>
-          <Grid item md={8}>
-            {this.state.scope !== "Global Chat" && this.state.tab === 1 && (
-              <ChatBox scope={this.state.scope} user={this.state.user} />
-            )}
-          </Grid>
-        </Grid>
-      </React.Fragment>
-    );
-  }
+                            <List
+                                style={{
+                                    maxHeight: "calc(100vh - 112px)",
+                                    overflowY: "auto",
+                                }}
+                            >
+                                {this.state.allDoctors.map((u) => (
+                                    <ListItem
+                                        key={u._id}
+                                        onClick={() => {
+                                            this.setState({ user: u });
+                                            this.setState({ scope: u.email });
+                                        }}
+                                        style={{
+                                            color: "black",
+                                        }}
+                                        button
+                                    >
+                                        <ListItemAvatar>
+                                            <Avatar>
+                                                {commonUtilites.getInitialsFromName(
+                                                    u.firstname
+                                                )}
+                                            </Avatar>
+                                        </ListItemAvatar>
+                                        <ListItemText
+                                            primary={
+                                                <Typography
+                                                    type="body2"
+                                                    style={{ color: "black" }}
+                                                >
+                                                    {u.email}
+                                                </Typography>
+                                            }
+                                        />
+                                    </ListItem>
+                                ))}
+                            </List>
+                        </Paper>
+                    </Grid>
+                    <Grid item md={8}>
+                        {this.state.scope !== "Global Chat" &&
+                            this.state.tab === 1 && (
+                                <ChatBox
+                                    scope={this.state.scope}
+                                    user={this.state.user}
+                                />
+                            )}
+                    </Grid>
+                </Grid>
+            </React.Fragment>
+        );
+    }
 }
 
 export default Chat;

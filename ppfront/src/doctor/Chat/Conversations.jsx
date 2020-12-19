@@ -29,10 +29,8 @@ const useStyles = makeStyles((theme) => ({
 
 const Conversations = (props) => {
   const classes = useStyles();
-  const [conversations, setConversations] = useState([]);
-  const [newConversation, setNewConversation] = useState(null);
-  const getConversations = [];///useGetConversations();
-
+  const [conversations] = useState([]);
+  
   // Returns the recipient name that does not
   // belong to the current user.
   const handleRecipient = (recipients) => {
