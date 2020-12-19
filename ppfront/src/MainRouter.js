@@ -18,6 +18,7 @@ import CreateReport from "./doctor/Reports/CreateReport";
 import Report1 from "./doctor/Reports/Report1";
 import Report2 from "./doctor/Reports/Report2";
 import Viewbloodreport from "./doctor/Reports/Viewbloodreport";
+import Viewpathreport from "./doctor/Reports/Viewpathreport";
 import Dashboard from "./hospital/dashboard";
 import HospitalSignin from "./hospital/hospitalsignin";
 import HospitalSignup from "./hospital/hospitalsignup";
@@ -64,6 +65,11 @@ function MainRouter() {
                 exact
                 path="/doctor/reports/Viewbloodreport"
                 component={Viewbloodreport}
+            />
+            <DoctorRouter
+                exact
+                path="/doctor/reports/Viewpathreport"
+                component={Viewpathreport}
             />
             <Route
                 exact

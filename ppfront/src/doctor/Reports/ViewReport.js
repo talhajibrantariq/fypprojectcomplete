@@ -39,7 +39,7 @@ class ViewReport extends Component {
 
                     <div className="col-md-2">
                         <div className="home-deck-card">
-                            <a href="/doctor/reports/Report2">
+                            <a href="/doctor/reports/Viewpathreport">
                                 <Card.Img variant="top" src="" />
                                 <Card.Body>
                                     <Card.Title>

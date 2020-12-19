@@ -87,7 +87,7 @@ exports.display = (req, res) => {
 
 exports.allmessages = async (req, res) => {
     const re = await Message.find({});
-    console.log("jj");
+
     res.status(200).json({
         data: re,
     });

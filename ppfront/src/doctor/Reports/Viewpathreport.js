@@ -1,9 +1,9 @@
 import React, { Component } from "react";
 import {
     getdoctorsnames,
+    getpathReportsByDoctor,
     getpatientsnames,
-    getReportsByDoctor,
-} from "./reportapi";
+} from "./pathreportapi";
 class ViewPathReport extends Component {
     constructor() {
         super();
@@ -19,7 +19,7 @@ class ViewPathReport extends Component {
     }
 
     componentDidMount = () => {
-        getReportsByDoctor("").then((data) => {
+        getpathReportsByDoctor("").then((data) => {
             if (data.error) {
                 console.log(data.error);
             } else {
@@ -92,15 +92,15 @@ class ViewPathReport extends Component {
                             <th>Comments</th>
                         </tr>
                         {this.state.reports &&
-                            this.state.reports.map((r) => (
+                            this.state.reports.map((x) => (
                                 <tr>
-                                    <th>{r.name}</th>
-                                    <th>{r.namepatient}</th>
-                                    <th>{r.GrossExamination}</th>
-                                    <th>{r.MicroscopicExamination}</th>
-                                    <th>{r.Specimen}</th>
-                                    <th>{r.PertinentHistory}</th>
-                                    <th>{r.Comments}</th>
+                                    <th>{x.name}</th>
+                                    <th>{x.namepatient}</th>
+                                    <th>{x.GrossExamination}</th>
+                                    <th>{x.MicroscopicExamination}</th>
+                                    <th>{x.Specimen}</th>
+                                    <th>{x.PertinentHistory}</th>
+                                    <th>{x.Comments}</th>
                                 </tr>
                             ))}
                     </thead>
