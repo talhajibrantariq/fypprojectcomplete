@@ -73,7 +73,7 @@ exports.getReportsOfPatientByDoctor = async (req, res) => {
                 patient: mongoose.Types.ObjectId(req.patient.id),
                 // date: {
                 //     $gte: mongoose.Types.ISODate("2013-01-01T00:00:00.0Z"),
-                //     $lt: mongoose.Types.ISODate("2013-02-01T00:00:00.0Z"),
+                //     $lt: mongoosexz.Types.ISODate("2013-02-01T00:00:00.0Z"),
                 // },
             },
         },
@@ -87,6 +87,7 @@ exports.getReportsOfPatientByDoctor = async (req, res) => {
         },
         { $unwind: "$patients" },
     ]);
+    console.log(req.fromDate);
 
     res.status(200).json({
         results,

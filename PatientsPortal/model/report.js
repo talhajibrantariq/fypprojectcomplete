@@ -27,6 +27,10 @@ var reportSchema = new mongoose.Schema({
         trim: true,
         required: false,
     },
+    created: {
+        type: Date,
+        default: Date.now(),
+    },
 });
 
 const Report = mongoose.model("Report", reportSchema);

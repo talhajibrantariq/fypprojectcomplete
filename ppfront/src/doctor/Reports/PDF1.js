@@ -1,20 +1,27 @@
 import React from "react";
 import Pdf from "react-to-pdf";
+// import { getdoctorsnames, getpatientsnames } from "./reportapi";
 
 const ref = React.createRef();
 
 const PDF = (props) => {
     return (
         <>
-            <div className="Post" ref={ref}>
-                <h1>{props.patient}</h1>
-                <p>{props.bloodpressure}</p>
-                <p>{props.glucose}</p>
-                <p>{props.hmg}</p>
+            <div className="bloodreport" ref={ref}>
+                <h1>Patient name: {props.patientname}</h1>
+                <h4> Bloodpressure:{props.bloodpressure}</h4>
+                <h4>Glucose: {props.glucose}</h4>
+                <h4>Heamoglobin:{props.hmg}</h4>
             </div>
-            <Pdf targetRef={ref} filename="post.pdf">
-                {({ toPdf }) => <button onClick={toPdf}>Capture as PDF</button>}
-            </Pdf>
+            <div className="reportpdf">
+                <Pdf targetRef={ref} filename="bloodreport.pdf">
+                    {({ toPdf }) => (
+                        <button id="btn" onClick={toPdf}>
+                            Capture as PDF
+                        </button>
+                    )}
+                </Pdf>
+            </div>
         </>
     );
 };

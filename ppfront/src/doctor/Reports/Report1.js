@@ -4,7 +4,12 @@ import { isAuthenticated } from "../../auth/index";
 import styles from "../doctorlogin.module.css";
 import PDF1 from "./PDF1";
 import "./Report1.css";
-import { createReport, getUsersDropdown } from "./reportapi";
+import {
+    createReport,
+    getdoctorsnames,
+    getpatientsnames,
+    getUsersDropdown,
+} from "./reportapi";
 
 // const { Header, Content, Footer } = Layout;
 
@@ -30,6 +35,45 @@ class Report1 extends Component {
             this.setState({ allPatients: res.data });
         });
     }
+    getName = async () => {
+        var doctors_ids = [];
+        var patients_ids = [];
+        await this.state.reports.forEach((report) => {
+            doctors_ids.push(report.doctor);
+            patients_ids.push(report.patient);
+        });
+        await getdoctorsnames(doctors_ids).then((data) => {
+            if (data.error) console.log(data.error);
+            else doctors_ids = data;
+        });
+        var reports = this.state.reports;
+        await reports.forEach((report) => {
+            doctors_ids.forEach((doctor) => {
+                if (report.doctor == doctor._id) {
+                    report.name = doctor.firstname + " " + doctor.lastname;
+                    console.log(report);
+                }
+            });
+        });
+        console.log(reports);
+        await this.setState({ reports: reports });
+        await getpatientsnames(patients_ids).then((data) => {
+            if (data.error) console.log(data.error);
+            else patients_ids = data;
+        });
+        var reports1 = this.state.reports;
+        await reports1.forEach((report) => {
+            patients_ids.forEach((patient) => {
+                if (report.patient == patient._id) {
+                    report.namepatient =
+                        patient.firstname + " " + patient.lastname;
+                    console.log(report);
+                }
+            });
+        });
+        console.log(reports1);
+        await this.setState({ reports1: reports1 });
+    };
 
     handleChange = (name) => (event) => {
         this.setState({ error: " " });
@@ -213,7 +257,7 @@ class Report1 extends Component {
                     </div>
                 ) : (
                     <PDF1
-                        patient={this.state.patient}
+                        patient={this.state.patientname}
                         bloodpressure={this.state.bloodpressure}
                         glucose={this.state.glucose}
                         hmg={this.state.hmg}
