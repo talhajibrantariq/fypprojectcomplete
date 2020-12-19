@@ -81,6 +81,22 @@ export const getAllReports = () => {
         })
         .catch((err) => console.log(err));
 };
+export const createpathReport = (pathreport, token) => {
+    return fetch("http://localhost:8080/pathreport/create", {
+        method: "POST",
+        headers: {
+            Accept: "application/json",
+            "Content-type": "application/json",
+        },
+
+        body: JSON.stringify(pathreport),
+    })
+        .then((response) => {
+            console.log("list", response);
+            return response.json();
+        })
+        .catch((err) => console.log(err));
+};
 export const createReport = (report, token) => {
     return fetch("http://localhost:8080/report/create", {
         method: "POST",

@@ -14,13 +14,14 @@ class Report2 extends Component {
             allPatients: [],
             doctor: "",
             patient: "",
-            MedicalExamination: "",
+            MicroscopicExamination: "",
             GrossExamination: "",
             Specimen: "",
             PertinentHistory: "",
             Comments: "",
             error: "",
             postSubmitted: false,
+
             redirectTo: false,
             loading: false,
         };
@@ -39,7 +40,7 @@ class Report2 extends Component {
     clickSubmit = (event) => {
         if (
             !this.state.GrossExamination ||
-            !this.state.MedicalExamination ||
+            !this.state.MicroscopicExamination ||
             !this.state.patient ||
             !this.state.Comments ||
             !this.state.Specimen ||
@@ -59,7 +60,7 @@ class Report2 extends Component {
         const {
             patient,
             GrossExamination,
-            MedicalExamination,
+            MicroscopicExamination,
             Specimen,
             PertinentHistory,
             Comments,
@@ -68,7 +69,7 @@ class Report2 extends Component {
             doctor: localStorage.getItem("doctor_id"),
             patient,
             GrossExamination,
-            MedicalExamination,
+            MicroscopicExamination,
             Specimen,
             PertinentHistory,
             Comments,
@@ -81,7 +82,7 @@ class Report2 extends Component {
                     doctor: "",
                     patient: "",
                     GrossExamination: "",
-                    MedicalExamination: "",
+                    MicroscopicExamination: "",
                     Specimen: "",
                     PertinentHistory: "",
                     Comments: "",
@@ -94,7 +95,7 @@ class Report2 extends Component {
     render() {
         const {
             patient,
-            MedicalExamination,
+            MicroscopicExamination,
             GrossExamination,
             Specimen,
             PertinentHistory,
@@ -173,16 +174,16 @@ class Report2 extends Component {
           /> */}
 
                                     <div>
-                                        <label>Medical Examination: </label>
+                                        <label>Microscopic Examination: </label>
                                     </div>
                                     <div>
                                         <textarea
                                             className="form-control"
                                             id="exampleFormControlTextarea1"
                                             rows="5"
-                                            value={MedicalExamination}
+                                            value={MicroscopicExamination}
                                             onChange={this.handleChange(
-                                                "MedicalExamination"
+                                                "MicroscopicExamination"
                                             )}
                                             required
                                         />
@@ -249,9 +250,9 @@ class Report2 extends Component {
                                         <div></div>
                                     </div>
                                     <button
-                                        class="btn btn-lg btn-primary btn-block btn-signin"
                                         type="submit"
                                         onClick={this.clickSubmit}
+                                        className="btn btn-lg btn-primary btn-block"
                                     >
                                         Save
                                     </button>

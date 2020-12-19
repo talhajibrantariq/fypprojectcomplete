@@ -35,8 +35,42 @@ export const getAllpathReports = () => {
         })
         .catch((err) => console.log(err));
 };
+
+export const getdoctorsnames = (doctors_ids, token) => {
+    return fetch(`http://localhost:8080/doctor/getnamesdoctors`, {
+        method: "POST",
+        body: JSON.stringify({
+            ids: doctors_ids,
+        }),
+        headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+            // Authorization: `Bearer ${token}`,
+        },
+    }).then((response) => {
+        console.log(response);
+        return response.json();
+    });
+};
+export const getpatientsnames = (patients_ids, token) => {
+    return fetch(`http://localhost:8080/doctor/getnamespatients`, {
+        method: "POST",
+        body: JSON.stringify({
+            ids: patients_ids,
+        }),
+        headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+            // Authorization: `Bearer ${token}`,
+        },
+    }).then((response) => {
+        console.log(response);
+        return response.json();
+    });
+};
+
 export const createpathReport = (pathreport, token) => {
-    return fetch("http://localhost:8080/pathreport/create", {
+    return fetch("http://localhost:8080/pathreport/createpath", {
         method: "POST",
         headers: {
             Accept: "application/json",

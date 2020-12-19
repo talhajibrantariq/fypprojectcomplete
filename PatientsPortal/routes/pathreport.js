@@ -2,19 +2,19 @@ const express = require("express");
 const params = require("../controller/params-resolver");
 
 const {
-  getAllpathReports,
-  createpathReport,
-  editpathReportById,
-  deletepathReportById,
+    getAllpathReports,
+    createpathReport,
+    editpathReportById,
+    deletepathReportById,
 
-  getpathReportById,
-  getpathReportsByDoctor,
-  getpathReportsOfPatient,
+    getpathReportById,
+    getpathReportsByDoctor,
+    getpathReportsOfPatient,
 } = require("../controller/pathreport");
 
 const router = express.Router();
 
-router.post("/create", createpathReport); // first time save
+router.post("/createpath", createpathReport); // first time save
 router.get("/all", getAllpathReports); // see all reports of all doctors and all patients
 router.get("/:pathreportId", getpathReportById); // see one report by given id
 

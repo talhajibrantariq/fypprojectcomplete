@@ -117,7 +117,6 @@ class ViewBloodReport extends Component {
                                     <th>{r.glucose}</th>
                                     <th>{r.hmg}</th>
                                     <th>
-                                        {" "}
                                         <button
                                             class="btn btn-lg btn-primary btn-block"
                                             type="submit"
