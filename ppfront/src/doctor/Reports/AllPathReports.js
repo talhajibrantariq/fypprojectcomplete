@@ -7,12 +7,6 @@ class AllPathReports extends Component {
         super();
         this.state = {
             reports: [],
-            keyword: "",
-            Specimen: "",
-            GrossExamination: "",
-            MicroscopicExamination: "",
-            Comments: "",
-            PertinentHistory: "",
             loading: true,
         };
     }
@@ -23,7 +17,6 @@ class AllPathReports extends Component {
                 loading: false,
             });
             if (data.error) {
-                console.log(data.error);
             } else {
                 this.setState({
                     reports: data.results,
@@ -32,15 +25,11 @@ class AllPathReports extends Component {
         });
     };
 
-    handleChange = (name) => (event) => {
-        this.setState({ error: " " });
-        this.setState({ [name]: event.target.value });
-    };
-
     render() {
         return (
             <div className="container mt-4">
                 <h2 className="mb-5">
+                    <i className="fas fa-lungs-virus text-info mr-2" />
                     Pathology Report
                     {this.state.loading && (
                         <i className="fa fa-circle-notch fa-spin ml-2" />

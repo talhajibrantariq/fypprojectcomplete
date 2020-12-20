@@ -88,10 +88,7 @@ class Report1 extends Component {
             <div className="container">
                 <div
                     class="card card-container"
-                    style={{
-                        width: "50%",
-                        height: "100%",
-                    }}
+                    style={{ maxWidth: "400px" }}
                     className={styles.curd}
                 >
                     <h3>Blood Report</h3>
@@ -156,7 +153,7 @@ class Report1 extends Component {
                     <div>{this.state.error}</div>
 
                     <div className="d-flex justify-content-between">
-                        <Link to={"/doctor/dashboard"} class="btn">
+                        <Link to={"/doctor/ViewReport"} class="btn">
                             Back
                         </Link>
                         <button

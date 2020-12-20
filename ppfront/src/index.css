@@ -18,16 +18,9 @@ body {
  *
  *********************************
  */
-.home-body {
-    /* background: radial-gradient(
-    circle,
-    rgba(124, 226, 197, 0.36) 0%,
-    rgba(30, 207, 172, 0.16) 100%
-  ); */
-}
 
 .home-deck-card {
-    background-color: #a00037;
+    background-color: #003d77;
     margin: 1rem 0;
     text-align: center;
     transition: all 0.2s;
@@ -35,8 +28,14 @@ body {
 }
 
 .home-deck-card:hover {
-    box-shadow: 0 0 5px 5px rgb(0, 0, 0, 0.3);
+    box-shadow: 2px 2px 20px rgb(0, 0, 0, 0.3);
     transform: scale(1.03);
+}
+
+.home-deck-card .report-link {
+    font-size: 1.2rem;
+    display: block;
+    padding: 1rem;
 }
 
 .home-deck-card a {
@@ -100,8 +99,15 @@ li.MuiListItem-root.makeStyles-listItemRight-17.MuiListItem-gutters.MuiListItem-
     margin-left: auto;
 }
 
-.img-thumbnail {
-    margin: auto;
+.doctor-dibba {
+    padding: 1rem;
+    background-color: #f8f9fa !important;
+    border-radius: 0.5rem;
+    border: 1px solid silver;
+}
+
+.doctor-dibba:hover {
+    box-shadow: 2px 2px 20px rgb(0, 0, 0, 0.3);
 }
 
 @media screen and (max-width: 1024px) {

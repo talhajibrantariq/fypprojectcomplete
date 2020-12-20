@@ -9,6 +9,7 @@ export const ViewReportsByPatient = () => {
     const [SelectedPatient, setSelectedPatient] = React.useState();
     const [SelectedWeek, setSelectedWeek] = React.useState();
     const [BloodReports, setBloodReports] = React.useState([]);
+    const [isLoading, setIsLoading] = React.useState(false);
     const [Error, setError] = React.useState("");
 
     React.useEffect(() => {
@@ -25,7 +26,10 @@ export const ViewReportsByPatient = () => {
             const toDate = String(moment(SelectedWeek).endOf("isoWeek"));
             // .format("YYYY-MM-DD");
 
+            setIsLoading(true);
             getBloodReports(SelectedPatient, fromDate, toDate).then((data) => {
+                setIsLoading(false);
+
                 if (data.error) {
                     setError(String(data.error));
                 } else {
@@ -43,8 +47,11 @@ export const ViewReportsByPatient = () => {
     }, [SelectedPatient, SelectedWeek]);
 
     return (
-        <>
-            <h1>View Reports By Patient</h1>
+        <div className="container mt-4">
+            <h2 className=" mb-5">
+                <i className="fas fa-clock text-info mr-2" />
+                Time Based Reports
+            </h2>
 
             <div className="row">
                 {AllPatients && (
@@ -84,7 +91,9 @@ export const ViewReportsByPatient = () => {
                 )}
             </div>
 
-            {!isEmpty(Error) ? (
+            {isLoading ? (
+                <i className="fa fa-circle-notch fa-spin ml-2" />
+            ) : !isEmpty(Error) ? (
                 Error
             ) : isEmpty(SelectedPatient) ? (
                 <div
@@ -120,6 +129,6 @@ export const ViewReportsByPatient = () => {
                     )}
                 </>
             )}
-        </>
+        </div>
     );
 };

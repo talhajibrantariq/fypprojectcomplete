@@ -36,20 +36,28 @@ export default class Doctors extends Component {
                 {doctor.map((doctor, i) => {
                     return (
                         <div class="my-3 col-md-4 text-center" key={i}>
-                            <div className="p-3 border rounded-lg shadow">
-                                <img
+                            <div className="doctor-dibba">
+                                <div
+                                    className="d-flex align-items-center"
                                     style={{
                                         height: "200px",
                                         width: "200px",
-                                        border: 2,
+                                        margin: "auto",
+                                        borderRadius: "50%",
+                                        overflow: "hidden",
                                     }}
-                                    className="img-thumbnail"
-                                    src={`http://localhost:8080/doctor/photo/${doctor._id}`}
-                                    onError={(i) =>
-                                        (i.target.src = `${DefaultProfile}`)
-                                    }
-                                    alt={doctor.firstname}
-                                />
+                                >
+                                    <img
+                                        style={{
+                                            width: "200px",
+                                        }}
+                                        src={`http://localhost:8080/doctor/photo/${doctor._id}`}
+                                        onError={(i) =>
+                                            (i.target.src = `${DefaultProfile}`)
+                                        }
+                                        alt={doctor.firstname}
+                                    />
+                                </div>
                                 <div class="card-body">
                                     <h5 class="card-title">
                                         {doctor.firstname} {doctor.lastname}
@@ -80,8 +88,11 @@ export default class Doctors extends Component {
                 .includes(keyword.toLowerCase());
         });
         return (
-            <div>
-                <h2 className=" mb-5">Doctors</h2>
+            <div className="container mt-4">
+                <h2 className=" mb-5">
+                    <i className="fas fa-user-md text-success mr-2" />
+                    Doctors
+                </h2>
                 <div className="row">
                     <div className="col-md-3">
                         <input
