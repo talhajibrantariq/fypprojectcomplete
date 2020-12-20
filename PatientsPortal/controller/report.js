@@ -95,10 +95,10 @@ exports.getReportsOfPatientByDoctor = async (req, res) => {
             $match: {
                 doctor: mongoose.Types.ObjectId(req.doctor.id),
                 patient: mongoose.Types.ObjectId(req.patient.id),
-                // date: {
-                //     $gte: mongoose.Types.ISODate("2013-01-01T00:00:00.0Z"),
-                //     $lt: mongoosexz.Types.ISODate("2013-02-01T00:00:00.0Z"),
-                // },
+                created: {
+                    $gte: new Date(req.body.fromDate + " 00:00:00"),
+                    $lte: new Date(req.body.toDate + " 23:59:59"),
+                },
             },
         },
         {
@@ -111,7 +111,6 @@ exports.getReportsOfPatientByDoctor = async (req, res) => {
         },
         { $unwind: "$patients" },
     ]);
-    console.log(req.fromDate);
 
     res.status(200).json({
         results,

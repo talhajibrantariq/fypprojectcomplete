@@ -69,6 +69,34 @@ exports.getpathReportsOfPatient = async (req, res) => {
     });
 };
 
+exports.getPathReportsOfPatientByDoctor = async (req, res) => {
+    const results = await pathReport.aggregate([
+        {
+            $match: {
+                doctor: mongoose.Types.ObjectId(req.doctor.id),
+                patient: mongoose.Types.ObjectId(req.patient.id),
+                created: {
+                    $gte: new Date(req.body.fromDate + " 00:00:00"),
+                    $lte: new Date(req.body.toDate + " 23:59:59"),
+                },
+            },
+        },
+        {
+            $lookup: {
+                from: "patients",
+                localField: "patient",
+                foreignField: "_id",
+                as: "patients",
+            },
+        },
+        { $unwind: "$patients" },
+    ]);
+
+    res.status(200).json({
+        results,
+    });
+};
+
 exports.getAllpathReports = (req, res) => {
     pathReport
         .find()

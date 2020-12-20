@@ -182,3 +182,36 @@ export const getpathReportsOfPatient = (patientId, token) => {
         return response.json();
     });
 };
+
+export const getPathReportsOfPatientByDoctor = (
+    patientId,
+    fromDate,
+    toDate,
+    doctorId = null,
+    token = null
+) => {
+    if (!doctorId) {
+        doctorId = localStorage.getItem("doctor_id");
+    }
+    return fetch(
+        `http://localhost:8080/pathreport/pathreports-of-patient-by-doctor/${patientId}/${doctorId}`,
+        {
+            method: "POST",
+            body: JSON.stringify({
+                patientId,
+                fromDate,
+                toDate,
+                doctorId,
+            }),
+
+            headers: {
+                Accept: "application/json",
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`,
+            },
+        }
+    ).then((response) => {
+        console.log(response);
+        return response.json();
+    });
+};
