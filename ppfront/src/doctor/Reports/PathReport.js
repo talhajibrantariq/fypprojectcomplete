@@ -140,7 +140,7 @@ const A4Page = styled.div`
     // box-shadow: 0 0 20px -5px black;
 
     .header-div {
-        padding-bottom: 2rem;
+        padding-bottom: 1rem;
 
         .header-logo {
             height: 100px;

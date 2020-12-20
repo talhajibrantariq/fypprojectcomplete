@@ -119,7 +119,6 @@ class DoctorDashboard extends Component {
                         </Menu>
                     </Sider>
                     <Layout>
-                        {/* <Header className={styles.sssl} style={{ padding: 0 }} /> */}
                         <Content className={styles.ssl}>
                             <div className="container">
                                 <RouterSwitch>
