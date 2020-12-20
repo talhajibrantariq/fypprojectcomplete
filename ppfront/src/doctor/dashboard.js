@@ -29,6 +29,7 @@ import { BloodReport } from "./Reports/BloodReport";
 import CreateReport from "./Reports/CreateReport";
 import { PathReport } from "./Reports/PathReport";
 import Report1 from "./Reports/Report1";
+import Report2 from "./Reports/Report2";
 import ViewReport from "./Reports/ViewReport";
 
 const { Content, Sider } = Layout;
@@ -184,6 +185,11 @@ class DoctorDashboard extends Component {
                                     exact
                                     path="/doctor/reports/Report1"
                                     component={Report1}
+                                />
+                                <Route
+                                    exact
+                                    path="/doctor/reports/Report2"
+                                    component={Report2}
                                 />
                                 <Route
                                     exact

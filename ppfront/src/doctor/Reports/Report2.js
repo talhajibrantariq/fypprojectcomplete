@@ -1,9 +1,7 @@
-import { get } from "lodash";
+import { get, isString } from "lodash";
 import React, { Component } from "react";
 import { Link, Redirect } from "react-router-dom";
 import { isAuthenticated } from "../../auth/index";
-// import { Layout } from "antd";
-import styles from "../doctorlogin.module.css";
 import { createpathReport, getUsersDropdown } from "./pathreportapi";
 
 // const { Header, Content, Footer } = Layout;
@@ -23,7 +21,6 @@ class Report2 extends Component {
             error: "",
             image: "",
             fileSize: 0,
-            postSubmitted: false,
 
             redirectTo: false,
             loading: false,
@@ -68,6 +65,8 @@ class Report2 extends Component {
     };
 
     clickSubmit = (event) => {
+        event.preventDefault();
+
         if (
             !this.state.GrossExamination ||
             !this.state.MicroscopicExamination ||
@@ -78,34 +77,29 @@ class Report2 extends Component {
             !this.state.image
         ) {
             alert("All fields are required!");
-            event.preventDefault();
-        } else {
-            this.setState({
-                postSubmitted: true,
-            });
+            return;
         }
 
-        event.preventDefault();
         this.setState({ loading: true });
         const token = isAuthenticated().token;
 
         this.reportData.set("doctor", localStorage.getItem("doctor_id"));
 
-        createpathReport(this.reportData, token).then((data) => {
-            if (get(data, "pathreport")) {
+        createpathReport(this.reportData, token).then((res) => {
+            if (get(res, "id")) {
+                this.props.history.push(
+                    "/doctor/reports/path-report/".concat(get(res, "id"))
+                );
+
                 this.setState({
-                    doctor: "",
-                    patient: "",
-                    GrossExamination: "",
-                    MicroscopicExamination: "",
-                    Specimen: "",
-                    PertinentHistory: "",
-                    Comments: "",
-                    image: "",
-                    open: true,
+                    postSubmitted: true,
                 });
             } else {
-                this.setState({ error: (data && data?.error) || "Error" });
+                this.setState({
+                    error: isString(get(res, "error"))
+                        ? get(res, "error")
+                        : "Couldn't save the report",
+                });
             }
         });
     };
@@ -126,160 +120,120 @@ class Report2 extends Component {
             return <Redirect to="/doctor/reports" />;
         }
         return (
-            <div className="container">
-                <div className="jumbotron mt-3">
-                    <div className="row">
-                        <div className="col-md-12">
-                            <div className="well well-sm">
-                                <form
-                                    className="form-horizontal"
-                                    method="post"
-                                ></form>
-                                <div
-                                    class="card card-container"
-                                    className={styles.ch}
-                                    style={{ maxWidth: "400px" }}
-                                    // eslint-disable-next-line react/jsx-no-duplicate-props
-                                    className={styles.curd}
-                                >
-                                    <h3>Pathology Report</h3>
-                                    <label
-                                        className="text-muted"
-                                        htmlFor="photo"
-                                    >
-                                        Attach file/image:
-                                    </label>
-                                    <input
-                                        onChange={this.handleImageChange(
-                                            "image"
-                                        )}
-                                        type="file"
-                                        id="image"
-                                        accept="image/*"
-                                        class="form-control"
-                                    />
-                                    <label>Patients:</label>
-                                    <div>
-                                        {this.state.allPatients && (
-                                            <select
-                                                id="inputPatient"
-                                                class="form-control"
-                                                placeholder="Enter Patient's name"
-                                                style={{ marginBottom: 10 }}
-                                                value={patient}
-                                                required
-                                                onChange={this.handleChange(
-                                                    "patient"
-                                                )}
-                                            >
-                                                <option value="null">
-                                                    Select patient
-                                                </option>
-                                                {this.state.allPatients.map(
-                                                    (r) => (
-                                                        <option value={r._id}>
-                                                            {r.firstname}{" "}
-                                                            {r.lastname}{" "}
-                                                            {r.phone}
-                                                        </option>
-                                                    )
-                                                )}
-                                            </select>
-                                        )}
-                                    </div>
+            <div className="container py-5">
+                <div class="offset-md-3 col-md-6 offset-lg-4 col-lg-4 bg-light">
+                    <h3>Pathology Report</h3>
+                    <label className="text-muted" htmlFor="photo">
+                        Attach file/image:
+                    </label>
+                    <input
+                        onChange={this.handleImageChange("image")}
+                        type="file"
+                        id="image"
+                        accept="image/*"
+                        class="form-control"
+                    />
+                    <label>Patients:</label>
+                    <div>
+                        {this.state.allPatients && (
+                            <select
+                                id="inputPatient"
+                                class="form-control"
+                                placeholder="Enter Patient's name"
+                                style={{ marginBottom: 10 }}
+                                value={patient}
+                                required
+                                onChange={this.handleChange("patient")}
+                            >
+                                <option value="null">Select patient</option>
+                                {this.state.allPatients.map((r) => (
+                                    <option value={r._id}>
+                                        {r.firstname} {r.lastname} {r.phone}
+                                    </option>
+                                ))}
+                            </select>
+                        )}
+                    </div>
 
-                                    <div>
-                                        <label>Microscopic Examination: </label>
-                                    </div>
-                                    <div>
-                                        <textarea
-                                            className="form-control"
-                                            id="exampleFormControlTextarea1"
-                                            rows="5"
-                                            value={MicroscopicExamination}
-                                            onChange={this.handleChange(
-                                                "MicroscopicExamination"
-                                            )}
-                                            required
-                                        />
-                                    </div>
-                                    <div>
-                                        <label>Specimen: </label>
-                                    </div>
-                                    <div>
-                                        <textarea
-                                            className="form-control"
-                                            id="exampleFormControlTextarea1"
-                                            rows="5"
-                                            value={Specimen}
-                                            onChange={this.handleChange(
-                                                "Specimen"
-                                            )}
-                                        />
-                                    </div>
-                                    <div>
-                                        <label> Gross Examination: </label>
-                                    </div>
-                                    <div>
-                                        <textarea
-                                            className="form-control"
-                                            id="exampleFormControlTextarea1"
-                                            rows="5"
-                                            value={GrossExamination}
-                                            onChange={this.handleChange(
-                                                "GrossExamination"
-                                            )}
-                                        />
-                                    </div>
-                                    <div>
-                                        <label>Pertinent History: </label>
-                                    </div>
-                                    <div>
-                                        <textarea
-                                            className="form-control"
-                                            id="exampleFormControlTextarea1"
-                                            rows="5"
-                                            style={{ marginBottom: 10 }}
-                                            value={PertinentHistory}
-                                            onChange={this.handleChange(
-                                                "PertinentHistory"
-                                            )}
-                                        />
-                                    </div>
-                                    <div>
-                                        <label> Comments: </label>
-                                    </div>
-                                    <div>
-                                        <textarea
-                                            className="form-control"
-                                            id="exampleFormControlTextarea1"
-                                            rows="5"
-                                            style={{ marginBottom: 10 }}
-                                            value={Comments}
-                                            onChange={this.handleChange(
-                                                "Comments"
-                                            )}
-                                        />
-                                    </div>
-                                    <div>
-                                        <div></div>
-                                    </div>
-                                    <button
-                                        type="submit"
-                                        onClick={this.clickSubmit}
-                                        className="btn btn-lg btn-primary btn-block"
-                                    >
-                                        Save
-                                    </button>
-                                    <Link
-                                        to={"/doctor/ViewReport"}
-                                        class="btn btn-lg btn-block btn-danger "
-                                    >
-                                        Back
-                                    </Link>
-                                </div>
-                            </div>
-                        </div>
+                    <div>
+                        <label>Microscopic Examination: </label>
+                    </div>
+                    <div>
+                        <textarea
+                            className="form-control"
+                            id="exampleFormControlTextarea1"
+                            rows="5"
+                            value={MicroscopicExamination}
+                            onChange={this.handleChange(
+                                "MicroscopicExamination"
+                            )}
+                            required
+                        />
+                    </div>
+                    <div>
+                        <label>Specimen: </label>
+                    </div>
+                    <div>
+                        <textarea
+                            className="form-control"
+                            id="exampleFormControlTextarea1"
+                            rows="5"
+                            value={Specimen}
+                            onChange={this.handleChange("Specimen")}
+                        />
+                    </div>
+                    <div>
+                        <label> Gross Examination: </label>
+                    </div>
+                    <div>
+                        <textarea
+                            className="form-control"
+                            id="exampleFormControlTextarea1"
+                            rows="5"
+                            value={GrossExamination}
+                            onChange={this.handleChange("GrossExamination")}
+                        />
+                    </div>
+                    <div>
+                        <label>Pertinent History: </label>
+                    </div>
+                    <div>
+                        <textarea
+                            className="form-control"
+                            id="exampleFormControlTextarea1"
+                            rows="5"
+                            style={{ marginBottom: 10 }}
+                            value={PertinentHistory}
+                            onChange={this.handleChange("PertinentHistory")}
+                        />
+                    </div>
+                    <div>
+                        <label> Comments: </label>
+                    </div>
+                    <div>
+                        <textarea
+                            className="form-control"
+                            id="exampleFormControlTextarea1"
+                            rows="5"
+                            style={{ marginBottom: 10 }}
+                            value={Comments}
+                            onChange={this.handleChange("Comments")}
+                        />
+                    </div>
+
+                    <div>{this.state.error}</div>
+
+                    <div className="d-flex justify-content-between">
+                        <Link to={"/doctor/ViewReport"} class="btn">
+                            Back
+                        </Link>
+                        <button
+                            type="submit"
+                            onClick={this.clickSubmit}
+                            className="btn btn-primary"
+                        >
+                            Save
+                        </button>
                     </div>
                 </div>
             </div>

@@ -9,7 +9,8 @@ var mongoose = require("mongoose");
 exports.createpathReport = async (req, res, next) => {
     let form = new formidable.IncomingForm();
     form.keepExtensions = true;
-    form.parse(req, (err, fields, files) => {
+
+    form.parse(req, async (err, fields, files) => {
         console.log("form parsed");
         if (err) {
             return res.status(400).json({
@@ -28,13 +29,10 @@ exports.createpathReport = async (req, res, next) => {
             Object.assign(pathreport, { image });
         }
 
-        const newpathreport = new pathReport(pathreport);
-
-        newpathreport.save((s) => {
-            res.status(200).json({
-                message: "Report saved succesfully",
-                pathreport: s,
-            });
+        const newpathreport = await new pathReport(pathreport).save();
+        return res.status(200).json({
+            id: newpathreport._id,
+            message: "You have created new pathology report",
         });
     });
 };

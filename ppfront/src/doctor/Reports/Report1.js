@@ -2,7 +2,6 @@ import { get, isEmpty, isString } from "lodash";
 import React, { Component } from "react";
 import { Link, Redirect } from "react-router-dom";
 import { isAuthenticated } from "../../auth/index";
-import styles from "../doctorlogin.module.css";
 import "./Report1.css";
 import { createReport, getUsersDropdown } from "./reportapi";
 
@@ -54,11 +53,11 @@ class Report1 extends Component {
             hmg,
         };
 
-        createReport(report, token).then((data) => {
-            if (get(data, "data.0._id")) {
+        createReport(report, token).then((res) => {
+            if (get(res, "data.0._id")) {
                 this.props.history.push(
                     "/doctor/reports/blood-report/".concat(
-                        get(data, "data.0._id")
+                        get(res, "data.0._id")
                     )
                 );
 
@@ -68,8 +67,8 @@ class Report1 extends Component {
             } else {
                 this.setState({
                     error:
-                        data.error && isString(data.error)
-                            ? data.error
+                        res.error && isString(res.error)
+                            ? res.error
                             : "Couldn't save the report",
                 });
             }
@@ -85,12 +84,8 @@ class Report1 extends Component {
         }
 
         return (
-            <div className="container">
-                <div
-                    class="card card-container"
-                    style={{ maxWidth: "400px" }}
-                    className={styles.curd}
-                >
+            <div className="container py-5">
+                <div class="offset-md-3 col-md-6 offset-lg-4 col-lg-4 bg-light">
                     <h3>Blood Report</h3>
                     <select
                         id="inputPatient"
