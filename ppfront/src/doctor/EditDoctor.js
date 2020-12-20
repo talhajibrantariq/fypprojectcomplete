@@ -120,7 +120,6 @@ class EditDoctor extends Component {
         this.doctorData.set(name, value);
         this.setState({ [name]: value, fileSize });
     };
-
     clickSubmit = (event) => {
         event.preventDefault();
         this.setState({
@@ -157,171 +156,180 @@ class EditDoctor extends Component {
             loading,
         } = this.state;
         if (redirectToProfile) {
-            return <Redirect to={`/doctor/dashboard/profile/${id}`} />;
+            return <Redirect to={`/doctor/profile/${id}`} />;
         }
         const photoUrl = id
             ? `http://localhost:8080/doctor/photo/${id}`
             : DefaultProfile;
+
         return (
-            <div>
-                <div class="row mt-5">
-                    <div class="col-md-6 m-auto">
-                        <div class="card card-body">
-                            <h1 class="text-center mb-3">
-                                <i class="fas fa-user-edit"></i> Edit Profile
-                            </h1>
-                            <div
-                                class="alert alert-danger 
-                            alert-dismissible fade show"
-                                role="alert"
-                                style={{
-                                    display: this.state.error ? "" : "none",
-                                }}
-                            >
-                                {error}
-                                <button
-                                    type="button"
-                                    class="close"
-                                    data-dismiss="alert"
-                                    aria-label="Close"
-                                >
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                            </div>
-                            {loading ? (
-                                <div className="jumbotron text-center">
-                                    <h2>Loading....</h2>
-                                </div>
-                            ) : (
-                                ""
-                            )}
-                            <img
-                                style={{ height: "auto", width: "300px" }}
-                                className="img-thumbnail"
-                                src={photoUrl}
-                                alt={firstname}
-                                onError={(i) =>
-                                    (i.target.src = `${DefaultProfile}`)
-                                }
-                            />
-                            <form action="/signup" method="POST">
-                                <div class="form-group">
-                                    <label className="text-muted" for="photo">
-                                        Profile Photo
-                                    </label>
-                                    <input
-                                        onChange={this.handleChange("photo")}
-                                        type="file"
-                                        id="firstname"
-                                        accept="image/*"
-                                        class="form-control"
-                                    />
-                                    <label
-                                        className="text-muted"
-                                        for="firstname"
-                                    >
-                                        First Name
-                                    </label>
-                                    <input
-                                        onChange={this.handleChange(
-                                            "firstname"
-                                        )}
-                                        type="firstname"
-                                        id="firstname"
-                                        name="firstname"
-                                        class="form-control"
-                                        placeholder="Enter First Name"
-                                        value={firstname}
-                                    />
-                                </div>
-                                <div class="form-group">
-                                    <label
-                                        className="text-muted"
-                                        for="lastname"
-                                    >
-                                        Last Name
-                                    </label>
-                                    <input
-                                        onChange={this.handleChange("lastname")}
-                                        type="lastname"
-                                        id="lastname"
-                                        name="lastname"
-                                        class="form-control"
-                                        placeholder="Enter Last Name"
-                                        value={lastname}
-                                    />
-                                </div>
-                                <div class="form-group">
-                                    <label className="text-muted" for="age">
-                                        Age
-                                    </label>
-                                    <input
-                                        onChange={this.handleChange("age")}
-                                        type="age"
-                                        id="age"
-                                        name="age"
-                                        class="form-control"
-                                        placeholder="Enter Age"
-                                        value={age}
-                                    />
-                                </div>
-
-                                <div class="form-group">
-                                    <label className="text-muted" for="phone">
-                                        Phone
-                                    </label>
-                                    <input
-                                        onChange={this.handleChange("phone")}
-                                        type="phone"
-                                        id="phone"
-                                        name="phone"
-                                        class="form-control"
-                                        placeholder="Enter Phone"
-                                        value={phone}
-                                    />
-                                </div>
-                                <div class="form-group">
-                                    <label className="text-muted" for="age">
-                                        Designation
-                                    </label>
-                                    <input
-                                        onChange={this.handleChange(
-                                            "designation"
-                                        )}
-                                        type="designation"
-                                        id="designation"
-                                        name="designation"
-                                        class="form-control"
-                                        placeholder="Enter Age"
-                                        value={designation}
-                                    />
-                                </div>
-                                <div class="form-group">
-                                    <label className="text-muted" for="email">
-                                        Email
-                                    </label>
-                                    <input
-                                        onChange={this.handleChange("email")}
-                                        type="email"
-                                        id="email"
-                                        name="email"
-                                        class="form-control"
-                                        placeholder="Enter Email"
-                                        value={email}
-                                        disabled
-                                    />
-                                </div>
-
-                                <button
-                                    onClick={this.clickSubmit}
-                                    type="submit"
-                                    class="btn btn-primary btn-block"
-                                >
-                                    Update Settings
-                                </button>
-                            </form>
-                        </div>
+            <div class="row my-5">
+                <div class="col-md-4 m-auto doctor-dibba">
+                    <h2 className="mb-3 text-center">
+                        <i className="fas fa-user-edit text-info mr-2" />
+                        Edit Profile
+                        {this.state.loading && (
+                            <i className="fa fa-circle-notch fa-spin ml-2" />
+                        )}
+                    </h2>
+                    <div
+                        class="alert alert-danger alert-dismissible fade show"
+                        role="alert"
+                        style={{
+                            display: this.state.error ? "" : "none",
+                        }}
+                    >
+                        {error}
+                        <button
+                            type="button"
+                            class="close"
+                            data-dismiss="alert"
+                            aria-label="Close"
+                        >
+                            <span aria-hidden="true">&times;</span>
+                        </button>
                     </div>
+
+                    <div
+                        className="d-flex align-items-center"
+                        style={{
+                            height: "200px",
+                            width: "200px",
+                            margin: "auto",
+                            borderRadius: "50%",
+                            overflow: "hidden",
+                        }}
+                    >
+                        <img
+                            style={{
+                                width: "200px",
+                            }}
+                            src={photoUrl}
+                            onError={(i) =>
+                                (i.target.src = `${DefaultProfile}`)
+                            }
+                            alt={firstname}
+                        />
+                    </div>
+
+                    <form action="/signup" method="POST">
+                        <div class="form-group">
+                            <label className="text-muted mb-0" for="photo">
+                                Profile Photo
+                            </label>
+                            <input
+                                onChange={this.handleChange("photo")}
+                                type="file"
+                                id="firstname"
+                                accept="image/*"
+                                class="form-control"
+                            />
+                        </div>
+
+                        <div class="form-group">
+                            <label className="text-muted mb-0" for="firstname">
+                                First Name
+                            </label>
+                            <input
+                                onChange={this.handleChange("firstname")}
+                                type="firstname"
+                                id="firstname"
+                                name="firstname"
+                                class="form-control"
+                                placeholder="Enter first name"
+                                value={firstname}
+                            />
+                        </div>
+
+                        <div class="form-group">
+                            <label className="text-muted mb-0" for="lastname">
+                                Last Name
+                            </label>
+                            <input
+                                onChange={this.handleChange("lastname")}
+                                type="lastname"
+                                id="lastname"
+                                name="lastname"
+                                class="form-control"
+                                placeholder="Enter last name"
+                                value={lastname}
+                            />
+                        </div>
+
+                        <div class="form-group">
+                            <label className="text-muted mb-0" for="age">
+                                Age
+                            </label>
+                            <input
+                                onChange={this.handleChange("age")}
+                                type="age"
+                                id="age"
+                                name="age"
+                                class="form-control"
+                                placeholder="Enter age"
+                                value={age}
+                            />
+                        </div>
+
+                        <div class="form-group">
+                            <label className="text-muted mb-0" for="phone">
+                                Mobile
+                            </label>
+                            <input
+                                onChange={this.handleChange("phone")}
+                                type="phone"
+                                id="phone"
+                                name="phone"
+                                class="form-control"
+                                placeholder="Enter mobile"
+                                minLength="11"
+                                maxLength="11"
+                                value={phone}
+                            />
+                        </div>
+
+                        <div class="form-group">
+                            <label className="text-muted mb-0" for="age">
+                                Designation
+                            </label>
+                            <input
+                                onChange={this.handleChange("designation")}
+                                type="designation"
+                                id="designation"
+                                name="designation"
+                                class="form-control"
+                                placeholder="Enter designation"
+                                value={designation}
+                            />
+                        </div>
+
+                        <div class="form-group">
+                            <label className="text-muted mb-0" for="email">
+                                Email
+                            </label>
+                            <input
+                                onChange={this.handleChange("email")}
+                                type="email"
+                                id="email"
+                                name="email"
+                                class="form-control"
+                                placeholder="Enter email"
+                                value={email}
+                                disabled
+                            />
+                        </div>
+
+                        <button
+                            onClick={this.clickSubmit}
+                            type="submit"
+                            class="btn btn-primary"
+                        >
+                            {this.state.loading && (
+                                <i className="fa fa-circle-notch fa-spin mr-2" />
+                            )}
+                            Update
+                        </button>
+                    </form>
                 </div>
             </div>
         );

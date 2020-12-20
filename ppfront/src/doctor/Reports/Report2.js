@@ -138,7 +138,7 @@ class Report2 extends Component {
                                 <div
                                     class="card card-container"
                                     className={styles.ch}
-                                    style={{ width: "30%" }}
+                                    style={{ maxWidth: "400px" }}
                                     // eslint-disable-next-line react/jsx-no-duplicate-props
                                     className={styles.curd}
                                 >
@@ -272,7 +272,7 @@ class Report2 extends Component {
                                         Save
                                     </button>
                                     <Link
-                                        to={"/doctor/dashboard"}
+                                        to={"/doctor/ViewReport"}
                                         class="btn btn-lg btn-block btn-danger "
                                     >
                                         Back

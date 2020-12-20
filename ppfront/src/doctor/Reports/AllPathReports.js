@@ -1,10 +1,10 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
-import { getReportsByDoctor } from "./reportapi";
+import { getpathReportsByDoctor } from "./pathreportapi";
 
-class AllBloodReports extends Component {
-    constructor(props) {
-        super(props);
+class AllPathReports extends Component {
+    constructor() {
+        super();
         this.state = {
             reports: [],
             loading: true,
@@ -12,7 +12,7 @@ class AllBloodReports extends Component {
     }
 
     componentDidMount = () => {
-        getReportsByDoctor("").then((data) => {
+        getpathReportsByDoctor("").then((data) => {
             this.setState({
                 loading: false,
             });
@@ -29,8 +29,8 @@ class AllBloodReports extends Component {
         return (
             <div className="container p-5">
                 <h2 className="mb-5">
-                    <i className="fas fa-vials text-danger mr-2" />
-                    Blood Report
+                    <i className="fas fa-lungs-virus text-info mr-2" />
+                    Pathology Report
                     {this.state.loading && (
                         <i className="fa fa-circle-notch fa-spin ml-2" />
                     )}
@@ -38,10 +38,8 @@ class AllBloodReports extends Component {
                 <table className="table">
                     <thead>
                         <tr>
-                            <th>Patient</th>
-                            <th>Bloodpressure</th>
-                            <th>Glucose</th>
-                            <th>Hmg</th>
+                            <th width="200">Patient</th>
+                            <th>Comments</th>
                             <th width="180"></th>
                         </tr>
                         {this.state.reports &&
@@ -51,13 +49,11 @@ class AllBloodReports extends Component {
                                         {r.patients.firstname}{" "}
                                         {r.patients.lastname}
                                     </td>
-                                    <td>{r.bloodpressure}</td>
-                                    <td>{r.glucose}</td>
-                                    <td>{r.hmg}</td>
+                                    <td>{r.Comments}</td>
                                     <td>
                                         <Link
                                             class="btn btn-secondary"
-                                            to={"/doctor/reports/blood-report/".concat(
+                                            to={"/doctor/reports/path-report/".concat(
                                                 r._id
                                             )}
                                         >
@@ -74,4 +70,4 @@ class AllBloodReports extends Component {
     }
 }
 
-export default AllBloodReports;
+export default AllPathReports;

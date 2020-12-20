@@ -16,7 +16,6 @@ import Doctors from "./doctor/doctors";
 import EditDoctor from "./doctor/EditDoctor";
 import CreateReport from "./doctor/Reports/CreateReport";
 import Report2 from "./doctor/Reports/Report2";
-import Viewpathreport from "./doctor/Reports/Viewpathreport";
 import Dashboard from "./hospital/dashboard";
 import HospitalSignin from "./hospital/hospitalsignin";
 import HospitalSignup from "./hospital/hospitalsignup";
@@ -55,12 +54,6 @@ function MainRouter() {
                 component={Report2}
             />
             <DoctorRouter exact path="/doctor/chat" component={Chat} />
-
-            <DoctorRouter
-                exact
-                path="/doctor/reports/Viewpathreport"
-                component={Viewpathreport}
-            />
             <Route
                 exact
                 path="/superadmin/superadminsignin"

@@ -3,16 +3,16 @@ import React from "react";
 import { useParams } from "react-router-dom";
 import Pdf from "react-to-pdf";
 import styled from "styled-components";
-import { getReportById } from "./reportapi";
+import { getpathReportById } from "./pathreportapi";
 
-export const BloodReport = (props) => {
+export const PathReport = (props) => {
     const { reportId } = useParams();
     const ref = React.createRef();
     const [Report, setReport] = React.useState(null);
     const [isLoading, setIsLoading] = React.useState(true);
 
     React.useEffect(() => {
-        getReportById(reportId).then((res) => {
+        getpathReportById(reportId).then((res) => {
             console.log(`🚀 > getReportById > res`, res);
             setReport(get(res, "0"));
             setIsLoading(false);
@@ -20,77 +20,9 @@ export const BloodReport = (props) => {
         //
     }, [reportId]);
 
-    const BloodPressureConclusion = (value) => {
-        if (!String(value)) {
-            return "N/A";
-        } else if (!String(value).includes("/")) {
-            return "Invalid bloodpressure result";
-        } else if (String(value).split("/").length != 2) {
-            return "Invalid bloodpressure result";
-        } else {
-            const bp = String(value).split("/");
-            const s = bp[0];
-            const d = bp[1];
-
-            let resp = "";
-
-            if (s < 60) {
-                resp += "Systolic low";
-            } else if (s > 80) {
-                resp += "Systolic high";
-            } else {
-                resp += "Systolic normal";
-            }
-
-            resp += "; ";
-
-            if (d < 90) {
-                resp += "Diastolic low";
-            } else if (d > 120) {
-                resp += "Diastolic high";
-            } else {
-                resp += "Diastolic normal";
-            }
-
-            return resp;
-        }
-    };
-
-    const GlucoseConclusion = (value) => {
-        let resp = "";
-
-        if (!Number(value)) {
-            resp = "N/A";
-        } else if (value < 90) {
-            resp += "Low";
-        } else if (value > 140) {
-            resp += "High";
-        } else {
-            resp += "Normal";
-        }
-
-        return resp;
-    };
-
-    const HeamoglobinConclusion = (value) => {
-        let resp = "";
-
-        if (!Number(value)) {
-            resp = "N/A";
-        } else if (value < 12) {
-            resp += "Low";
-        } else if (value > 17.5) {
-            resp += "High";
-        } else {
-            resp += "Normal";
-        }
-
-        return resp;
-    };
-
     return (
         <div className="container p-5">
-            <Pdf targetRef={ref} filename="bloodreport?.pdf">
+            <Pdf targetRef={ref} filename="pathreport.pdf">
                 {({ toPdf }) => (
                     <button className="btn btn-light" id="btn" onClick={toPdf}>
                         <i className="fa fa-file-pdf mr-2 text-danger"></i>
@@ -136,46 +68,20 @@ export const BloodReport = (props) => {
                         </div>
                     </div>
 
-                    <h4 className="report-name">Blood Report</h4>
+                    <h4 className="report-name">Pathology Report</h4>
 
-                    <table>
-                        <tr>
-                            <th>Test</th>
-                            <th>Result</th>
-                            <th>Normal Ranges</th>
-                            <th>Conclusion</th>
-                        </tr>
-                        <tr>
-                            <td>Blood pressure</td>
-                            <td> {Report?.bloodpressure} mmHg </td>
-                            <td>
-                                90/60 mmHg -<br /> 120/80 mmHg
-                            </td>
-                            <td>
-                                {BloodPressureConclusion(Report?.bloodpressure)}
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Glucose</td>
-                            <td>
-                                {Report?.glucose}
-                                mg/dL
-                            </td>
-                            <td>90 - 140 mg/dL</td>
-                            <td> {GlucoseConclusion(Report?.glucose)} </td>
-                        </tr>
-                        <tr>
-                            <td>Heamoglobin</td>
-                            <td>
-                                {Report?.hmg}
-                                g/dL
-                            </td>
-                            <td>12.0 to 17.5 g/dL</td>
-                            <td> {HeamoglobinConclusion(Report?.hmg)} </td>
-                        </tr>
-                    </table>
-
-                    <div className="doctors-remarks">Doctor's Remarks</div>
+                    <div className="report-data">
+                        <h3>Gross Examination:</h3>
+                        <p>{Report?.GrossExamination}</p>
+                        <h3>Microscopic Examination:</h3>
+                        <p>{Report?.MicroscopicExamination}</p>
+                        <h3>Specimen</h3>
+                        <p>{Report?.Specimen}</p>
+                        <h3>Pertinent History</h3>
+                        <p>{Report?.PertinentHistory}</p>
+                        <h3>Comments</h3>
+                        <p>{Report?.Comments}</p>
+                    </div>
 
                     <div className="patient-detail">
                         <div className="row">
@@ -226,7 +132,7 @@ export const BloodReport = (props) => {
 
 const A4Page = styled.div`
     background-color: white;
-    height: 1120px;
+    min-height: 1120px;
     width: 800px;
     padding: 2rem;
     padding-top: 1rem;
@@ -278,6 +184,13 @@ const A4Page = styled.div`
         }
     }
 
+    .doctors-remarks {
+        margin-top: 3rem;
+        padding: 1rem;
+        height: 200px;
+        border: 1px solid gray;
+    }
+
     .report-name {
         border-bottom: 1px solid gray;
         padding-bottom: 4px;
@@ -285,10 +198,10 @@ const A4Page = styled.div`
         margin: 2rem 0;
     }
 
-    .doctors-remarks {
-        margin-top: 3rem;
-        padding: 1rem;
-        height: 200px;
-        border: 1px solid gray;
+    .report-data {
+        h3 {
+            font-size: 1.2rem;
+            font-weight: bold;
+        }
     }
 `;

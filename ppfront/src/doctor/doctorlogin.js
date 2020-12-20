@@ -128,7 +128,7 @@ class DoctorSignin extends Component {
                             onClick={this.clickSubmit}
                         >
                             {loading && (
-                                <i className="fa fa-spinner fa-spin mr-2" />
+                                <i className="fa fa-circle-notch fa-spin mr-2" />
                             )}
                             Sign in
                         </button>

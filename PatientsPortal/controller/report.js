@@ -4,11 +4,9 @@ const { extend } = require("lodash");
 var mongoose = require("mongoose");
 
 exports.createReport = async (req, res, next) => {
-    console.log("exports.createReport -> req.body", req.body);
     const report = await new Report(req.body);
 
     const resp = await report.save();
-    console.log("exports.createReport -> await report.save()", resp);
 
     const results = await Report.aggregate([
         {
@@ -28,7 +26,6 @@ exports.createReport = async (req, res, next) => {
     ]);
 
     res.status(200).json({
-        message: "Report saved succesfully",
         data: results,
     });
 };
@@ -63,7 +60,6 @@ exports.getPatientById = (req, res) => {
 };
 
 exports.getReportsByDoctor = async (req, res) => {
-    // doctor
     const results = await Report.aggregate([
         {
             $match: {
@@ -80,8 +76,6 @@ exports.getReportsByDoctor = async (req, res) => {
         },
         { $unwind: "$patients" },
     ]);
-
-    // const results = await Report.find({ doctor: req.doctor.id });
 
     res.status(200).json({
         results,
@@ -101,10 +95,10 @@ exports.getReportsOfPatientByDoctor = async (req, res) => {
             $match: {
                 doctor: mongoose.Types.ObjectId(req.doctor.id),
                 patient: mongoose.Types.ObjectId(req.patient.id),
-                // date: {
-                //     $gte: mongoose.Types.ISODate("2013-01-01T00:00:00.0Z"),
-                //     $lt: mongoosexz.Types.ISODate("2013-02-01T00:00:00.0Z"),
-                // },
+                created: {
+                    $gte: new Date(req.body.fromDate + " 00:00:00"),
+                    $lte: new Date(req.body.toDate + " 23:59:59"),
+                },
             },
         },
         {
@@ -117,7 +111,6 @@ exports.getReportsOfPatientByDoctor = async (req, res) => {
         },
         { $unwind: "$patients" },
     ]);
-    console.log(req.fromDate);
 
     res.status(200).json({
         results,
