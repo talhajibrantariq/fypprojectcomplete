@@ -1,6 +1,7 @@
 var pathReport = require("../model/pathreport");
 var Doctor = require("../model/doctor");
 const { extend } = require("lodash");
+var mongoose = require("mongoose");
 
 exports.createpathReport = async (req, res, next) => {
     console.log("exports.createpathReport -> req.body", req.body);
@@ -17,31 +18,47 @@ exports.createpathReport = async (req, res, next) => {
     });
 };
 
-exports.getpathReportById = (req, res) => {
-    return res.json(req.pathreportData);
+exports.getpathReportById = async (req, res) => {
+    const report = await pathReport.aggregate([
+        {
+            $match: {
+                _id: mongoose.Types.ObjectId(req.pathreportData._id),
+            },
+        },
+        {
+            $lookup: {
+                from: "patients",
+                localField: "patient",
+                foreignField: "_id",
+                as: "patients",
+            },
+        },
+        { $unwind: "$patients" },
+    ]);
+
+    return res.json(report);
 };
 
 exports.getpathReportsByDoctor = async (req, res) => {
-    const resu = await pathReport.find({ doctor: req.doctor.id });
-
-    const tmp = resu.values;
-    // console.log("exports.getReportsByDoctor -> tmp", tmp);
-
-    let results = Array.from(resu);
-    // console.log("exports.getReportsByDoctor -> results", results);
-
-    const x = [];
-    resu.map(async (r) => {
-        const xx = await Doctor.findOne({ _id: r.doctor });
-        r["doctorx"] = xx;
-        r["doctory"] = 123;
-
-        x.push(xx);
-    });
+    const results = await pathReport.aggregate([
+        {
+            $match: {
+                doctor: mongoose.Types.ObjectId(req.doctor.id),
+            },
+        },
+        {
+            $lookup: {
+                from: "patients",
+                localField: "patient",
+                foreignField: "_id",
+                as: "patients",
+            },
+        },
+        { $unwind: "$patients" },
+    ]);
 
     res.status(200).json({
         results,
-        x,
     });
 };
 

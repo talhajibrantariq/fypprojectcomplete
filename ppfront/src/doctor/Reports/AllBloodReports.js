@@ -106,12 +106,12 @@ class AllBloodReports extends Component {
                         {this.state.reports &&
                             this.state.reports.map((r) => (
                                 <tr>
-                                    <th>{r.name}</th>
-                                    <th>{r.namepatient}</th>
-                                    <th>{r.bloodpressure}</th>
-                                    <th>{r.glucose}</th>
-                                    <th>{r.hmg}</th>
-                                    <th>
+                                    <td>{r.name}</td>
+                                    <td>{r.namepatient}</td>
+                                    <td>{r.bloodpressure}</td>
+                                    <td>{r.glucose}</td>
+                                    <td>{r.hmg}</td>
+                                    <td>
                                         <Link
                                             class="btn btn-secondary"
                                             to={"/doctor/reports/blood-report/".concat(
@@ -121,7 +121,7 @@ class AllBloodReports extends Component {
                                             <i className="far fa-chart-bar mr-2"></i>
                                             Open Report
                                         </Link>
-                                    </th>
+                                    </td>
                                 </tr>
                             ))}
                     </thead>
