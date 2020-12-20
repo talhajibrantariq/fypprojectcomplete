@@ -13,7 +13,7 @@ var reportSchema = new mongoose.Schema({
         required: true,
     },
     bloodpressure: {
-        type: Number,
+        type: String,
         trim: true,
         required: false,
     },

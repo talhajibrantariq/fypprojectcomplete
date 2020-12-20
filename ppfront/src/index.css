@@ -2,16 +2,16 @@
 
 html,
 body * {
-  font-family: "Poppins", sans-serif;
+    font-family: "Poppins", sans-serif;
 }
 
 body {
-  background-color: #fee;
-  /* background: #d81b60;
+    /* background-color: #fee; */
+    /* background: #d81b60;
   color: white; */
 }
 
-/* 
+/*
  ********************************
  *
  *  HOME PAGE CSS
@@ -19,7 +19,7 @@ body {
  *********************************
  */
 .home-body {
-  /* background: radial-gradient(
+    /* background: radial-gradient(
     circle,
     rgba(124, 226, 197, 0.36) 0%,
     rgba(30, 207, 172, 0.16) 100%
@@ -27,28 +27,28 @@ body {
 }
 
 .home-deck-card {
-  background-color: #a00037;
-  margin: 1rem 0;
-  text-align: center;
-  transition: all 0.2s;
-  border-radius: 0.5rem;
+    background-color: #a00037;
+    margin: 1rem 0;
+    text-align: center;
+    transition: all 0.2s;
+    border-radius: 0.5rem;
 }
 
 .home-deck-card:hover {
-  box-shadow: 0 0 5px 5px rgb(0, 0, 0, 0.3);
-  transform: scale(1.03);
+    box-shadow: 0 0 5px 5px rgb(0, 0, 0, 0.3);
+    transform: scale(1.03);
 }
 
 .home-deck-card a {
-  color: white !important;
+    color: white !important;
 }
 
 .home-deck-card img {
-  height: auto;
-  width: 100%;
+    height: auto;
+    width: 100%;
 }
 
-/* 
+/*
  ********************************
  *
  *  ______ PAGE CSS
@@ -57,62 +57,62 @@ body {
  */
 
 img.bg {
-  /* Set rules to fill background */
-  min-height: 100%;
-  min-width: 1024px;
+    /* Set rules to fill background */
+    min-height: 100%;
+    min-width: 1024px;
 
-  /* Set up proportionate scaling */
-  width: 100%;
-  height: auto;
+    /* Set up proportionate scaling */
+    width: 100%;
+    height: auto;
 
-  /* Set up positioning */
-  position: fixed;
-  top: 0;
-  left: 0;
-  z-index: -1;
+    /* Set up positioning */
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: -1;
 }
 
 div.admin-bg {
-  /* Set rules to fill background */
-  min-height: 100%;
-  min-width: 1024px;
+    /* Set rules to fill background */
+    min-height: 100%;
+    min-width: 1024px;
 
-  /* Set up proportionate scaling */
-  width: 100%;
-  height: auto;
+    /* Set up proportionate scaling */
+    width: 100%;
+    height: auto;
 
-  /* Set up positioning */
-  position: fixed;
-  top: 0;
-  left: 0;
-  z-index: -1;
-  background-color: black;
+    /* Set up positioning */
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: -1;
+    background-color: black;
 }
 
 /* CHAT LIST */
 li.MuiListItem-root.MuiListItem-gutters.MuiListItem-alignItemsFlexStart {
-  width: max-content;
-  max-width: 80%;
-  overflow-wrap: break-word;
+    width: max-content;
+    max-width: 80%;
+    overflow-wrap: break-word;
 }
 
 li.MuiListItem-root.makeStyles-listItemRight-17.MuiListItem-gutters.MuiListItem-alignItemsFlexStart {
-  margin-left: auto;
+    margin-left: auto;
 }
 
 .img-thumbnail {
-  margin: auto;
+    margin: auto;
 }
 
 @media screen and (max-width: 1024px) {
-  /* Specific to this particular image */
-  img.bg {
-    left: 50%;
-    margin-left: -512px; /* 50% */
-  }
+    /* Specific to this particular image */
+    img.bg {
+        left: 50%;
+        margin-left: -512px; /* 50% */
+    }
 
-  div.admin-bg {
-    left: 50%;
-    margin-left: -512px; /* 50% */
-  }
+    div.admin-bg {
+        left: 50%;
+        margin-left: -512px; /* 50% */
+    }
 }

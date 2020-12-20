@@ -25,6 +25,7 @@ export const deleteradreportById = (radreportId, token) => {
         return response.json();
     });
 };
+
 export const getAllradreports = () => {
     return fetch("http://localhost:8080/radreport/all", {
         method: "GET",
@@ -52,6 +53,7 @@ export const getdoctorsnames = (doctors_ids, token) => {
         return response.json();
     });
 };
+
 export const getpatientsnames = (patients_ids, token) => {
     return fetch(`http://localhost:8080/doctor/getnamespatients`, {
         method: "POST",
@@ -85,6 +87,7 @@ export const createradreport = (radreport, token) => {
         })
         .catch((err) => console.log(err));
 };
+
 export const getUsersDropdown = () => {
     return fetch("http://localhost:8080/hospital/getallpatients").then(
         (response) => {

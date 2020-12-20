@@ -15,9 +15,7 @@ import DoctorProfile from "./doctor/doctorprofile";
 import Doctors from "./doctor/doctors";
 import EditDoctor from "./doctor/EditDoctor";
 import CreateReport from "./doctor/Reports/CreateReport";
-import Report1 from "./doctor/Reports/Report1";
 import Report2 from "./doctor/Reports/Report2";
-import Viewbloodreport from "./doctor/Reports/Viewbloodreport";
 import Viewpathreport from "./doctor/Reports/Viewpathreport";
 import Dashboard from "./hospital/dashboard";
 import HospitalSignin from "./hospital/hospitalsignin";
@@ -50,22 +48,14 @@ function MainRouter() {
             <Route exact path="/signup" component={Signup} />
             <Route exact path="/signin" component={Signin} />
             <Route exact path="/" component={Home} />
-            <DoctorRouter
-                exact
-                path="/doctor/reports/Report1"
-                component={Report1}
-            />
+
             <DoctorRouter
                 exact
                 path="/doctor/reports/Report2"
                 component={Report2}
             />
             <DoctorRouter exact path="/doctor/chat" component={Chat} />
-            <DoctorRouter
-                exact
-                path="/doctor/reports/Viewbloodreport"
-                component={Viewbloodreport}
-            />
+
             <DoctorRouter
                 exact
                 path="/doctor/reports/Viewpathreport"
@@ -118,11 +108,6 @@ function MainRouter() {
                 exact
                 path="/doctor/Reports/CreateReport"
                 component={CreateReport}
-            />
-            <DoctorRouter
-                exact
-                path="/doctor/Reports/Viewbloodreport"
-                component={Viewbloodreport}
             />
             {/* <DoctorRouter exact path='/doctor/:doctorId' component={DoctorProfile} /> */}
             <Route exact path="/hospital/signup" component={HospitalSignup} />
