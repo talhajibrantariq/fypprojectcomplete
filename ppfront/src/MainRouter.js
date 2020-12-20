@@ -6,7 +6,7 @@ import HospitalRouter from "./auth/hospitalprivate";
 import PrivateRouter from "./auth/privateRouter";
 import SuperAdminRouter from "./auth/superAdminprivate";
 import Home from "./core/Home";
-import patientHome from "./core/patienthome";
+import patientDashboard from "./core/patientDashboard";
 import appointmentRequests from "./doctor/appointmentRequests";
 import Chat from "./doctor/chat";
 import DoctorDashboard from "./doctor/dashboard";
@@ -84,7 +84,7 @@ function MainRouter() {
                 path="/superAdmin/displayHospital"
                 component={displayHospital}
             />
-            <Route exact path="/patient" component={patientHome} />
+            <Route exact path="/patient" component={patientDashboard} />
             <Route exact path="/doctor/signin" component={DoctorSignin} />
             <DoctorRouter path="/doctor" component={DoctorDashboard} />
             <DoctorRouter

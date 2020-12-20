@@ -2,19 +2,26 @@ var _ = require("lodash");
 var formidable = require("formidable");
 var fs = require("fs");
 var Doctor = require("../model/doctor");
-var Patient = require("../model/patient");
 const { DH_CHECK_P_NOT_PRIME } = require("constants");
 
 exports.doctorById = (req, res, next, id) => {
-    Doctor.findById(id).exec((err, doctor) => {
-        if (err || !doctor) {
-            return res.status(400).json({
-                error: "Doctor not found",
-            });
-        }
-        req.profile = doctor;
-        next();
-    });
+    Doctor.findById(id)
+        .populate('appointments', '_id title status')
+        .exec((err, doctor) => {
+            if (err || !doctor) {
+                return res.status(400).json({
+                    error: "Doctor not found",
+                });
+            }
+            if (req.profile) {
+                req.doctorProfile = doctor
+            }
+            else {
+                req.profile = doctor;
+            }
+            ;
+            next();
+        });
 };
 exports.hasAuthorization = (req, res, next) => {
     const authorized =
@@ -40,45 +47,9 @@ exports.getAllDoctors = (req, res) => {
         .catch((err) => console.log(err));
 };
 
-exports.getDoctorsNames = (req, res) => {
-    Doctor.find({ _id: { $in: req.body.ids } })
-        .select("_id firstname lastname")
-        .then((doctor) => {
-            res.status(200).json(doctor);
-        })
-        .catch((err) => console.log(err));
-};
-
 exports.getDoctor = (req, res) => {
     return res.json(req.profile);
 };
-
-exports.getPatientsNames = (req, res) => {
-    Patient.find({ _id: { $in: req.body.ids } })
-        .select("_id firstname lastname")
-        .then((patient) => {
-            res.status(200).json(patient);
-        })
-        .catch((err) => console.log(err));
-};
-
-exports.getPatient = (req, res) => {
-    return res.json(req.profile);
-};
-
-// exports.GetDoctorByID = function (req, res, next) {
-//     console.log(req.params.id);
-//     Doctor.findById(req.params.id)
-//         .then(
-//             (doctor) => {
-//                 res.statusCode = 200;
-//                 res.setHeader("Content-Type", "application/json");
-//                 res.json(doctor);
-//             },
-//             (err) => next(err)
-//         )
-//         .catch((err) => next(err));
-// };
 
 exports.updateDoctor = (req, res, next) => {
     let form = new formidable.IncomingForm();
@@ -118,6 +89,28 @@ exports.doctorPhoto = (req, res, next) => {
     }
     next();
 };
+
+exports.getAppointments = (req, res) => {
+    res.json(req.profile)
+}
+
+exports.acceptAppointment = (req, res) => {
+    let appointment = req.appointment;
+    const updatedFields = {
+        status: 'Accepted'
+    }
+    appointment = _.extend(appointment, updatedFields);
+    appointment.updated = Date.now();
+    console.log(appointment.updated)
+    appointment.save(err => {
+        if (err) {
+            return res.status(400).json({
+                error: err
+            });
+        }
+        res.json(appointment);
+    });
+}
 
 exports.deleteDoctor = (req, res, next) => {
     let doctor = req.profile;

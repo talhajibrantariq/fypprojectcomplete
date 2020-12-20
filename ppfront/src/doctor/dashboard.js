@@ -1,8 +1,8 @@
 import {
     BookOutlined,
-    FormOutlined,
     LogoutOutlined,
     ProfileOutlined,
+    UploadOutlined,
     UserOutlined,
     WechatOutlined,
 } from "@ant-design/icons";
@@ -86,7 +86,13 @@ class DoctorDashboard extends Component {
                                 Doctors
                                 <Link to="/doctor/doctors" />
                             </Menu.Item>
-                            <Menu.Item key="3" icon={<FormOutlined />}>
+                            <Menu.Item
+                                onClick={() => {
+                                    window.location.href = "/doctor/requests";
+                                }}
+                                key="3"
+                                icon={<UploadOutlined />}
+                            >
                                 Appointments
                             </Menu.Item>
                             <SubMenu
