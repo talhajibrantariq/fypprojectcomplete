@@ -1,24 +1,53 @@
 var pathReport = require("../model/pathreport");
 var Doctor = require("../model/doctor");
 const { extend } = require("lodash");
+const formidable = require("formidable");
+var _ = require("lodash");
+var fs = require("fs");
 
 exports.createpathReport = async (req, res, next) => {
-    console.log("exports.createpathReport -> req.body", req.body);
-    const pathreport = await new pathReport(req.body);
-    const doctor = await new Doctor(req.body);
-    console.log(
-        "exports.createpathReport -> await pathreport.save()",
-        await pathreport.save()
-    );
+    let form = new formidable.IncomingForm();
+    form.keepExtensions = true;
+    form.parse(req, (err, fields, files) => {
+        console.log("form parsed");
+        if (err) {
+            return res.status(400).json({
+                error: "Photo could not be uploaded",
+            });
+        }
+        let pathreport = req.body;
 
-    res.status(200).json({
-        message: "Report saved succesfully",
-        message: req.body,
+        pathreport = _.extend(pathreport, fields);
+
+        if (files.image) {
+            image = {};
+            image.data = fs.readFileSync(files.image.path);
+            image.contentType = files.image.type;
+
+            Object.assign(pathreport, { image });
+        }
+
+        const newpathreport = new pathReport(pathreport);
+
+        newpathreport.save((s) => {
+            res.status(200).json({
+                message: "Report saved succesfully",
+                pathreport: s,
+            });
+        });
     });
 };
 
 exports.getpathReportById = (req, res) => {
     return res.json(req.pathreportData);
+};
+
+exports.pathReportImage = (req, res, next) => {
+    if (req.pathReport.image.data) {
+        res.set(("Content-Type", req.pathReport.image.contentType));
+        return res.send(req.pathReport.image.data);
+    }
+    next();
 };
 
 exports.getpathReportsByDoctor = async (req, res) => {

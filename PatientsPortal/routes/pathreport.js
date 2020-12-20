@@ -10,6 +10,7 @@ const {
     getpathReportById,
     getpathReportsByDoctor,
     getpathReportsOfPatient,
+    pathReportImage,
 } = require("../controller/pathreport");
 
 const router = express.Router();
@@ -23,6 +24,7 @@ router.delete("/:pathreportId", deletepathReportById); // delete a saved report 
 
 router.get("/pathreports-by-doctor/:doctorId", getpathReportsByDoctor); // see all reports by given doctor's id
 router.get("/pathreports-of-patient/:patientId", getpathReportsOfPatient); // see all reports by given patient's id
+router.get("/image/:reportId", pathReportImage);
 
 router.param("pathreportId", params.pathreportIdParam); // resolve reportId parameter
 router.param("doctorId", params.doctorIdParam); // resolve doctorId parameter
