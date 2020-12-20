@@ -21,7 +21,10 @@ import styles from "./dashboard.module.css";
 import DoctorProfile from "./doctorprofile";
 import Doctors from "./doctors";
 import EditDoctor from "./EditDoctor";
+import AllBloodReports from "./Reports/AllBloodReports";
+import { BloodReport } from "./Reports/BloodReport";
 import CreateReport from "./Reports/CreateReport";
+import Report1 from "./Reports/Report1";
 import ViewReport from "./Reports/ViewReport";
 import { ViewReportsByPatient } from "./Reports/ViewReportsByPatient";
 
@@ -145,8 +148,23 @@ class DoctorDashboard extends Component {
                                     />
                                     <Route
                                         exact
+                                        path="/doctor/reports/blood-reports"
+                                        component={AllBloodReports}
+                                    />
+                                    <Route
+                                        exact
+                                        path="/doctor/reports/blood-report/:reportId"
+                                        component={BloodReport}
+                                    />
+                                    <Route
+                                        exact
                                         path="/doctor/ViewReport"
                                         component={ViewReport}
+                                    />
+                                    <Route
+                                        exact
+                                        path="/doctor/reports/Report1"
+                                        component={Report1}
                                     />
                                     <Route
                                         exact

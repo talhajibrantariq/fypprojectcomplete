@@ -27,7 +27,7 @@ class ViewReport extends Component {
                 <div className="row p-3 justify-content-center">
                     <div className="col-md-2">
                         <div className="home-deck-card">
-                            <a href="/doctor/reports/Viewbloodreport">
+                            <a href="/doctor/reports/blood-reports">
                                 <Card.Img variant="top" src="" />
                                 <Card.Body>
                                     <Card.Title>View Blood Report</Card.Title>

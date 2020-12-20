@@ -1,10 +1,11 @@
 import React, { Component } from "react";
+import { Link } from "react-router-dom";
 import {
     getdoctorsnames,
     getpatientsnames,
     getReportsByDoctor,
 } from "./reportapi";
-class ViewBloodReport extends Component {
+class AllBloodReports extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -18,11 +19,15 @@ class ViewBloodReport extends Component {
             loading: false,
             reports: [],
             keyword: "",
+            loading: true,
         };
     }
 
     componentDidMount = () => {
         getReportsByDoctor("").then((data) => {
+            this.setState({
+                loading: false,
+            });
             if (data.error) {
                 console.log(data.error);
             } else {
@@ -79,25 +84,15 @@ class ViewBloodReport extends Component {
         this.setState({ [name]: event.target.value });
     };
 
-    // printDocument = (report) => {
-    //     const { patient, bloodpressure, glucose, hmg } = this.state;
-
-    //     var report12 = "Doctors name:" + report.name;
-
-    //     const input = document.getElementById(report12);
-    //     html2canvas(input).then((canvas) => {
-    //         const imgData = canvas.toDataURL("image/png");
-    //         const pdf = new jsPDF();
-    //         pdf.addImage(imgData, "JPEG", 0, 0);
-    //         // pdf.output("dataurlnewwindow");
-    //         pdf.save("download.pdf");
-    //     });
-    // };
-
     render() {
         return (
-            <>
-                <h2 className="mb-5">Blood Report</h2>
+            <div className="container mt-4">
+                <h2 className="mb-5">
+                    Blood Report
+                    {this.state.loading && (
+                        <i className="fa fa-circle-notch fa-spin ml-2" />
+                    )}
+                </h2>
                 <table className="table">
                     <thead>
                         <tr>
@@ -106,7 +101,7 @@ class ViewBloodReport extends Component {
                             <th>Bloodpressure</th>
                             <th>Glucose</th>
                             <th>Hmg</th>
-                            <th></th>
+                            <th width="180"></th>
                         </tr>
                         {this.state.reports &&
                             this.state.reports.map((r) => (
@@ -117,20 +112,23 @@ class ViewBloodReport extends Component {
                                     <th>{r.glucose}</th>
                                     <th>{r.hmg}</th>
                                     <th>
-                                        <button
-                                            class="btn btn-lg btn-primary btn-block"
-                                            type="submit"
+                                        <Link
+                                            class="btn btn-secondary"
+                                            to={"/doctor/reports/blood-report/".concat(
+                                                r._id
+                                            )}
                                         >
-                                            Generate PDF
-                                        </button>
+                                            <i className="far fa-chart-bar mr-2"></i>
+                                            Open Report
+                                        </Link>
                                     </th>
                                 </tr>
                             ))}
                     </thead>
                 </table>
-            </>
+            </div>
         );
     }
 }
 
-export default ViewBloodReport;
+export default AllBloodReports;

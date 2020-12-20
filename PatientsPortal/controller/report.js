@@ -6,20 +6,50 @@ var mongoose = require("mongoose");
 exports.createReport = async (req, res, next) => {
     console.log("exports.createReport -> req.body", req.body);
     const report = await new Report(req.body);
-    const doctor = await new Doctor(req.body);
-    console.log(
-        "exports.createReport -> await report.save()",
-        await report.save()
-    );
+
+    const resp = await report.save();
+    console.log("exports.createReport -> await report.save()", resp);
+
+    const results = await Report.aggregate([
+        {
+            $match: {
+                _id: mongoose.Types.ObjectId(resp._id),
+            },
+        },
+        {
+            $lookup: {
+                from: "patients",
+                localField: "patient",
+                foreignField: "_id",
+                as: "patients",
+            },
+        },
+        { $unwind: "$patients" },
+    ]);
 
     res.status(200).json({
         message: "Report saved succesfully",
-        message: req.body,
+        data: results,
     });
 };
 
-exports.getReportById = (req, res) => {
-    let report = req.reportData;
+exports.getReportById = async (req, res) => {
+    const report = await Report.aggregate([
+        {
+            $match: {
+                _id: mongoose.Types.ObjectId(req.reportData._id),
+            },
+        },
+        {
+            $lookup: {
+                from: "patients",
+                localField: "patient",
+                foreignField: "_id",
+                as: "patients",
+            },
+        },
+        { $unwind: "$patients" },
+    ]);
 
     return res.json(report);
 };
