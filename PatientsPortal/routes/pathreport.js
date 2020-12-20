@@ -10,6 +10,7 @@ const {
     getpathReportById,
     getpathReportsByDoctor,
     getpathReportsOfPatient,
+    pathReportImage,
     getPathReportsOfPatientByDoctor,
 } = require("../controller/pathreport");
 
@@ -24,6 +25,7 @@ router.delete("/:pathreportId", deletepathReportById); // delete a saved report 
 
 router.get("/pathreports-by-doctor/:doctorId", getpathReportsByDoctor); // see all reports by given doctor's id
 router.get("/pathreports-of-patient/:patientId", getpathReportsOfPatient); // see all reports by given patient's id
+router.get("/image/:reportId", pathReportImage);
 router.post(
     "/pathreports-of-patient-by-doctor/:patientId/:doctorId",
     getPathReportsOfPatientByDoctor

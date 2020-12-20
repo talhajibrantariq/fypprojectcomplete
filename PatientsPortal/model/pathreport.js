@@ -36,10 +36,18 @@ var pathreportSchema = new mongoose.Schema({
         trim: true,
         required: true,
     },
+    image: {
+        data: Buffer,
+        contentType: String,
+    },
     Comments: {
         type: String,
         trim: true,
         required: true,
+    },
+    created: {
+        type: Date,
+        default: Date.now(),
     },
 });
 

@@ -74,10 +74,9 @@ export const createpathReport = (pathreport, token) => {
         method: "POST",
         headers: {
             Accept: "application/json",
-            "Content-type": "application/json",
         },
 
-        body: JSON.stringify(pathreport),
+        body: pathreport,
     })
         .then((response) => {
             console.log("list", response);

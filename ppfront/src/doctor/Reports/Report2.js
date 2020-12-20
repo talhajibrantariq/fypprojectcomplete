@@ -1,3 +1,4 @@
+import { get } from "lodash";
 import React, { Component } from "react";
 import { Link, Redirect } from "react-router-dom";
 import { isAuthenticated } from "../../auth/index";
@@ -20,6 +21,8 @@ class Report2 extends Component {
             PertinentHistory: "",
             Comments: "",
             error: "",
+            image: "",
+            fileSize: 0,
             postSubmitted: false,
 
             redirectTo: false,
@@ -27,16 +30,43 @@ class Report2 extends Component {
         };
     }
 
+    isValid = () => {
+        const { fileSize } = this.state;
+        if (fileSize > 1000000000000000) {
+            this.setState({
+                error: "File size should be less than 20MB",
+            });
+            return false;
+        }
+        return true;
+    };
+
     componentDidMount() {
         getUsersDropdown().then((res) => {
             console.log(res);
             this.setState({ allPatients: res.data });
         });
+
+        this.reportData = new FormData();
     }
+
     handleChange = (name) => (event) => {
         this.setState({ error: " " });
+        this.reportData.set(name, event.target.value);
         this.setState({ [name]: event.target.value });
     };
+
+    handleImageChange = (name) => (event) => {
+        this.setState({
+            error: "",
+        });
+        const value =
+            name === "image" ? event.target.files[0] : event.target.value;
+        const fileSize = name === "image" ? event.target.files[0].size : 0;
+        this.reportData.set(name, value);
+        this.setState({ [name]: value, fileSize });
+    };
+
     clickSubmit = (event) => {
         if (
             !this.state.GrossExamination ||
@@ -44,7 +74,8 @@ class Report2 extends Component {
             !this.state.patient ||
             !this.state.Comments ||
             !this.state.Specimen ||
-            !this.state.PertinentHistory
+            !this.state.PertinentHistory ||
+            !this.state.image
         ) {
             alert("All fields are required!");
             event.preventDefault();
@@ -57,27 +88,11 @@ class Report2 extends Component {
         event.preventDefault();
         this.setState({ loading: true });
         const token = isAuthenticated().token;
-        const {
-            patient,
-            GrossExamination,
-            MicroscopicExamination,
-            Specimen,
-            PertinentHistory,
-            Comments,
-        } = this.state;
-        var pathreport = {
-            doctor: localStorage.getItem("doctor_id"),
-            patient,
-            GrossExamination,
-            MicroscopicExamination,
-            Specimen,
-            PertinentHistory,
-            Comments,
-        };
 
-        createpathReport(pathreport, token).then((data) => {
-            if (data.error) this.setState({ error: data.error });
-            else {
+        this.reportData.set("doctor", localStorage.getItem("doctor_id"));
+
+        createpathReport(this.reportData, token).then((data) => {
+            if (get(data, "pathreport")) {
                 this.setState({
                     doctor: "",
                     patient: "",
@@ -86,8 +101,11 @@ class Report2 extends Component {
                     Specimen: "",
                     PertinentHistory: "",
                     Comments: "",
+                    image: "",
                     open: true,
                 });
+            } else {
+                this.setState({ error: (data && data?.error) || "Error" });
             }
         });
     };
@@ -125,22 +143,22 @@ class Report2 extends Component {
                                     className={styles.curd}
                                 >
                                     <h3>Pathology Report</h3>
-                                    {/* <div
-            class="alert alert-warning alert-dismissible fade show"
-            role="alert"
-            style={{ display: error ? "" : "none" }}
-          >
-            {error}
-            <button
-              type="button"
-              class="close"
-              data-dismiss="alert"
-              aria-label="Close"
-            >
-              <span aria-hidden="false">&times;</span>
-            </button>
-          </div> */}
-
+                                    <label
+                                        className="text-muted"
+                                        htmlFor="photo"
+                                    >
+                                        Attach file/image:
+                                    </label>
+                                    <input
+                                        onChange={this.handleImageChange(
+                                            "image"
+                                        )}
+                                        type="file"
+                                        id="image"
+                                        accept="image/*"
+                                        class="form-control"
+                                    />
+                                    <label>Patients:</label>
                                     <div>
                                         {this.state.allPatients && (
                                             <select
@@ -169,9 +187,6 @@ class Report2 extends Component {
                                             </select>
                                         )}
                                     </div>
-                                    {/* <input
-            type="name"
-          /> */}
 
                                     <div>
                                         <label>Microscopic Examination: </label>
