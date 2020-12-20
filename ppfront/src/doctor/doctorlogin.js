@@ -57,7 +57,7 @@ class DoctorSignin extends Component {
 
         if (redirectTo) {
             console.log(redirectTo);
-            return <Redirect to="/doctor/dashboard" />;
+            return <Redirect to="/doctor" />;
         }
         return (
             <div class="m-5 d-flex justify-content-center">
