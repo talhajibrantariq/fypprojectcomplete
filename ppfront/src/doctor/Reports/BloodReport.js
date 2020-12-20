@@ -122,14 +122,15 @@ export const BloodReport = (props) => {
                         <div className="col-6">
                             <div className="patient-info">
                                 <p>
-                                    Patient name:{" "}
+                                    Patient name:
                                     <span>
                                         {Report?.patients.firstname}{" "}
                                         {Report?.patients.lastname}
                                     </span>
                                 </p>
                                 <p>
-                                    Age: <span> {Report?.patients.age} </span>
+                                    Age:
+                                    <span>{Report?.patients.age} years</span>
                                 </p>
                             </div>
                         </div>
@@ -191,35 +192,27 @@ export const BloodReport = (props) => {
                                     <span> {Report?.patients.email} </span>
                                 </p>
                             </div>
-                            <div className="col-6">
-                                <div className="row">
-                                    <div className="col-6 text-center">
-                                        <small className="text-muted">
-                                            patient id
-                                        </small>
-                                        <br />
-                                        <img
-                                            height="125px"
-                                            src={"http://barcodes4.me/barcode/qr/google.png?value=".concat(
-                                                Report?.patients._id
-                                            )}
-                                            alt={Report?.patients._id}
-                                        />
-                                    </div>
-                                    <div className="col-6 text-center">
-                                        <small className="text-muted">
-                                            report id
-                                        </small>
-                                        <br />
-                                        <img
-                                            height="125px"
-                                            src={"http://barcodes4.me/barcode/qr/google.png?value=".concat(
-                                                Report?.report_id
-                                            )}
-                                            alt={Report?.report_id}
-                                        />
-                                    </div>
-                                </div>
+                            <div className="col-3 text-center">
+                                <small className="text-muted">patient id</small>
+                                <br />
+                                <img
+                                    height="125px"
+                                    src={"http://barcodes4.me/barcode/qr/google.png?value=".concat(
+                                        Report?.patients._id
+                                    )}
+                                    alt={Report?.patients._id}
+                                />
+                            </div>
+                            <div className="col-3 text-center">
+                                <small className="text-muted">report id</small>
+                                <br />
+                                <img
+                                    height="125px"
+                                    src={"http://barcodes4.me/barcode/qr/google.png?value=".concat(
+                                        Report?._id
+                                    )}
+                                    alt={Report?._id}
+                                />
                             </div>
                         </div>
                     </div>
