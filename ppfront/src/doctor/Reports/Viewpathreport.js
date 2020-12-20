@@ -92,15 +92,15 @@ class ViewPathReport extends Component {
                             <th>Comments</th>
                         </tr>
                         {this.state.reports &&
-                            this.state.reports.map((x) => (
+                            this.state.reports.map((r) => (
                                 <tr>
-                                    <th>{x.name}</th>
-                                    <th>{x.namepatient}</th>
-                                    <th>{x.GrossExamination}</th>
-                                    <th>{x.MicroscopicExamination}</th>
-                                    <th>{x.Specimen}</th>
-                                    <th>{x.PertinentHistory}</th>
-                                    <th>{x.Comments}</th>
+                                    <th>{r.name}</th>
+                                    <th>{r.namepatient}</th>
+                                    <th>{r.GrossEramination}</th>
+                                    <th>{r.MicroscopicEramination}</th>
+                                    <th>{r.Specimen}</th>
+                                    <th>{r.PertinentHistory}</th>
+                                    <th>{r.Comments}</th>
                                 </tr>
                             ))}
                     </thead>

@@ -164,6 +164,8 @@ var fs = require("fs");
 var Hospital = require("../model/hospital");
 var Doctor = require("../model/doctor");
 var Patient = require("../model/patient");
+// var faker = require("faker");
+const { sample } = require("lodash");
 
 exports.hospitalById = (req, res, next, id) => {
     Hospital.findById(id).exec((err, hospital) => {
@@ -273,6 +275,43 @@ exports.patientsignup = async (req, res) => {
     const patient = await new Patient(req.body);
     patient.createdBy = req.auth._id;
     await patient.save();
+
+    // Patient.collection.drop();
+    // for (let index = 0; index < 40; index++) {
+    //     const fname = faker.name.firstName();
+    //     const lname = faker.name.lastName();
+    //     var patient = new Patient({
+    //         firstname: fname,
+    //         lastname: lname,
+    //         cnic: String(faker.random.number({ min: 42000, max: 66000 }))
+    //             .concat("-")
+    //             .concat(faker.random.number({ min: 1234567, max: 9999999 }))
+    //             .concat("-")
+    //             .concat(faker.random.number({ min: 1, max: 9 })),
+    //         age: faker.random.number({ min: 10, max: 80 }),
+    //         phone: "03"
+    //             .concat(faker.random.number({ min: 10, max: 49 }))
+    //             .concat("-")
+    //             .concat(faker.random.number({ min: 1234567, max: 9999999 })),
+    //         email: fname
+    //             .concat(".")
+    //             .concat(lname)
+    //             .concat(faker.random.number({ min: 1, max: 9 }))
+    //             .concat(
+    //                 sample([
+    //                     "@gmail.com",
+    //                     "@yahoo.com",
+    //                     "@outlook.com",
+    //                     "@icloud.com",
+    //                 ])
+    //             )
+    //             .toLocaleLowerCase(),
+    //         password: fname + "1234",
+    //     });
+
+    //     patient.createdBy = req.auth._id;
+    //     await patient.save();
+    // }
     res.status(200).json({
         message: "Patient Registered succesfully",
     });
