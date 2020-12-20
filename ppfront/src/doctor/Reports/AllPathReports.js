@@ -27,7 +27,7 @@ class AllPathReports extends Component {
 
     render() {
         return (
-            <div className="container mt-4">
+            <div className="container p-5">
                 <h2 className="mb-5">
                     <i className="fas fa-lungs-virus text-info mr-2" />
                     Pathology Report

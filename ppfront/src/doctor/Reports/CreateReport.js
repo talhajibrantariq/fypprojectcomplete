@@ -29,7 +29,7 @@ class CreateReport extends Component {
         console.log(doctors);
 
         return (
-            <div className="container mt-4">
+            <div className="container p-5">
                 <h2 className=" mb-5">
                     <i className="fas fa-chart-line text-danger mr-2" />
                     Create Report

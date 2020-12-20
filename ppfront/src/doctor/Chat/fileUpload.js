@@ -101,7 +101,7 @@
 //             loading,
 //         } = this.state;
 //         if (redirectToProfile) {
-//             return <Redirect to={`/doctor/dashboard/profile/${id}`} />;
+//             return <Redirect to={`/doctor/profile/${id}`} />;
 //         }
 //         const photoUrl = id
 //             ? `http://localhost:8080/doctor/photo/${id}`

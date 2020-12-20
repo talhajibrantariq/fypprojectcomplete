@@ -17,18 +17,19 @@ import {
 } from "react-router-dom";
 import { doctorsignout } from "../auth/index";
 import Chat from "./chat";
+import { DashboardContent } from "./dashboard-content";
 import styles from "./dashboard.module.css";
 import DoctorProfile from "./doctorprofile";
 import Doctors from "./doctors";
 import EditDoctor from "./EditDoctor";
 import AllBloodReports from "./Reports/AllBloodReports";
 import AllPathReports from "./Reports/AllPathReports";
+import { AllTimeBasedReports } from "./Reports/AllTimeBasedReports";
 import { BloodReport } from "./Reports/BloodReport";
 import CreateReport from "./Reports/CreateReport";
 import { PathReport } from "./Reports/PathReport";
 import Report1 from "./Reports/Report1";
 import ViewReport from "./Reports/ViewReport";
-import { ViewReportsByPatient } from "./Reports/ViewReportsByPatient";
 
 const { Content, Sider } = Layout;
 
@@ -68,13 +69,11 @@ class DoctorDashboard extends Component {
                                 textAlign: "center",
                             }}
                         >
-                            Doctor's Portal
+                            <Link className="text-white" to="/doctor">
+                                Doctor's Portal
+                            </Link>
                         </div>
-                        <Menu
-                            theme="dark"
-                            mode="inline"
-                            defaultSelectedKeys={["1"]}
-                        >
+                        <Menu theme="dark" mode="inline">
                             <Menu.Item key="1" icon={<ProfileOutlined />}>
                                 Profile
                                 <Link
@@ -118,80 +117,88 @@ class DoctorDashboard extends Component {
                             </Menu.Item>
                         </Menu>
                     </Sider>
-                    <Layout>
-                        <Content className={styles.ssl}>
-                            <div className="container">
-                                <RouterSwitch>
-                                    <Route
-                                        exact
-                                        path="/doctor/profile"
-                                        component={DoctorProfile}
-                                    />
-                                    <Route
-                                        exact
-                                        path="/doctor/profile/:doctorId"
-                                        component={DoctorProfile}
-                                    />
-                                    <Route
-                                        exact
-                                        path="/doctor/edit/:doctorId"
-                                        component={EditDoctor}
-                                    />
-                                    <Route
-                                        exact
-                                        path="/doctor/doctors"
-                                        component={Doctors}
-                                    />
-                                    <Route
-                                        exact
-                                        path="/doctor/create-report"
-                                        component={CreateReport}
-                                    />
-                                    <Route
-                                        exact
-                                        path="/doctor/reports/blood-reports"
-                                        component={AllBloodReports}
-                                    />
-                                    <Route
-                                        exact
-                                        path="/doctor/reports/blood-report/:reportId"
-                                        component={BloodReport}
-                                    />
-                                    <Route
-                                        exact
-                                        path="/doctor/reports/path-reports"
-                                        component={AllPathReports}
-                                    />
-                                    <Route
-                                        exact
-                                        path="/doctor/reports/path-report/:reportId"
-                                        component={PathReport}
-                                    />
-                                    <Route
-                                        exact
-                                        path="/doctor/ViewReport"
-                                        component={ViewReport}
-                                    />
-                                    <Route
-                                        exact
-                                        path="/doctor/reports/Report1"
-                                        component={Report1}
-                                    />
-                                    <Route
-                                        exact
-                                        path="/doctor/reports/ViewReportsByPatient"
-                                        component={ViewReportsByPatient}
-                                    />
+                    <Content className={styles.ssl}>
+                        <RouterSwitch>
+                            <Route
+                                exact
+                                path="/doctor"
+                                component={DashboardContent}
+                            />
+                            <Route
+                                exact
+                                path="/doctor/profile"
+                                component={DoctorProfile}
+                            />
+                            <Route
+                                exact
+                                path="/doctor/profile/:doctorId"
+                                component={DoctorProfile}
+                            />
+                            <Route
+                                exact
+                                path="/doctor/edit/:doctorId"
+                                component={EditDoctor}
+                            />
+                            <div
+                                style={{
+                                    minHeight: "calc(100vh - 60px)",
+                                    backgroundColor: "rgba(255,255,255,0.95)",
+                                }}
+                            >
+                                <Route
+                                    exact
+                                    path="/doctor/doctors"
+                                    component={Doctors}
+                                />
+                                <Route
+                                    exact
+                                    path="/doctor/create-report"
+                                    component={CreateReport}
+                                />
+                                <Route
+                                    exact
+                                    path="/doctor/reports/blood-reports"
+                                    component={AllBloodReports}
+                                />
+                                <Route
+                                    exact
+                                    path="/doctor/reports/blood-report/:reportId"
+                                    component={BloodReport}
+                                />
+                                <Route
+                                    exact
+                                    path="/doctor/reports/path-reports"
+                                    component={AllPathReports}
+                                />
+                                <Route
+                                    exact
+                                    path="/doctor/reports/path-report/:reportId"
+                                    component={PathReport}
+                                />
+                                <Route
+                                    exact
+                                    path="/doctor/ViewReport"
+                                    component={ViewReport}
+                                />
+                                <Route
+                                    exact
+                                    path="/doctor/reports/Report1"
+                                    component={Report1}
+                                />
+                                <Route
+                                    exact
+                                    path="/doctor/reports/time-reports"
+                                    component={AllTimeBasedReports}
+                                />
 
-                                    <Route
-                                        exact
-                                        path="/doctor/chat"
-                                        component={Chat}
-                                    />
-                                </RouterSwitch>
+                                <Route
+                                    exact
+                                    path="/doctor/chat"
+                                    component={Chat}
+                                />
                             </div>
-                        </Content>
-                    </Layout>
+                        </RouterSwitch>
+                    </Content>
                 </Router>
             </Layout>
         );

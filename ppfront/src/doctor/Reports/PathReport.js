@@ -21,7 +21,7 @@ export const PathReport = (props) => {
     }, [reportId]);
 
     return (
-        <div>
+        <div className="container p-5">
             <Pdf targetRef={ref} filename="pathreport.pdf">
                 {({ toPdf }) => (
                     <button className="btn btn-light" id="btn" onClick={toPdf}>

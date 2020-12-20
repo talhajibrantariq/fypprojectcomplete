@@ -27,7 +27,7 @@ class AllBloodReports extends Component {
 
     render() {
         return (
-            <div className="container mt-4">
+            <div className="container p-5">
                 <h2 className="mb-5">
                     <i className="fas fa-vials text-danger mr-2" />
                     Blood Report

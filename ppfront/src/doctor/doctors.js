@@ -88,7 +88,7 @@ export default class Doctors extends Component {
                 .includes(keyword.toLowerCase());
         });
         return (
-            <div className="container mt-4">
+            <div className="container p-5">
                 <h2 className=" mb-5">
                     <i className="fas fa-user-md text-success mr-2" />
                     Doctors

@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 class ViewReport extends Component {
     render() {
         return (
-            <div className="container mt-4">
+            <div className="container p-5">
                 <h2 className=" mb-5">
                     <i className="fas fa-chart-line text-danger mr-2" />
                     View Reports
@@ -40,7 +40,7 @@ class ViewReport extends Component {
                         <div className="home-deck-card">
                             <Link
                                 className="report-link"
-                                to={"/doctor/reports/ViewReportsByPatient"}
+                                to={"/doctor/reports/time-reports"}
                             >
                                 <i className="fas fa-clock text-white fa-2x my-4" />
                                 <br />
