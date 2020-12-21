@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import { getalldoctors } from "../doctor/doctorapi";
 import DefaultProfile from "../images/avatar.png";
+// NewAppointment
 
 export default class getAppointment extends Component {
     constructor() {

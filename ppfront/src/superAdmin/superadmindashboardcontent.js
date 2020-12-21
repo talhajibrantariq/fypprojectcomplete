@@ -24,7 +24,7 @@ const superAdminDashboard = styled.div`
         background-color: #00000033;
     }
 
-    .dash-head {
+    .dash-head2 {
         color: white;
         font-weight: bold;
     }

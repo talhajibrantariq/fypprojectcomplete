@@ -92,7 +92,7 @@ class superAdmindashboard extends Component {
                         </Menu>
                     </Sider>
 
-                    <Content className={styles.ssl}>
+                    <Content className={styles.ss2}>
                         <RouterSwitch>
                             <Route
                                 exact

@@ -100,7 +100,7 @@ class patientDashboard extends React.Component {
                             </Menu.Item>
 
                             <SubMenu
-                                key="sub4"
+                                key="sub6"
                                 icon={<SettingOutlined />}
                                 title="Account"
                             >

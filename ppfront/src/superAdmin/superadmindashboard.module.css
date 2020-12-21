@@ -1,14 +1,10 @@
-/*
- * Specific styles of signin component
- */
-/*
- * General styles
- */
-/* body, .html {
-    height: 100%;
-    background-repeat: no-repeat;
-    background-image: linear-gradient(rgb(71, 90, 148), rgb(0, 35, 146 ));
-} */
+.ss2 {
+    background: #fff;
+    min-height: calc(100vh - 60px) !important;
+    background-image: url("/assets/images/superAdmindashboard.jpg");
+    background-position: center;
+    background-size: cover;
+}
 #components-layout-demo-responsive .logo {
     height: 32px;
     background: rgba(255, 255, 255, 0.2);

@@ -84,7 +84,6 @@ const ChatBox = (props) => {
     const [currentUserId] = useState(localStorage.getItem("doctor_id"));
     const [newMessage, setNewMessage] = useState("");
     const [messages, setMessages] = useState([]);
-    const [File, setFile] = useState();
     const [show, setShow] = useState(false);
     const [src, setSrc] = useState("");
 
@@ -209,10 +208,9 @@ const ChatBox = (props) => {
         if (event.target.files.length) {
             const file = event.target.files[0];
             const fileName = event.target.files[0].name;
-            const fileSize = event.target.files[0].size;
+            // const fileSize = event.target.files[0].size;
             const fileType = event.target.files[0].type;
             // this.appointmentData.set(name, value);
-            //setFile({ value: file, fileSize });
 
             const message = {
                 conversation: "",
@@ -235,8 +233,6 @@ const ChatBox = (props) => {
                     setNewMessage("");
                 }
             });
-        } else {
-            setFile();
         }
         loadmessages();
     };
