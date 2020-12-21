@@ -40,11 +40,8 @@ var doctorSchema = new mongoose.Schema({
   },
   email: {
     type: String,
-    match: [/.+\@.+\..+/, "Please fill a valid email address"],
     trim: true,
     required: true,
-    unique: "Email already exists",
-    required: "Email is required",
   },
   hashed_password: {
     type: String,
@@ -59,6 +56,10 @@ var doctorSchema = new mongoose.Schema({
     type: ObjectId,
     ref: "Hospital",
   },
+  appointments: [{
+    type: ObjectId,
+    ref: "Appointment",
+  }],
   created: {
     type: Date,
     default: Date.now(),

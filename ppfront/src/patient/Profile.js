@@ -1,5 +1,6 @@
 import React, { Component } from "react";
-import { Link, Redirect } from "react-router-dom";
+import { Link } from "react-router-dom";
+import { listByUser } from "../appointment/apiAppointment";
 import { isAuthenticated } from "../auth/index";
 import DefaultProfile from "../images/avatar.png";
 import { read } from "./apiPatient";
@@ -11,6 +12,7 @@ class Profile extends Component {
         this.state = {
             patient: "",
             redirect: false,
+            appointments: [],
         };
     }
 
@@ -27,12 +29,27 @@ class Profile extends Component {
                 this.setState({
                     patient: data,
                 });
+                this.loadApointments(data._id);
+            }
+        });
+    };
+
+    loadApointments = (patientId) => {
+        const token = isAuthenticated().token;
+        listByUser(patientId, token).then((data) => {
+            if (data.error) {
+                console.log(data.error);
+            } else {
+                this.setState({
+                    appointments: data,
+                });
             }
         });
     };
 
     componentDidMount() {
-        const patientId = this.props.match.params.patientId;
+        const patientId = this.props.match.params.id;
+        console.log(patientId, "lll");
         this.init(patientId);
     }
 
@@ -41,8 +58,8 @@ class Profile extends Component {
         this.init(patientId);
     }
     render() {
-        const { redirect, patient } = this.state;
-        if (redirect) return <Redirect to="/signin" />;
+        const { redirect, patient, appointments } = this.state;
+        // if (redirect) return <Redirect to="/signin" />
         const photoUrl = this.state.patient._id
             ? `http://localhost:8080/patient/photo/${this.state.patient._id}`
             : DefaultProfile;
@@ -75,7 +92,7 @@ class Profile extends Component {
                                     patient._id && (
                                     <div className="d-inline-block">
                                         <Link
-                                            className="btn btn-raised btn-success mr- 5"
+                                            className="btn btn-raised btn-success mr-1"
                                             to={`/patient/edit/${patient._id}`}
                                         >
                                             Edit Profile
@@ -87,6 +104,21 @@ class Profile extends Component {
                                 )}
                         </div>
                     </div>
+                    <h2 className="mt-5 mb-5">History</h2>
+                    <hr />
+                    {appointments.map((appointment, i) => (
+                        <div key={i}>
+                            <div>
+                                <Link to={`/appointment/${appointment._id}`}>
+                                    <div>
+                                        <p className="lead text-primary">
+                                            {appointment.title}
+                                        </p>
+                                    </div>
+                                </Link>
+                            </div>
+                        </div>
+                    ))}
                 </div>
             </div>
         );

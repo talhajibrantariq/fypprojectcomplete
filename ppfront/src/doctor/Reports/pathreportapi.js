@@ -165,7 +165,7 @@ export const getpathReportsByDoctor = (token) => {
     });
 };
 
-export const getpathReportsOfPatient = (patientId, token) => {
+export const getpathReportsOfPatient = (patientId) => {
     return fetch(
         `http://localhost:8080/pathreport/pathreports-of-patient/${patientId}`,
         {
@@ -173,7 +173,7 @@ export const getpathReportsOfPatient = (patientId, token) => {
             headers: {
                 Accept: "application/json",
                 "Content-Type": "application/json",
-                Authorization: `Bearer ${token}`,
+                // Authorization: `Bearer ${token}`,
             },
         }
     ).then((response) => {

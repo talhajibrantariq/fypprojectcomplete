@@ -92,6 +92,9 @@ const ChatBox = (props) => {
     const classes = useStyles();
 
     useEffect(() => {
+        console.log(
+        "llll"
+        )
         loadmessages();
         scrollToBottom();
 

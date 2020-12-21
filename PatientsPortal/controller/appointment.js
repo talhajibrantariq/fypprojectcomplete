@@ -1,10 +1,9 @@
-var Appointment = require("../model/appointment");
-var Doctor = require("../model/doctor");
-var _ = require("lodash");
-var formidable = require("formidable");
-var fs = require("fs");
-const app = require("../app");
-const { DH_CHECK_P_NOT_PRIME } = require("constants");
+var Appointment = require('../model/appointment');
+var Doctor = require('../model/doctor');
+var _ = require('lodash');
+var formidable = require('formidable');
+var fs = require('fs');
+const app = require('../app');
 
 exports.appointmentById = (req, res, next, id) => {
     Appointment.findById(id)
@@ -12,34 +11,12 @@ exports.appointmentById = (req, res, next, id) => {
         .exec((err, appointment) => {
             if (err || !appointment) {
                 return res.status(400).json({
-                    error: err,
+                    error: err
                 });
             }
             req.appointment = appointment;
             next();
         });
-};
-
-exports.getAppointments = (req, res) => {
-    res.json(req.profile);
-};
-
-exports.acceptAppointment = (req, res) => {
-    let appointment = req.appointment;
-    const updatedFields = {
-        status: "Accepted",
-    };
-    appointment = _.extend(appointment, updatedFields);
-    appointment.updated = Date.now();
-    console.log(appointment.updated);
-    appointment.save((err) => {
-        if (err) {
-            return res.status(400).json({
-                error: err,
-            });
-        }
-        res.json(appointment);
-    });
 };
 
 exports.getAppointment = (req, res) => {
@@ -48,54 +25,57 @@ exports.getAppointment = (req, res) => {
         .select("_id  title body")
         .then((appointment) => {
             res.status(200).json({
-                appointment,
+                appointment
             });
         })
-        .catch((err) => console.log(err));
+        .catch(err => console.log(err));
 };
 
+
 exports.createAppointment = (req, res) => {
-    let form = new formidable.IncomingForm();
+    let form = new formidable.IncomingForm()
     form.keepExtensions = true;
     form.parse(req, (err, fields, files) => {
         if (err) {
             return res.status(400).json({
-                error: "Image couldn't be uploaded",
-            });
+                error: "Image couldn't be uploaded"
+            })
         }
         let appointment = new Appointment(fields);
         req.profile.hashed_password = undefined;
         req.profile.salt = undefined;
-        console.log("patient", req.profile);
-        console.log("doctor", req.doctorProfile);
+        console.log("patient", req.profile)
+        console.log("doctor", req.doctorProfile)
         appointment.postedBy = req.profile;
         appointment.sentTo = req.doctorProfile;
         if (files.photo) {
             appointment.photo.data = fs.readFileSync(files.photo.path);
-            appointment.photo.contentType = files.photo.type;
+            appointment.photo.contentType = files.photo.type
         }
         appointment.save((err, result) => {
             if (err) {
                 return res.status(400).json({
-                    error: err,
+                    error: err
                 });
             }
             Doctor.findById(req.doctorProfile._id, (err, doctor) => {
                 if (err) {
-                    console.log("error aaya he");
-                } else {
-                    doctor.appointments.push(result);
+                    console.log("error aaya he")
+                }
+                else {
+                    doctor.appointments.push(result)
                     doctor.save((err, doctor) => {
                         if (err) {
-                            console.log("save main error");
+                            console.log("save main error")
                         }
-                    });
+                    })
                 }
-            });
+            })
             res.json(result);
-        });
+        })
     });
 };
+
 
 exports.appointmentByPatient = (req, res) => {
     Appointment.find({ postedBy: req.profile._id })
@@ -104,73 +84,71 @@ exports.appointmentByPatient = (req, res) => {
         .exec((err, appointment) => {
             if (err) {
                 return res.status(400).json({
-                    error: err,
+                    error: err
                 });
             }
             res.json(appointment);
         });
-};
+
+}
 
 exports.updateAppointment = (req, res, next) => {
     let appointment = req.appointment;
     appointment = _.extend(appointment, req.body);
     appointment.updated = Date.now();
-    console.log(appointment.updated);
-    appointment.save((err) => {
+    console.log(appointment.updated)
+    appointment.save(err => {
         if (err) {
             return res.status(400).json({
-                error: err,
+                error: err
             });
         }
         res.json(appointment);
     });
-    console.log(appointment);
-};
+    console.log(appointment)
+}
+
 
 exports.isPoster = (req, res, next) => {
-    let isPoster =
-        req.appointment &&
-        req.auth &&
-        req.appointment.postedBy._id == req.auth._id;
+    let isPoster = req.appointment && req.auth && req.appointment.postedBy._id == req.auth._id;
 
     if (!isPoster) {
         return res.status(403).json({
-            error: "You are not authroized",
+            error: "You are not authroized"
         });
     }
     next();
 };
 
+
 exports.deleteAppointment = (req, res) => {
-    let appointment = req.appointment;
+    let appointment = req.appointment
     console.log(appointment);
     appointment.remove((err, appointment) => {
         if (err) {
             res.status(400).json({
-                error: err,
+                error: err
             });
         }
         res.json({
-            message: "Appointment deleted successfully",
+            message: "Appointment deleted successfully"
         });
     });
 };
 
 exports.getPendingAppointments = (req, res) => {
-    console.log(req.profile);
-    Appointment.find({ postedBy: req.profile })
+    Appointment.find({ _id: req.profile._id, status: 'pending' })
         .populate("postedBy", "_id firstname lastname")
         .sort("_created")
         .exec((err, appointment) => {
             if (err) {
                 return res.status(400).json({
-                    error: err,
+                    error: err
                 });
             }
-            console.log(appointment);
             res.json(appointment);
         });
-};
+}
 
 exports.acceptAppointment = (req, res) => {
     Appointment.find({ status: false })
@@ -179,9 +157,9 @@ exports.acceptAppointment = (req, res) => {
         .exec((err, appointment) => {
             if (err) {
                 return res.status(400).json({
-                    error: err,
+                    error: err
                 });
             }
             res.json(appointment);
         });
-};
+}

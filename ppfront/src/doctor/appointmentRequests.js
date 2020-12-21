@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import DefaultProfile from "../images/avatar.png";
 import { acceptAppointment, getdoctorappoint } from "./doctorapi";
 
 class appointmentRequests extends Component {
@@ -41,15 +40,6 @@ class appointmentRequests extends Component {
                 {patient.appointments?.map((patient, i) => {
                     return (
                         <div class="card col-md-4" key={i}>
-                            <img
-                                style={{ height: "300px", width: "auto" }}
-                                className="img-thumbnail"
-                                src={`http://localhost:8080/patient/photo/${patient._id}`}
-                                onError={(i) =>
-                                    (i.target.src = `${DefaultProfile}`)
-                                }
-                                alt={patient.firstname}
-                            />
                             <div class="card-body">
                                 <h5 class="card-title">{patient.title} </h5>
                                 <p class="card-text">{patient.status}.</p>

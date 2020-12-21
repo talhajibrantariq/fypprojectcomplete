@@ -165,7 +165,7 @@ var Hospital = require("../model/hospital");
 var Doctor = require("../model/doctor");
 var Patient = require("../model/patient");
 // var faker = require("faker");
-const { sample } = require("lodash");
+// const { sample } = require("lodash");
 
 exports.hospitalById = (req, res, next, id) => {
     Hospital.findById(id).exec((err, hospital) => {
@@ -337,6 +337,13 @@ exports.getallpatients = async (req, res) => {
         data: re,
     });
     console.log(re);
+};
+exports.getdoctors = async (req, res) => {
+    const resul = await Doctor.find({});
+    res.status(200).json({
+        data: resul,
+    });
+    console.log(resul);
 };
 
 exports.getpatients = async (req, res) => {
