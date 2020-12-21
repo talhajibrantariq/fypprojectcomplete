@@ -117,7 +117,6 @@ export const BloodReport = (props) => {
                             alt=""
                         />
                     </div>
-
                     <div className="row">
                         <div className="col-6">
                             <div className="patient-info">
@@ -136,7 +135,13 @@ export const BloodReport = (props) => {
                         </div>
                     </div>
 
-                    <h4 className="report-name">Blood Report</h4>
+                    <h4 className="report-name">
+                        {isLoading ? (
+                            <i className="fa fa-circle-notch fa-spin ml-2" />
+                        ) : (
+                            "Blood Report"
+                        )}
+                    </h4>
 
                     <table>
                         <tr>
@@ -174,9 +179,7 @@ export const BloodReport = (props) => {
                             <td> {HeamoglobinConclusion(Report?.hmg)} </td>
                         </tr>
                     </table>
-
                     <div className="doctors-remarks">Doctor's Remarks</div>
-
                     <div className="patient-detail">
                         <div className="row">
                             <div className="col-6 ">

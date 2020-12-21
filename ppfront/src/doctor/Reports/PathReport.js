@@ -68,9 +68,29 @@ export const PathReport = (props) => {
                         </div>
                     </div>
 
-                    <h4 className="report-name">Pathology Report</h4>
+                    <h4 className="report-name">
+                        {isLoading ? (
+                            <i className="fa fa-circle-notch fa-spin ml-2" />
+                        ) : (
+                            "Pathology Report"
+                        )}
+                    </h4>
 
                     <div className="report-data">
+                        {get(Report, "image.contentType") && (
+                            <p>
+                                <img
+                                    src={
+                                        "data:" +
+                                        get(Report, "image.contentType") +
+                                        ";base64," +
+                                        get(Report, "image.data")
+                                    }
+                                    height="200px"
+                                />
+                            </p>
+                        )}
+
                         <h3>Gross Examination:</h3>
                         <p>{Report?.GrossExamination}</p>
                         <h3>Microscopic Examination:</h3>
@@ -140,8 +160,6 @@ const A4Page = styled.div`
     // box-shadow: 0 0 20px -5px black;
 
     .header-div {
-        padding-bottom: 1rem;
-
         .header-logo {
             height: 100px;
         }
@@ -154,20 +172,23 @@ const A4Page = styled.div`
             border-top: 17px solid darkred;
         }
     }
-
     .patient-info {
-        font-size: 1rem;
-
         span {
             margin-left: 0.25rem;
             font-weight: bold;
         }
     }
 
-    .patient-detail {
-        margin-top: 2rem;
+    .patient-detail,
+    .patient-info {
+        font-size: 1rem;
+
+        p {
+            margin-bottom: 0.25rem;
+        }
 
         h5 {
+            margin-top: 2rem;
             font-weight: bold;
         }
     }
@@ -195,7 +216,7 @@ const A4Page = styled.div`
         border-bottom: 1px solid gray;
         padding-bottom: 4px;
         text-align: center;
-        margin: 2rem 0;
+        margin: 1rem 0;
     }
 
     .report-data {
