@@ -31,6 +31,31 @@ class DoctorSignup extends Component {
   clickSubmit = (event) => {
     event.preventDefault();
     const token = isAuthenticated().token;
+    if (!this.state.firstname ||
+      !this.state.lastname ||
+      !this.state.designation ||
+      !this.state.gender ||
+      !this.state.cnic ||
+      !this.state.age ||
+      !this.state.phone ||
+      !this.state.email) {
+      alert("All feilds required.")
+      return;
+    }
+    if (this.state.age > 60 || this.state.age < 20) {
+      alert("Age should be between 20 and 60")
+      return;
+    }
+    var numbers = /^[0-9]+$/;
+    if (!this.state.age.match(numbers) || !this.state.cnic.match(numbers) || !this.state.phone.match(numbers)) {
+      alert("Age, Cnic and Phone no should be numeric.")
+      return;
+    }
+    if (this.state.cnic.length != 13) {
+      alert("Cnic should contain 13 digits.")
+      return;
+    }
+
     const {
       firstname,
       lastname,
@@ -182,7 +207,7 @@ class DoctorSignup extends Component {
 
                 <input
                   onChange={this.handleChange("firstname")}
-                  type="firstname"
+                  type="text"
                   id="firstname"
                   name="firstname"
                   class="form-control"
@@ -195,7 +220,7 @@ class DoctorSignup extends Component {
 
                 <input
                   onChange={this.handleChange("lastname")}
-                  type="lastname"
+                  type="text"
                   id="lastname"
                   name="lastname"
                   class="form-control"
@@ -208,9 +233,11 @@ class DoctorSignup extends Component {
 
                 <input
                   onChange={this.handleChange("age")}
-                  type="age"
+                  type="number"
                   id="age"
                   name="age"
+                  min="23"
+                  max="60"
                   class="form-control"
                   placeholder="Enter Age"
                   value={age}
@@ -220,7 +247,7 @@ class DoctorSignup extends Component {
                 <label class="my-1 mr-2">Designation</label>
                 <input
                   onChange={this.handleChange("designation")}
-                  type="designation"
+                  type="text"
                   id="designation"
                   name="designation"
                   class="form-control"
@@ -246,7 +273,7 @@ class DoctorSignup extends Component {
                 <div class="form-group">
                   <input
                     onChange={this.handleChange("phone")}
-                    type="phone"
+                    type="tel"
                     id="phone"
                     name="phone"
                     class="form-control"

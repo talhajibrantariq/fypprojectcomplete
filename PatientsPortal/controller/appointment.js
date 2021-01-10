@@ -20,7 +20,7 @@ exports.appointmentById = (req, res, next, id) => {
 };
 
 exports.getAppointment = (req, res) => {
-    var appointment = Appointment.find()
+    var appointment = Appointment.find({})
         .populate("postedBy", "_id firstname lastname")
         .select("_id  title body")
         .then((appointment) => {
@@ -46,12 +46,13 @@ exports.createAppointment = (req, res) => {
         req.profile.salt = undefined;
         console.log("patient", req.profile)
         console.log("doctor", req.doctorProfile)
-        appointment.postedBy = req.profile;
-        appointment.sentTo = req.doctorProfile;
+        appointment.postedBy = req.profile._id;
+        appointment.sentTo = req.doctorProfile._id;
         if (files.photo) {
             appointment.photo.data = fs.readFileSync(files.photo.path);
             appointment.photo.contentType = files.photo.type
         }
+        console.log(appointment, "app saved.")
         appointment.save((err, result) => {
             if (err) {
                 return res.status(400).json({
@@ -137,7 +138,7 @@ exports.deleteAppointment = (req, res) => {
 };
 
 exports.getPendingAppointments = (req, res) => {
-    Appointment.find({ _id: req.profile._id, status: 'pending' })
+    Appointment.find({ postedBy: req.profile._id, status: 'pending' })
         .populate("postedBy", "_id firstname lastname")
         .sort("_created")
         .exec((err, appointment) => {

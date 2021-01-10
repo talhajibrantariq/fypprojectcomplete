@@ -93,7 +93,7 @@ class Profile extends Component {
                                     <div className="d-inline-block">
                                         <Link
                                             className="btn btn-raised btn-success mr-1"
-                                            to={`/patient/edit/${patient._id}`}
+                                            to={`/patientportal1/alleReport/${patient._id}`}
                                         >
                                             Edit Profile
                                         </Link>
@@ -104,18 +104,18 @@ class Profile extends Component {
                                 )}
                         </div>
                     </div>
-                    <h2 className="mt-5 mb-5">History</h2>
+                    <h2 className="abc">Appointment History</h2>
                     <hr />
                     {appointments.map((appointment, i) => (
                         <div key={i}>
                             <div>
-                                <Link to={`/appointment/${appointment._id}`}>
-                                    <div>
-                                        <p className="lead text-primary">
-                                            {appointment.title}
-                                        </p>
-                                    </div>
-                                </Link>
+                                {/* <Link to={`/appointment/${appointment._id}`}> */}
+                                <div>
+                                    <p className="lead text-primary">
+                                        {appointment.title}
+                                    </p>
+                                </div>
+                                {/* </Link> */}
                             </div>
                         </div>
                     ))}

@@ -9,11 +9,24 @@
 }
 
 .ssl {
-    background: #fff;
     min-height: calc(100vh - 60px) !important;
-    background-image: url("/assets/images/hospitaldashboard.jpg");
+    background-image: url("/assets/images/patientdashboard.jpg");
+    opacity: 80%;
+    letter-spacing: 3px;
+    font-family: fantasy;
+    font-weight: bold;
+    color: black;
     background-position: center;
     background-size: cover;
+    font-weight: bold;
+    border: 3px solid #f1f1f1;
+
+    z-index: 2;
+
+    padding: 20px;
+
+    /* filter: blur(8px); */
+    /* -webkit-filter: blur(8px); */
 }
 
 .logo {

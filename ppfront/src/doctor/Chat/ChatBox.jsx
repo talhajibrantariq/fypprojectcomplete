@@ -91,9 +91,7 @@ const ChatBox = (props) => {
     const classes = useStyles();
 
     useEffect(() => {
-        console.log(
-        "llll"
-        )
+     
         loadmessages();
         scrollToBottom();
 
@@ -223,7 +221,7 @@ const ChatBox = (props) => {
                 fileName: fileName,
                 fileType: fileType,
             };
-            console.log("kkkk");
+          
             console.log(message);
             sendmessage(message).then((data) => {
                 if (data.error) {

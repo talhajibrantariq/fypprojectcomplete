@@ -19,7 +19,6 @@ import Dashboard from "./hospital/dashboard";
 import HospitalSignin from "./hospital/hospitalsignin";
 import HospitalSignup from "./hospital/hospitalsignup";
 import appointments from "./patient/appointments";
-import EditPatient from "./patient/EditPatient";
 import Profile from "./patient/Profile";
 import Signin from "./patient/Signin";
 import Signup from "./patient/Signup";
@@ -105,20 +104,21 @@ function MainRouter() {
             />
             <PrivateRouter
                 exact
+                path="/appointment/create/:doctorId"
+                component={NewAppointment}
+            />
+            {/* <PrivateRouter
+                exact
                 path="/patient/edit/:patientId"
                 component={EditPatient}
-            />
+            /> */}
             <PrivateRouter
                 exact
                 path="/patient/:patientId"
                 component={Profile}
             />
             <PrivateRouter exact path="/patients" component={Doctors} />
-            <PrivateRouter
-                exact
-                path="/appointment/create/:doctorId"
-                component={NewAppointment}
-            />
+
         </Switch>
     );
 }

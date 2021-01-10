@@ -3,7 +3,6 @@ import { Redirect } from "react-router-dom";
 import { isAuthenticated } from "../auth//index";
 import DefaultProfile from "../images/avatar.png";
 import { read, update, updatePatient } from "./apiPatient";
-
 class EditPatient extends Component {
     constructor() {
         super();
@@ -47,8 +46,9 @@ class EditPatient extends Component {
     };
 
     componentDidMount() {
+        console.log("Hhhhhh");
         this.patientData = new FormData();
-        const patientId = this.props.match.params.patientId;
+        const patientId = this.props.match.params.id;
         this.init(patientId);
     }
 
@@ -68,13 +68,13 @@ class EditPatient extends Component {
             return false;
         }
 
-        if (phone.length >= 1 && phone.length <= 11) {
-            this.setState({
-                error: "Enter a valid phone number",
-            });
-            console.log(this.error);
-            return false;
-        }
+        // if (phone.length >= 1 && phone.length <= 11) {
+        //     this.setState({
+        //         error: "Enter a valid phone number",
+        //     });
+        //     console.log(this.error);
+        //     return false;
+        // }
 
         if (lastname.length === 0) {
             this.setState({
@@ -110,7 +110,7 @@ class EditPatient extends Component {
             loading: true,
         });
         if (this.isValid()) {
-            const patientId = this.props.match.params.patientId;
+            const patientId = this.props.match.params.id;
             const token = isAuthenticated().token;
             console.log(patientId, token);
             update(patientId, token, this.patientData).then((data) => {

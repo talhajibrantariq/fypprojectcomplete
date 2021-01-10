@@ -59,7 +59,7 @@ export default class getAppointment extends Component {
                                         {doctor.designation}.
                                     </p>
                                     <Link
-                                        to={`/appointment/create/${doctor._id}`}
+                                        to={`/patientsportal/appointment/create/${doctor._id}`}
                                         class="btn btn-raised btn-primary "
                                     >
                                         Get Appointment

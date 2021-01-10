@@ -1,6 +1,5 @@
 import React, { Component } from "react";
-import { Link } from "react-router-dom";
-import { getReportsByDoctor } from "../doctor/Reports/reportapi";
+import { getReportsOfPatient } from "../doctor/Reports/reportapi";
 
 class AllBReports extends Component {
     constructor(props) {
@@ -12,7 +11,7 @@ class AllBReports extends Component {
     }
 
     componentDidMount = () => {
-        getReportsByDoctor("").then((data) => {
+        getReportsOfPatient(this.props.match.params.id).then((data) => {
             this.setState({
                 loading: false,
             });
@@ -24,7 +23,6 @@ class AllBReports extends Component {
             }
         });
     };
-
     render() {
         return (
             <div className="container p-5">
@@ -38,32 +36,31 @@ class AllBReports extends Component {
                 <table className="table">
                     <thead>
                         <tr>
-                            <th>Patient</th>
+                            {/* <th>Patient</th> */}
                             <th>Bloodpressure</th>
                             <th>Glucose</th>
                             <th>Hmg</th>
-                            <th width="180"></th>
                         </tr>
                         {this.state.reports &&
                             this.state.reports.map((r) => (
                                 <tr>
-                                    <td>
+                                    {/* <td>
                                         {r.patients.firstname}{" "}
                                         {r.patients.lastname}
-                                    </td>
+                                    </td> */}
                                     <td>{r.bloodpressure}</td>
                                     <td>{r.glucose}</td>
                                     <td>{r.hmg}</td>
                                     <td>
-                                        <Link
+                                        {/* <Link
                                             class="btn btn-secondary"
-                                            to={"/doctor/reports/blood-report/".concat(
+                                            to={"/patient/BReport/".concat(
                                                 r._id
                                             )}
                                         >
                                             <i className="far fa-chart-bar mr-2"></i>
                                             Open Report
-                                        </Link>
+                                        </Link> */}
                                     </td>
                                 </tr>
                             ))}

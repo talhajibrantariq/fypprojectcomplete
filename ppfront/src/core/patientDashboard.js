@@ -7,17 +7,19 @@ import {
     BrowserRouter as Router,
     Link,
     Route,
-    Switch as RouterSwitch,
+    Switch as RouterSwitch
 } from "react-router-dom";
+import NewAppointment from "../appointment/newAppointment";
 import { isAuthenticated, signout } from "../auth/index";
 import AllBReports from "../patient/AllbReports";
 import AllPReports from "../patient/AllpReports";
 import AllReports from "../patient/allReport";
 import appointments from "../patient/appointments";
+import { BReport } from "../patient/BReport";
+import EditPatient from "../patient/EditPatient";
 import getAppointment from "../patient/getAppointment";
 import Profile from "../patient/Profile";
 import styles from "./patientdashboard.module.css";
-
 const { Content, Sider } = Layout;
 
 class patientDashboard extends React.Component {
@@ -75,26 +77,23 @@ class patientDashboard extends React.Component {
                                 Appointments
                                 {/* <Link to={"/patientportal/appointments"} /> */}
                                 <Link
-                                    to={`/patientportal/appointments/${
-                                        isAuthenticated().patient._id
-                                    }`}
+                                    to={`/patientportal/appointments/${isAuthenticated().patient._id
+                                        }`}
                                 />
                             </Menu.Item>
                             <Menu.Item key="4" icon={<UserOutlined />}>
                                 Profile
                                 {/* <Link to={"/patients/Profile"} /> */}
                                 <Link
-                                    to={`/patientportal/${
-                                        isAuthenticated().patient._id
-                                    }`}
+                                    to={`/patientportal/${isAuthenticated().patient._id
+                                        }`}
                                 />
                             </Menu.Item>
                             <Menu.Item key="5" icon={<UserOutlined />}>
                                 Reports
                                 <Link
-                                    to={`/patientportal1/allReport/${
-                                        isAuthenticated().patient._id
-                                    }`}
+                                    to={`/patientportal1/allReport/${isAuthenticated().patient._id
+                                        }`}
                                 />
                                 {/* <Link to={"/patientportal1/allReport"} /> */}
                             </Menu.Item>
@@ -117,15 +116,23 @@ class patientDashboard extends React.Component {
 
                     <Content className={styles.ssl}>
                         <RouterSwitch>
+
                             <Route
                                 exact
                                 path="/patientportal/:id"
                                 component={Profile}
                             />
+
                             <Route
                                 exact
                                 path="/patientportal/appointments/:id"
                                 component={appointments}
+                            />
+
+                            <Route
+                                exact
+                                path="/patientportal/BReport/:id"
+                                component={BReport}
                             />
                             <Route
                                 exact
@@ -144,9 +151,22 @@ class patientDashboard extends React.Component {
                             />
                             <Route
                                 exact
+                                path="/patientportal1/alleReport/:id"
+                                component={EditPatient}
+                            />
+
+                            <Route
+                                exact
+                                path="/patientsportal/appointment/create/:doctorId"
+                                component={NewAppointment}
+                            />
+
+                            <Route
+                                exact
                                 path="/patientsportal"
                                 component={getAppointment}
                             />
+
                         </RouterSwitch>
                     </Content>
                 </Router>

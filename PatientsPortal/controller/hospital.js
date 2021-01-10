@@ -240,21 +240,26 @@ exports.getalldoctors = async (req, res) => {
 };
 
 exports.deletedoctor = async (req, res) => {
+    console.log("kkkkk", req.body.id)
     let id = req.body.id;
     let doc = await Doctor.findOne({ _id: id });
-    console.log(doc);
     if (doc) {
+        console.log(req.auth._id, doc.createdBy)
+        console.log("lllll")
         if (doc.createdBy == req.auth._id) {
+            console.log("lllll")
             doc.delete();
             res.status(200).json({
                 message: "Deleted successfully.",
             });
         } else {
+            console.log("lpppppll")
             res.status(401).json({
                 message: "You are not authorized to delete this user.",
             });
         }
     } else {
+        console.log("llpppppp")
         res.status(404).json({
             message: "The doctor with specified ID is not found.",
         });
@@ -339,11 +344,10 @@ exports.getallpatients = async (req, res) => {
     console.log(re);
 };
 exports.getdoctors = async (req, res) => {
-    const resul = await Doctor.find({});
+    const resul = await Doctor.find({ createdBy: req.auth._id });
     res.status(200).json({
         data: resul,
     });
-    console.log(resul);
 };
 
 exports.getpatients = async (req, res) => {
