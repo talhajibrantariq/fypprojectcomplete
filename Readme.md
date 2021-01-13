@@ -6,4 +6,4 @@ Hello. This repository contains source code of our desktop and web application. 
 
 
 Here is the video link for the demo: 
-https://drive.google.com/drive/folders/1K6WnIFUVujfXbH0rYWY0n6O-U1A4XoIS
+https://youtu.be/tk9w_LEtr3s
