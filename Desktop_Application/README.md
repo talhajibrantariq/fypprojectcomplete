@@ -1,9 +1,5 @@
 # README #
 
-### What is this repository for? ###
-
-Segmentation of nasal channels using image registration
-
 ### How do I get set up? ###
 
 This code is tested on 64 bit platform in Release mode and using following libs,
@@ -73,57 +69,10 @@ This code is tested on 64 bit platform in Release mode and using following libs,
 	
 	-	Open the build fodler of the project and run ImageViewer.sln in the release mode.
 
-### How to run the exe? ###
-
-There are 5 steps,
-
-1.	Identify the target folder. There are 3 options,
-
-	-	Use "Load Folder" button to load all series within a dicom folder.
-	
-	-	Use "Load File" button to load a specific target 3D volume in other formats.
-	
-	-	Use "Load *.vol Folder" button to open .vol files. It is assumed that the user has already extracted all the slices from the folder using ODViewer.exe.	(ODViewer can be found in the root directory e.g. in CT_N1/Jelena Sabalina_20150831161204.SL./.... Double Click on ODViewer.exe and click on Export Slices from the file menu and specify a folder to extract all slices. Then specify the folder where all the slices are extracted by clicking on "Load *.vol Folder" button.
-
-2.	Since each dicom series can have multiple studies, select the target series which you want to segment.
-
-3.	Identify the folder containining reference 3D volume, segmentation map and 3D mesh of the segmentation map. This is to be used as reference. This folder should contain 4 files,
-
-	a)	-	filename.mhd (reference volume) 
-	
-	b)	-	filenameSegmentationMask.mha (segmentation map specifying region of interest of reference volume to be considered for processing) 
-	
-	c)	-	filenameSegmentation.stl (3D mesh)
-	
-	d)	-	filenameMask.mha (bounding box containing relevant nasal structures)
-	
-	e)	-	filenameSegmentationContours.mha (only areas around edges should be considered for similarity metric. This file specifies those areas.)
-	
-	f)	-	filenameSegmentationLeftEntranceBoundary.mha (plane that cuts the left nose entrance cylinder in half)
-
-	g)	-	filenameSegmentationRightEntranceBoundary.mha (plane that cuts the right nose entrance cylinder in half)
-	
-	h)	-	filenameSegmentationNasopharynxBoundary.mha (plane that cuts the nasopharynx cylinder in half)
-	
-	A sample folder containing these files can be downloaded from (https://drive.google.com/open?id=1ZtV9UsBsSi3n15lLEd1v0q3aE97y2I1U)
-
-4.	Click on Generate Model to generate the target model on the target image.
-
-5.	Click on Save Model button to save the target model on hardisk.
-
-The executable ImageViewer.exe can be found at https://drive.google.com/open?id=1bD6mUDnTqTsxIDFoGoqUcAVcDx_XzwnL
-
-Video on how to run the executable can be found at https://www.youtube.com/watch?v=0_2w3emq-CE
-
-### How to run the exe from command line? ###
-
-"ImageViewer.exe <TargetFolderName> <ReferenceFolderName> <TargetStlFileNametoSave.stl>"
-
 
 ### Algorithm Description ###
 
-The aim of this project is to segment nasal channels on a target image. I noticed that the nasal channels appear darker in both CT scans and MRIS. Therefore 
-the idea is to do intensity based thresholding only within a certain region of the target image. That certain region is inferred from a reference image where
+Therefore the idea is to do intensity based thresholding only within a certain region of the target image. That certain region is inferred from a reference image where
 a segmentation map is already available. The region of interest in target image is identified using image registration which aims to find an appropriate 
 transformation between the two images. Once we know the transformation or point wise correspondence from reference to target image, we can easily map the 3d 
 segmentation map (that we have obtained manually on reference) from reference to target image. Once the region of interest is identified within the target image, 
