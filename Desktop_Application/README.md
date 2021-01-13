@@ -1,6 +1,9 @@
 # README #
 
-### How do I get set up? ###
+
+### Desktop Application ###
+
+How do I get set up?
 
 This code is tested on 64 bit platform in Release mode and using following libs,
 
